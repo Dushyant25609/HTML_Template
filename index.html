@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CIO Viewpoint Dashboard</title>
+
+  <!-- ✅ Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="stylesheet" href="css/custom.css" />
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+  <!-- Header -->
+  <header class="bg-blue-900 text-white py-6 text-center shadow">
+    <h1 class="text-3xl font-bold">CIO Viewpoint Dashboard</h1>
+    <p class="text-sm text-blue-200">Key Drivers of Equities | Updated <span id="updateDate"></span></p>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-7xl mx-auto mt-8 px-4">
+    <section class="bg-white shadow-md rounded-lg p-8">
+      <h2 class="text-sm font-normal mb-6 pb-2 border-b border-gray-300">Current readings on the key drivers of Equities for investors to consider, with arrows representing the recent trend:</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full factors-table">
+          <thead>
+            <tr>
+              <th rowspan="2" class="align-middle">Factor</th>
+              <th class="align-middle">Implication for Equities</th>
+              <th rowspan="2" class="align-middle">CIO View</th>
+            </tr>
+            <tr>
+              <th class="text-xs">
+                <div class="flex justify-between px-4">
+                  <span>Negative</span>
+                  <span>Neutral</span>
+                  <span>Positive</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="factors-body"></tbody>
+        </table>
+      </div>
+      <div class="mt-4 text-xs text-gray-600">
+        <p>2 of 12 August 2025 – CIO Viewpoint</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center text-gray-500 text-sm py-4 mt-10 border-t">
+    Source: Chief Investment Office | CIO Viewpoint © 2025
+  </footer>
+
+  <!-- JS Modules -->
+    <script src="js/component.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

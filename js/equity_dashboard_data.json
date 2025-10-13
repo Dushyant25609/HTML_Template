@@ -1,0 +1,80 @@
+{
+  "headers": {
+    "factorHeader": "Factor",
+    "implicationHeader": "Implication for Equities",
+    "cioViewHeader": "CIO View"
+  },
+  "factors": [
+    {
+      "factor": "Earnings",
+      "implication": "Positive",
+      "trend": "up",
+      "value": 100,
+      "cioView": "According to FactSet, S&P 500 revenue and earnings grew by 5.2% and 10.6%, respectively, on a year-over-year (YoY) basis in 2024. Subsequently, they grew by 4.5% and 13.3% in Q1 2025. In Q2, growth is expected at 5.1% and 8.4%, respectively. Analysts are now forecasting Q3 growth at 4.8% and 9.5%, respectively, and expect a slight deceleration in profit growth to 10.0% in July, the Global Earnings Revision Ratio improved for a third straight month. The advance was led by the U.S. vs the ratio in Q1 of month high, with upgrades now surpassing downgrades, while globally the reverse remains in place. Ratios improved, according to BofA Global Research."
+    },
+    {
+      "factor": "Valuations",
+      "implication": "Neutral",
+      "trend": "neutral",
+      "value": 50,
+      "cioView": "The S&P 500 price-to-earnings (P/E) ratio next 12 months is at around 22.5x, nears its late-2021 high of 23.4x, and stands above its long-term average of 16.5x. While this headline measure suggests that U.S. Large-cap Equities are richly valued, the Global Barometer (Equity Risk Premium) is above the long-term average."
+    },
+    {
+      "factor": "U.S. Macro",
+      "implication": "Neutral",
+      "trend": "down",
+      "value": 40,
+      "cioView": "A first estimate for Q2 real gross domestic product (GDP) indicated the economy rebounded by a seasonally adjusted annualized rate of 3.0% from Q1 growth of -0.3%. Compared to Q1, stronger growth in consumption and a swing in net exports drove the expansion. Private-sector inventories dragged on investment that retail sales to private domestic purchases, while restocking activity largely in property measures, grew by 1.2% in Q2 after expanding by 1.3% in Q1. For 2025, BofA Global Research expects real GDP growth to decelerate in Q3 to 1.7% before rebounding to 2.1% in Q4 for an annual expansion of 1.7%."
+    },
+    {
+      "factor": "Global Growth",
+      "implication": "Neutral",
+      "trend": "neutral",
+      "value": 45,
+      "cioView": "Evolving U.S. trade policy and geopolitical tensions remain uncertainties in the outlook. For the euro area, these dynamics have commercial positive elements in recent fiscal and monetary policy, resulting in limited growth in the services and industrial sectors. In China, stimulus efforts centered with property market weakness and trade-related uncertainty, also a headwind for broader Asia. After growth of 4.3% in 2023, the global economy grew by 3.2% in 2024. BofA Global Research expects 3.0% growth for 2025 and 3.1% growth for 2026. This compares to the International Monetary Fund."
+    },
+    {
+      "factor": "U.S. Monetary Policy / Inflation",
+      "implication": "Neutral",
+      "trend": "neutral",
+      "value": 55,
+      "cioView": "The Federal Reserve (Fed) kept its policy interest rate at 4.25% to 4.50% in its July meeting, maintaining this stance since December. However, for the first time since 1993, two governors on the monetary policy committee dissented in favor of a 0.75% cut. Amid intensifying debate, the central bank continues to take a patient approach to monetary policy. This has been due to heightened economic uncertainty regarding the resilience of the labor market and concerns about inflation. The market expects two Fed rate cuts this year. BofA Global Research expects the Fed to hold its interest rate level until the second half of 2024, when it anticipates 100 basis points (bps) worth of cuts."
+    },
+    {
+      "factor": "Fiscal Policy",
+      "implication": "Positive",
+      "trend": "up",
+      "value": 70,
+      "cioView": "The federal government in the U.S. should the IRA to be put into law. It extends into law. It extends into 2027. The Cuts and Jobs Act and includes new tax breaks, among other elements. BofA Global Research expects the bill will provide a moderate growth impact to U.S. GDP year this year and likely add to the deficit, though tax revenue, if sticky, could potentially cover most of the cost of the bill."
+    },
+    {
+      "factor": "Corporate Credit",
+      "implication": "Neutral",
+      "trend": "neutral",
+      "value": 52,
+      "cioView": "In July, credit spreads for Investment-grade IG and High Yield (HY) reflected lessened concerns about an economic slowdown. Overall, their levels have been less seen nearly two decades ago."
+    },
+    {
+      "factor": "Yield Curve",
+      "implication": "Neutral",
+      "trend": "up",
+      "value": 58,
+      "cioView": "The Treasury yield curve has returned to normal positioning after being positively sloped from its inversion. During July, the curve rose overall and a slight flattening in its shape. A decrease in the size of the inversion between the three-month and ten-month-old bonds lessened anticipated more rate cuts this cycle. Meanwhile, the fed funds and the three-month rates remained near to that of the 10-year, lifting with then-rates."
+    },
+    {
+      "factor": "Technical Indicators",
+      "implication": "Positive",
+      "trend": "up",
+      "value": 80,
+      "cioView": "The breadth of stocks above their 200-day moving average has improved. The advancers have exceeded positive momentum fueled by the latest market rally. The cumulative advance/decline indicator, a measure of market breadth, has recovered from its decline earlier this year. A similar indicator, the percentage of New York Stock Exchange stocks closing above their 200-day moving average also trended higher last month, jumping to roughly 55% from 40%. This level remains below the average in 2024 of last June (60%), which was at a peak."
+    },
+    {
+      "factor": "Investor Sentiment",
+      "implication": "Neutral",
+      "trend": "down",
+      "value": 35,
+      "cioView": "Investor sentiment has improved. According to the American Association of Individual Investors, the large percentage of investors and investor in medium-term market activities compaired to early July extreme, standing today in more neutral territory. Meanwhile, the Chicago Board Options Exchange Volatility Index stands slightly above its year-to-date (YTD) average. BofA Global Research's Bull & Bear Indicator still flashes a 'neutral' signal at 6.3 as of July 31. However, according to the July Global Fund Manager Survey, the average cash level in institutional portfolios fell to 3.9%, triggering a sell signal."
+    }
+  ],
+  "exportDate": "2025-10-11T08:36:11.161Z"
+}

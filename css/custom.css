@@ -1,0 +1,202 @@
+/* Custom styles to match the design */
+table td {
+  vertical-align: top;
+}
+
+.factors-table {
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+.factors-table th,
+.factors-table td {
+  border: none;
+  padding: 8px 12px;
+}
+
+.factors-table thead th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  text-align: center;
+  border-top: 2px solid #333;
+  border-bottom: 2px solid #333;
+}
+
+.factors-table tbody td:first-child {
+  font-weight: 600;
+  width: 200px;
+}
+
+.factors-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.factors-table tbody tr:nth-child(odd) {
+  background-color: white;
+}
+
+.factors-table tbody td:last-child {
+  text-align: justify;
+  line-height: 1.4;
+  font-size: 14px;
+}
+
+.factors-table tbody td:nth-child(2) {
+  text-align: center;
+  vertical-align: middle;
+  width: 300px;
+  padding: 8px;
+}
+
+/* Range Slider Styles */
+.range-slider {
+  position: relative;
+  width: 280px;
+  height: 30px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.range-track {
+  width: 100%;
+  height: 8px;
+  background-color: #ccc;
+  border-radius: 4px;
+  position: relative;
+  margin: 0 10px;
+}
+
+.range-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+}
+
+.range-handle {
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border: 3px solid #333;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Handle colors based on implication */
+.range-handle.positive {
+  background-color: #22c55e;
+  border-color: #16a34a;
+}
+
+.range-handle.neutral {
+  background-color: #facc15;
+  border-color: #eab308;
+}
+
+.range-handle.negative {
+  background-color: #ef4444;
+  border-color: #dc2626;
+}
+
+.range-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+}
+
+.range-circle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #333;
+}
+
+.range-arrow {
+  font-size: 20px;
+  font-weight: 900;
+  color: #333;
+}
+
+/* SVG Arrow Styles */
+.svg-arrow {
+  display: inline-flex;
+  align-items: center;
+  color: #333;
+  width: 28px;
+  height: 21px;
+}
+
+.svg-arrow.left {
+  transform: rotate(180deg);
+}
+
+.svg-arrow.right {
+  transform: rotate(0deg);
+}
+
+.svg-arrow svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Circle colors */
+.positive { background-color: #22c55e; }
+.neutral { background-color: #facc15; }
+.negative { background-color: #ef4444; }
+
+/* Position indicators */
+.negative-pos { left: 15%; }
+.neutral-pos { left: 50%; }
+.positive-pos { left: 85%; }
+
+/* Editable cells styling */
+.factors-table th:not(.text-xs):hover,
+.factors-table td:first-child:hover,
+.factors-table td:last-child:hover {
+  background-color: #e3f2fd;
+  cursor: pointer;
+  position: relative;
+}
+
+.factors-table th:not(.text-xs):hover::after,
+.factors-table td:first-child:hover::after,
+.factors-table td:last-child:hover::after {
+  content: "Double-click to edit";
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #666;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* Input field styling when editing */
+.factors-table input {
+  font-family: inherit;
+  color: inherit;
+  outline: none;
+}
+
+.factors-table input:focus {
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 2px;
+  padding: 2px 4px;
+}
