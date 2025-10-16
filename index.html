@@ -519,13 +519,16 @@
       // Table 1: Range handle editing functionality
       function addRangeHandleEditing() {
         const rangeHandles = document.querySelectorAll('.range-handle');
+        console.log('Found range handles:', rangeHandles.length);
         rangeHandles.forEach((handle, index) => {
           handle.addEventListener('dblclick', function(e) {
             e.stopPropagation();
+            console.log('Range handle double-clicked!', index);
             
             const row = this.closest('tr');
             const rowIndex = Array.from(row.parentElement.children).indexOf(row);
             const factorData = window.factorsData[rowIndex];
+            console.log('Factor data for popover:', factorData);
             
             showRangeEditPopover(this, factorData, rowIndex);
           });
@@ -569,24 +572,24 @@
           <div style="margin-bottom: 15px;">
             <label style="display: block; margin-bottom: 5px; font-weight: 600;">Implication:</label>
             <select id="popover-implication" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-              <option value="positive" ${factorData.implication.toLowerCase() === 'positive' ? 'selected' : ''}>Positive</option>
-              <option value="neutral" ${factorData.implication.toLowerCase() === 'neutral' ? 'selected' : ''}>Neutral</option>
-              <option value="negative" ${factorData.implication.toLowerCase() === 'negative' ? 'selected' : ''}>Negative</option>
+              <option value="positive" ${(factorData.implication || '').toLowerCase() === 'positive' ? 'selected' : ''}>Positive</option>
+              <option value="neutral" ${(factorData.implication || '').toLowerCase() === 'neutral' ? 'selected' : ''}>Neutral</option>
+              <option value="negative" ${(factorData.implication || '').toLowerCase() === 'negative' ? 'selected' : ''}>Negative</option>
             </select>
           </div>
           
           <div style="margin-bottom: 15px;">
             <label style="display: block; margin-bottom: 5px; font-weight: 600;">Trend:</label>
             <select id="popover-trend" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-              <option value="up" ${factorData.trend === 'up' ? 'selected' : ''}>Up</option>
-              <option value="neutral" ${factorData.trend === 'neutral' ? 'selected' : ''}>Neutral</option>
-              <option value="down" ${factorData.trend === 'down' ? 'selected' : ''}>Down</option>
+              <option value="up" ${(factorData.trend || '') === 'up' ? 'selected' : ''}>Up</option>
+              <option value="neutral" ${(factorData.trend || '') === 'neutral' ? 'selected' : ''}>Neutral</option>
+              <option value="down" ${(factorData.trend || '') === 'down' ? 'selected' : ''}>Down</option>
             </select>
           </div>
           
           <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Value: <span id="value-display">${factorData.value}</span></label>
-            <input type="range" id="popover-value" min="0" max="100" value="${factorData.value}" 
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Value: <span id="value-display">${factorData.value || 50}</span></label>
+            <input type="range" id="popover-value" min="0" max="100" value="${factorData.value || 50}" 
                    style="width: 100%; margin-bottom: 5px;"
                    oninput="document.getElementById('value-display').textContent = this.value">
             <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666;">
@@ -3241,6 +3244,7 @@
         makeTextCellsEditable();
         
         // Initialize table-specific functionality
+        addRangeHandleEditing(); // Add range handle editing for Table 1
         addTable2WeightIndicatorEditing();
         addTable3WeightIndicatorEditing();
         addTable3RowEditing();
