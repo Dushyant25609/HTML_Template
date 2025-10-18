@@ -98,6 +98,8 @@
       background-color: #f8f9fa;
     }
 
+
+
     /* Preview Mode Button */
     .preview-btn {
       background: #007bff;
@@ -190,7 +192,7 @@
   <header class="bg-blue-900 text-white py-6 text-center shadow">
     <h1 id="header-title" class="text-3xl font-bold">CIO Viewpoint Dashboard</h1>
     <p id="header-subtitle" class="text-sm text-blue-200">Key Drivers of Equities | Updated <span id="header-date">October 2025</span></p>
-    <p class="text-xs text-blue-300 mt-2">💡 Double-click headers and text cells to edit | Click weight dots in Table 2 for quick position changes | Double-click Table 3 rows or weight dots/triangles for detailed editing | Double-click empty weight area in Table 2 to hide dots | Double-click range handles to adjust values</p>
+    <p class="text-xs text-blue-300 mt-2">💡 Double-click headers and text cells to edit | Double-click comments for advanced editing with merge notes | Click weight dots in Table 2 for quick position changes | Double-click Table 3 rows or weight dots/triangles for detailed editing | Double-click empty weight area in Table 2 to hide dots | Double-click range handles to adjust values</p>
   </header>
 
   <!-- Action Buttons -->
@@ -278,6 +280,41 @@
       const dataCells = document.querySelectorAll('tbody td:first-child, tbody td:last-child');
       dataCells.forEach((cell, index) => {
         cell.addEventListener('dblclick', function() {
+          // Check if this is a comments cell (last column)
+          const row = this.parentElement;
+          const isCommentsCell = this === row.lastElementChild;
+          
+          if (isCommentsCell) {
+            // Check if this comment cell is hidden - if so, prevent editing
+            if (this.style.display === 'none') {
+              return; // Do nothing for hidden comment cells
+            }
+            
+            // Show comments popover for comments cells
+            const tbody = row.parentElement;
+            const rowIndex = Array.from(tbody.children).indexOf(row);
+            
+            let data = null;
+            let tableType = '';
+            
+            if (tbody.id === 'factors-body') {
+              data = window.factorsData[rowIndex];
+              tableType = 'factors';
+            } else if (tbody.id === 'cio-view-body') {
+              data = window.cioViewData[rowIndex];
+              tableType = 'cio-view';
+            } else if (tbody.id === 'table3-view-body') {
+              // Disable comment popover for Table 3
+              return;
+            }
+            
+            if (data) {
+              showCommentsEditPopover(this, data, rowIndex, tableType);
+            }
+            return;
+          }
+          
+          // Handle regular text editing for non-comments cells
           if (this.querySelector('input')) return; // Already editing
           
           const originalText = this.textContent.trim();
@@ -318,19 +355,11 @@
                 if (window.cioViewData && window.cioViewData[rowIndex]) {
                   window.cioViewData[rowIndex].assetClass = newValue;
                 }
-              } else if (this === row.lastElementChild) {
-                if (window.cioViewData && window.cioViewData[rowIndex]) {
-                  window.cioViewData[rowIndex].comments = newValue;
-                }
               }
             } else if (tbody.id === 'table3-view-body') {
               if (this === row.firstElementChild) {
                 if (window.table3ViewData && window.table3ViewData[rowIndex]) {
                   window.table3ViewData[rowIndex].assetClass = newValue;
-                }
-              } else if (this === row.lastElementChild) {
-                if (window.table3ViewData && window.table3ViewData[rowIndex]) {
-                  window.table3ViewData[rowIndex].comments = newValue;
                 }
               }
             }
@@ -463,7 +492,7 @@
     <!-- Table 1 Specific JavaScript Functions -->
     <script>
       // Table 1: Create factor row with range slider
-      window.createFactorRow = function(item) {
+      window.createFactorRow = function(item, index, allItems) {
         // Create SVG arrow based on trend
         let trendArrow = '';
         const svgArrow = `<svg width="28" height="21" viewBox="0 0 122.88 108.06" xmlns="http://www.w3.org/2000/svg">
@@ -507,11 +536,18 @@
           </div>
         `;
 
+        const classAttr = '';
+
+        // Handle hidden comment cells
+        const commentStyle = item.commentHidden ? ' style="display: none;"' : '';
+        const commentContent = item.commentHidden ? '' : (item.comments || '');
+
         return `
-          <tr>
+          <tr${classAttr}>
             <td>${item.factor}</td>
             <td>${rangeSlider}</td>
             <td>${item.cioView}</td>
+            <td${commentStyle}>${commentContent}</td>
           </tr>
         `;
       };
@@ -642,7 +678,7 @@
 
         // Regenerate the table to reflect changes
         const tbody = document.getElementById("factors-body");
-        tbody.innerHTML = window.factorsData.map(window.createFactorRow).join("");
+        tbody.innerHTML = window.factorsData.map((item, index) => window.createFactorRow(item, index, window.factorsData)).join("");
         
         // Re-initialize editable functionality
         makeHeadersEditable();
@@ -765,27 +801,42 @@
 
       /* Hidden weight indicators (when position is -1) */
       .weight-indicator.hidden {
-        display: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        padding-top: 25px;
+        padding-bottom: 10px;
+        cursor: pointer;
+        min-height: 40px;
+        background-color: rgba(211, 211, 211, 0.1);
+        border-radius: 4px;
+        transition: background-color 0.2s ease;
+      }
+
+      .weight-indicator.hidden:hover {
+        background-color: rgba(211, 211, 211, 0.2);
       }
     </style>
 
     <!-- Table 2 Specific JavaScript Functions -->
     <script>
       // Table 2: Create asset class row with weight indicators
-      window.createAssetClassRow = function(item) {
+      window.createAssetClassRow = function(item, index, allItems) {
         // Determine if row should have separation borders
         const rowClass = item.separate === 1 ? ' class="separated-row"' : '';
+        const classAttr = rowClass;
         
         // If position is -1, hide all dots
         if (item.position === -1) {
           const weightIndicator = `
-            <div class="weight-indicator hidden">
-              <!-- No dots displayed when position is -1 -->
+            <div class="weight-indicator hidden" title="Double-click to set weight position">
+              <span style="color: #999; font-size: 12px; font-style: italic;"></span>
             </div>
           `;
 
           return `
-            <tr${rowClass}>
+            <tr${classAttr}>
               <td>${item.assetClass}</td>
               <td>${weightIndicator}</td>
               <td>${item.comments}</td>
@@ -822,11 +873,15 @@
           </div>
         `;
 
+        // Handle hidden comment cells
+        const commentStyle = item.commentHidden ? ' style="display: none;"' : '';
+        const commentContent = item.commentHidden ? '' : (item.comments || '');
+
         return `
-          <tr${rowClass}>
+          <tr${classAttr}>
             <td>${item.assetClass}</td>
             <td>${weightIndicator}</td>
-            <td>${item.comments}</td>
+            <td${commentStyle}>${commentContent}</td>
           </tr>
         `;
       };
@@ -835,6 +890,25 @@
       function addTable2WeightIndicatorEditing() {
         const weightIndicators = document.querySelectorAll('#cio-view-body .weight-indicator');
         weightIndicators.forEach((indicator, index) => {
+          // Handle hidden weight indicators (when position is -1)
+          if (indicator.classList.contains('hidden')) {
+            indicator.addEventListener('dblclick', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              
+              const row = this.closest('tr');
+              if (!row) return;
+              const tbody = row.parentElement;
+              if (!tbody) return;
+              const rowIndex = Array.from(tbody.children).indexOf(row);
+              
+              if (window.cioViewData && window.cioViewData[rowIndex]) {
+                showWeightEditPopover(this, window.cioViewData[rowIndex], rowIndex, 'cio-view');
+              }
+            });
+            return; // Skip regular functionality for hidden indicators
+          }
+
           // Single click for position selection (Table 2 only)
           indicator.addEventListener('click', function(e) {
             const dots = this.querySelectorAll('.weight-dot');
@@ -864,7 +938,9 @@
             
             // Update the data
             const row = this.closest('tr');
+            if (!row) return;
             const tbody = row.parentElement;
+            if (!tbody) return;
             const rowIndex = Array.from(tbody.children).indexOf(row);
             
             if (window.cioViewData && window.cioViewData[rowIndex]) {
@@ -899,7 +975,9 @@
             
             const clickedDot = e.target.closest('.weight-dot');
             const row = this.closest('tr');
+            if (!row) return;
             const tbody = row.parentElement;
+            if (!tbody) return;
             const rowIndex = Array.from(tbody.children).indexOf(row);
             
             if (clickedDot && clickedDot.classList.contains('filled')) {
@@ -923,7 +1001,7 @@
                 
                 // Regenerate Table 2
                 const cioTbody = document.getElementById("cio-view-body");
-                cioTbody.innerHTML = window.cioViewData.map(window.createAssetClassRow).join("");
+                cioTbody.innerHTML = window.cioViewData.map((item, index) => window.createAssetClassRow(item, index, window.cioViewData)).join("");
                 
                 // Re-initialize functionality
                 makeHeadersEditable();
@@ -1031,18 +1109,35 @@
       }
 
       /* Table 3 trend row highlights */
-      .trend-row-up {
-        background-color: rgba(239, 68, 68, 0.2) !important;
+      .trend-row-up td:first-child,
+      .trend-row-up td:nth-child(2) {
+        border-top: 2px solid #ef2121 !important;
+        border-bottom: 2px solid #ef2121 !important;
+      }
+      
+      .trend-row-up td:first-child {
+        border-left: 2px solid #ef2121 !important;
+      }
+      
+      .trend-row-up td:nth-child(2) {
+        border-right: 2px solid #ef2121 !important;
       }
 
-      .trend-row-down {
-        background-color: rgba(239, 68, 68, 0.2) !important;
+      .trend-row-down td:first-child,
+      .trend-row-down td:nth-child(2) {
+        border-top: 2px solid #ef2121 !important;
+        border-bottom: 2px solid #ef2121 !important;
+      }
+      
+      .trend-row-down td:first-child {
+        border-left: 2px solid #ef2121 !important;
+      }
+      
+      .trend-row-down td:nth-child(2) {
+        border-right: 2px solid #ef2121 !important;
       }
 
-      .trend-row-up:hover,
-      .trend-row-down:hover {
-        background-color: rgba(239, 68, 68, 0.3) !important;
-      }
+    
 
       /* Table 3 rows are clickable */
       #table3-view-body tr {
@@ -1057,7 +1152,7 @@
     <!-- Table 3 Specific JavaScript Functions -->
     <script>
       // Table 3: Enhanced createAssetClassRow with trend triangles
-      window.createTable3sectorRow = function(item) {
+      window.createTable3sectorRow = function(item, index, allItems) {
         // Determine if row should have separation borders
         let rowClass = item.separate === 1 ? 'separated-row' : '';
         
@@ -1067,6 +1162,8 @@
         } else if (item.trend === -1) {
           rowClass += ' trend-row-down';
         }
+        
+
         
         // Add class attribute if there are any classes
         const classAttr = rowClass ? ` class="${rowClass.trim()}"` : '';
@@ -1129,11 +1226,15 @@
           </div>
         `;
 
+        // Handle hidden comment cells
+        const commentStyle = item.commentHidden ? ' style="display: none;"' : '';
+        const commentContent = item.commentHidden ? '' : (item.comments || '');
+
         return `
           <tr${classAttr}>
             <td>${item.sector}</td>
             <td>${weightIndicator}</td>
-            <td>${item.comments}</td>
+            <td${commentStyle}>${commentContent}</td>
           </tr>
         `;
       };
@@ -1540,6 +1641,248 @@
       closeWeightPopover();
       showWeightUpdateNotification();
     };
+
+    // Helper functions for merge preview
+    function getNextRowComment(rowIndex, tableType) {
+      let targetData = null;
+      if (tableType === 'factors') targetData = window.factorsData;
+      else if (tableType === 'cio-view') targetData = window.cioViewData;
+      else if (tableType === 'table3') targetData = window.table3ViewData;
+      
+      if (targetData && rowIndex < targetData.length - 1) {
+        return targetData[rowIndex + 1].comments || 'Empty';
+      }
+      return 'No next row';
+    }
+
+    function getMergePreview(currentComments, rowIndex, tableType) {
+      const nextComment = getNextRowComment(rowIndex, tableType);
+      if (nextComment === 'No next row' || nextComment === 'Empty') {
+        return currentComments || 'Empty';
+      }
+      const current = currentComments || '';
+      const next = nextComment === 'Empty' ? '' : nextComment;
+      return current + (current && next ? ' | ' : '') + next;
+    }
+
+    // Helper function to regenerate tables with proper parameters
+    function regenerateTable(tableType) {
+      if (tableType === 'factors') {
+        const tbody = document.getElementById('factors-body');
+        if (tbody && window.factorsData) {
+          tbody.innerHTML = window.factorsData.map((item, index) => window.createFactorRow(item, index, window.factorsData)).join("");
+        }
+      } else if (tableType === 'cio-view') {
+        const tbody = document.getElementById('cio-view-body');
+        if (tbody && window.cioViewData) {
+          tbody.innerHTML = window.cioViewData.map((item, index) => window.createAssetClassRow(item, index, window.cioViewData)).join("");
+        }
+      } else if (tableType === 'table3') {
+        const tbody = document.getElementById('table3-view-body');
+        if (tbody && window.table3ViewData) {
+          tbody.innerHTML = window.table3ViewData.map((item, index) => window.createTable3sectorRow(item, index, window.table3ViewData)).join("");
+        }
+      }
+    }
+
+    // Comments Edit Popover Functionality
+    function showCommentsEditPopover(element, data, rowIndex, tableType) {
+      // Validate data before proceeding
+      if (!data) {
+        console.error('No data provided to showCommentsEditPopover for row:', rowIndex);
+        return;
+      }
+
+      // Remove existing popover if any
+      const existingPopover = document.querySelector('.comments-edit-popover');
+      if (existingPopover) {
+        existingPopover.remove();
+      }
+
+      // Create popover
+      const popover = document.createElement('div');
+      popover.className = 'comments-edit-popover';
+      popover.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 1000;
+        min-width: 350px;
+        max-width: 500px;
+        font-size: 14px;
+        animation: popoverFadeIn 0.2s ease-out;
+      `;
+
+      // Ensure data properties exist with defaults
+      const comments = data.comments || '';
+      const merge = data.merge || '';
+
+      // Create form content
+      popover.innerHTML = `
+        <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: bold;">Edit Comments</h3>
+        
+        <div style="margin-bottom: 15px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 600;">Comments:</label>
+          <textarea id="popover-comments" 
+                   style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; min-height: 80px; resize: vertical; font-family: inherit;"
+                   placeholder="Enter comments here...">${comments}</textarea>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; margin-bottom: 5px; font-weight: 600;">Merge with Next Row:</label>
+          <select id="popover-merge" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <option value="0" ${merge === 0 || merge === '0' || !merge ? 'selected' : ''}>No (0)</option>
+            <option value="1" ${merge === 1 || merge === '1' ? 'selected' : ''}>Yes (1)</option>
+          </select>
+          <div style="font-size: 12px; color: #666; margin-top: 5px;">
+            When set to "Yes (1)", this row's comment will be combined with the next row's comment. The next row's comment will be cleared.
+          </div>
+        </div>
+        
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+          <button onclick="closeCommentsPopover()" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Cancel</button>
+          <button onclick="saveCommentsChanges(${rowIndex}, '${tableType}')" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Save</button>
+        </div>
+      `;
+
+      document.body.appendChild(popover);
+      window.currentCommentsPopover = popover;
+
+      // Focus on the first textarea
+      setTimeout(() => {
+        const commentsTextarea = document.getElementById('popover-comments');
+        if (commentsTextarea) {
+          commentsTextarea.focus();
+          commentsTextarea.select();
+        }
+      }, 100);
+
+      // Close popover when clicking outside
+      setTimeout(() => {
+        document.addEventListener('click', closeCommentsPopoverOnOutsideClick);
+      }, 100);
+    }
+
+    // Comments popover utility functions
+    function closeCommentsPopoverOnOutsideClick(e) {
+      const popover = document.querySelector('.comments-edit-popover');
+      if (popover && !popover.contains(e.target)) {
+        closeCommentsPopover();
+      }
+    }
+
+    window.closeCommentsPopover = function() {
+      const popover = document.querySelector('.comments-edit-popover');
+      if (popover) {
+        popover.remove();
+        document.removeEventListener('click', closeCommentsPopoverOnOutsideClick);
+      }
+    };
+
+    window.saveCommentsChanges = function(rowIndex, tableType) {
+      const comments = document.getElementById('popover-comments').value;
+      const mergeValue = parseInt(document.getElementById('popover-merge').value);
+
+      // Update the data based on table type
+      let targetData = null;
+      let targetTbodyId = null;
+      
+      if (tableType === 'factors') {
+        targetData = window.factorsData;
+        targetTbodyId = 'factors-body';
+      } else if (tableType === 'cio-view') {
+        targetData = window.cioViewData;
+        targetTbodyId = 'cio-view-body';
+      } else if (tableType === 'table3') {
+        targetData = window.table3ViewData;
+        targetTbodyId = 'table3-view-body';
+      }
+      
+      if (targetData && targetData[rowIndex]) {
+        targetData[rowIndex].comments = comments;
+        targetData[rowIndex].merge = mergeValue;
+        
+        // Handle merge functionality
+        if (mergeValue === 1 && rowIndex < targetData.length - 1) {
+          // Merge current row's comment with next row's comment
+          const nextRowIndex = rowIndex + 1;
+          const currentComments = comments || '';
+          const nextRowComments = targetData[nextRowIndex].comments || '';
+          
+          // Combine comments (current + next)
+          const mergedComments = currentComments + (currentComments && nextRowComments ? ' | ' : '') + nextRowComments;
+          
+          // Update current row with merged comments
+          targetData[rowIndex].comments = mergedComments;
+          
+          // Hide the next row's comment cell instead of clearing it
+          targetData[nextRowIndex].commentHidden = true;
+          
+          // Reset merge flag for next row to avoid conflicts
+          targetData[nextRowIndex].merge = 0;
+        } else {
+          // If merge is disabled, ensure next row's comment is visible
+          if (rowIndex < targetData.length - 1) {
+            targetData[rowIndex + 1].commentHidden = false;
+          }
+        }
+        
+        // Regenerate the table to reflect changes
+        regenerateTable(tableType);
+        
+        // Re-initialize functionality based on table type
+        makeHeadersEditable();
+        makeTextCellsEditable();
+        
+        if (tableType === 'factors') {
+          addRangeHandleEditing();
+        } else if (tableType === 'cio-view') {
+          addTable2WeightIndicatorEditing();
+        } else if (tableType === 'table3') {
+          addTable3WeightIndicatorEditing();
+          addTable3RowEditing();
+        }
+        
+        console.log(`Updated comments and merge for ${tableType} row ${rowIndex}, merge: ${mergeValue}`);
+      }
+
+      // Save changes
+      saveDataToStorage();
+      closeCommentsPopover();
+      showCommentsUpdateNotification();
+    };
+
+    // Show comments update notification
+    function showCommentsUpdateNotification() {
+      const notification = document.createElement('div');
+      notification.textContent = 'Comments updated successfully!';
+      notification.style.cssText = `
+        position: fixed;
+        top: 140px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 4px;
+        z-index: 1001;
+        font-size: 14px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      `;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 3000);
+    }
   </script>
 
   <!-- JS Modules -->
@@ -1693,6 +2036,23 @@
         window.table3ViewData = data.table3Views.sectores;
         window.dashboardInfo = data.dashboardInfo;
         
+        // Ensure all data items have merge field initialized
+        if (window.factorsData) {
+          window.factorsData.forEach(item => {
+            if (item.merge === undefined) item.merge = 0;
+          });
+        }
+        if (window.cioViewData) {
+          window.cioViewData.forEach(item => {
+            if (item.merge === undefined) item.merge = 0;
+          });
+        }
+        if (window.table3ViewData) {
+          window.table3ViewData.forEach(item => {
+            if (item.merge === undefined) item.merge = 0;
+          });
+        }
+        
         console.log('CIO View Data:', window.cioViewData);
         console.log('CIO View Data length:', window.cioViewData.length);
         console.log('Table 3 View Data:', window.table3ViewData);
@@ -1769,13 +2129,20 @@
         window.headerData = data.headers;
         window.factorsData = data.factors;
         
+        // Initialize merge fields
+        if (window.factorsData) {
+          window.factorsData.forEach(item => {
+            if (item.merge === undefined) item.merge = 0;
+          });
+        }
+        
         const headers = document.querySelectorAll('th:not(.text-xs)');
         if (headers[0]) headers[0].textContent = window.headerData.factorHeader;
         if (headers[1]) headers[1].textContent = window.headerData.implicationHeader;
         if (headers[2]) headers[2].textContent = window.headerData.cioViewHeader;
         
         const tbody = document.getElementById("factors-body");
-        tbody.innerHTML = window.factorsData.map(window.createFactorRow).join("");
+        tbody.innerHTML = window.factorsData.map((item, index) => window.createFactorRow(item, index, window.factorsData)).join("");
         
         console.log('Factors data loaded from separate file');
       } catch (error) {
@@ -1790,8 +2157,15 @@
         
         window.cioViewData = cioData.sectores;
         
+        // Initialize merge fields
+        if (window.cioViewData) {
+          window.cioViewData.forEach(item => {
+            if (item.merge === undefined) item.merge = 0;
+          });
+        }
+        
         const cioTbody = document.getElementById("cio-view-body");
-        cioTbody.innerHTML = window.cioViewData.map(window.createAssetClassRow).join("");
+        cioTbody.innerHTML = window.cioViewData.map((item, index) => window.createAssetClassRow(item, index, window.cioViewData)).join("");
         
         console.log('CIO View data loaded from separate file');
       } catch (error) {
@@ -2059,10 +2433,43 @@
     function addWeightIndicatorEditing() {
       const weightIndicators = document.querySelectorAll('.weight-indicator');
       weightIndicators.forEach((indicator, index) => {
+        // Handle hidden weight indicators (when position is -1)
+        if (indicator.classList.contains('hidden')) {
+          indicator.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const row = this.closest('tr');
+            if (!row) return;
+            const tbody = row.parentElement;
+            if (!tbody) return;
+            const rowIndex = Array.from(tbody.children).indexOf(row);
+            
+            // Determine which table this is from
+            let targetData = null;
+            let tableType = '';
+            
+            if (tbody.id === 'cio-view-body') {
+              targetData = window.cioViewData;
+              tableType = 'cio-view';
+            } else if (tbody.id === 'table3-view-body') {
+              targetData = window.table3ViewData;
+              tableType = 'table3';
+            }
+            
+            if (targetData && targetData[rowIndex]) {
+              showWeightEditPopover(this, targetData[rowIndex], rowIndex, tableType);
+            }
+          });
+          return; // Skip regular functionality for hidden indicators
+        }
+
         // Single click for position selection (only for Table 2 - CIO view)
         indicator.addEventListener('click', function(e) {
           const row = this.closest('tr');
+          if (!row) return;
           const tbody = row.parentElement;
+          if (!tbody) return;
           
           // Only allow single-click editing for Table 2 (cio-view-body), not Table 3
           if (tbody.id !== 'cio-view-body') {
@@ -2138,7 +2545,9 @@
           const clickedDot = e.target.closest('.weight-dot');
           
           const row = this.closest('tr');
+          if (!row) return;
           const tbody = row.parentElement;
+          if (!tbody) return;
           const rowIndex = Array.from(tbody.children).indexOf(row);
           
           if (clickedTriangle) {
@@ -2215,7 +2624,9 @@
           e.preventDefault();
           
           const row = this.closest('tr');
+          if (!row) return;
           const tbody = row.parentElement;
+          if (!tbody) return;
           const rowIndex = Array.from(tbody.children).indexOf(row);
           
           let targetData = null;

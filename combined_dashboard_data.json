@@ -99,6 +99,7 @@
         "weight": "overweight",
         "position": 4,
         "separate": 1,
+        "merge": 0,
         "comments": "We are overweight Equities and continue to view weakness as a buying opportunity for long-term investors. We are overweight the U.S. and neutral EM and International Developed."
       },
       {
@@ -106,6 +107,7 @@
         "weight": "overweight",
         "position": 4,
         "separate": 0,
+        "merge": 0,
         "comments": "Large caps continue to look attractive on solid fundamentals, strong free cash flow (FCF) and the ability to produce healthy shareholder payouts. We emphasize the importance of incorporating both Growth and Value as appropriate."
       },
       {
@@ -113,13 +115,15 @@
         "weight": "overweight",
         "position": 4,
         "separate": 0,
-        "comments": ""
+        "merge": 0,
+        "comments": "Large caps continue to look attractive on solid fundamentals, strong free cash flow (FCF) and the ability to produce healthy"
       },
       {
         "assetClass": "U.S. Small-cap Growth",
         "weight": "neutral",
         "position": 3,
         "separate": 0,
+        "merge": 0,
         "comments": "While headwinds persist, Small caps may benefit from future interest rate cuts and a potential earnings inflection. We continue to suggest a balance of Value and Growth factors."
       },
       {
@@ -127,13 +131,15 @@
         "weight": "overweight",
         "position": 4,
         "separate": 0,
-        "comments": ""
+        "merge": 0,
+        "comments": "Large caps continue to look attractive on solid fundamentals, strong free cash flow (FCF) and the ability to produce healthy"
       },
       {
         "assetClass": "International Developed",
         "weight": "neutral",
         "position": 3,
         "separate": 0,
+        "merge": 0,
         "comments": "We are neutral International Developed Equities. Valuations appear attractive on a relative basis, with potential upside catalysts from fiscal policy in Europe and domestic reforms in Japan."
       },
       {
@@ -141,6 +147,7 @@
         "weight": "neutral",
         "position": 3,
         "separate": 0,
+        "merge": 0,
         "comments": "We are neutral Emerging Markets with mixed views on Asia and smaller markets in Europe, Latin America, the Middle East, and Africa. Overweight China market continues to face economic constraints, but likely supported by extensive policy measures."
       },
       {
@@ -148,6 +155,7 @@
         "weight": "neutral",
         "position": -1,
         "separate": 1,
+        "merge": 0,
         "comments": ""
       },
       {
@@ -155,6 +163,7 @@
         "weight": "overweight",
         "position": 4,
         "separate": 0,
+        "merge": 0,
         "comments": "The U.S. remains our preferred region given balance sheet strength, better fundamentals for consumer spending and healthy shareholder payouts."
       },
       {
@@ -162,6 +171,7 @@
         "weight": "neutral",
         "position": 3,
         "separate": 0,
+        "merge": 0,
         "comments": "Eurozone/Regional banks are attractively valued on relative valuations and potential upward tailwinds. Risks remain from growing competition with China in key industries."
       },
       {
@@ -169,6 +179,7 @@
         "weight": "neutral",
         "position": 3,
         "separate": 0,
+        "merge": 0,
         "comments": "Higher interest rate volatility could require lower risk tolerance for the UK. Mid- and small-cap sectors continue to remain elevated. Government moves toward closer EU cooperation may reduce negative impact of withdrawal from single market."
       },
       {
@@ -176,6 +187,7 @@
         "weight": "overweight",
         "position": 4,
         "separate": 0,
+        "merge": 0,
         "comments": "Sustained positive inflation and official efforts to increase corporate returns to shareholders remain fundamental supports. Potential for positive developments in energy costs and in the future of nuclear power usage for the local market."
       },
       {
@@ -183,6 +195,7 @@
         "weight": "underweight",
         "position": 2,
         "separate": 0,
+        "merge": 0,
         "comments": "Regional market likely to be driven in near term by slower economic growth in China and its impact on commodities and resource demand. Efforts to enhance fiscal policy effectiveness limit constraints for China's economy."
       },
       {
@@ -190,6 +203,7 @@
         "weight": "underweight",
         "position": 2,
         "separate": 1,
+        "merge": 0,
         "comments": "Yields are attractive, providing good diversification for multi-asset class portfolios and reasonable income. Neutral duration recommended."
       },
       {
@@ -197,6 +211,7 @@
         "weight": "underweight",
         "position": 2,
         "separate": 0,
+        "merge": 0,
         "comments": "Nominal and real yields remain attractive across the curve relative to the last 10 to 15 years. A Treasury allocation for liquidity, principal preservation, and diversification is advised, as Treasuries provide the best short-term diversification benefits to Equities especially during uncertain crisis-stricken market environments. Long-term strategic level remains attractive."
       },
       {
@@ -204,6 +219,7 @@
         "weight": "underweight",
         "position": 2,
         "separate": 0,
+        "merge": 0,
         "comments": "MBS spreads are now range-bound near their year-to-week. In the high-3% to 6% type. This reduces their appeal and potential for additional tightening (negative excess supply), and we continue to expect shorter investment horizons. Despite cuts in federal funding to municipal issuers, thanks to abundant state rainy-day funds until 2030 for their second-quarter review."
       },
       {
@@ -211,6 +227,7 @@
         "weight": "underweight",
         "position": 2,
         "separate": 0,
+        "merge": 0,
         "comments": "Investment grade spreads are trending at YTD lows – a function of improving fundamentals, weaker than expected supply, and strong demand for both Investment grade and more spread tightening over forward excess returns – and we expect that forward excess returns are likely to be driven more by carry versus spread tightening over the next year."
       },
       {
@@ -218,6 +235,7 @@
         "weight": "neutral",
         "position": 3,
         "separate": 0,
+        "merge": 0,
         "comments": "International rates markets are at normal valuation levels on a U.S. dollar-hedged basis."
       },
       {
@@ -225,6 +243,7 @@
         "weight": "underweight",
         "position": 2,
         "separate": 0,
+        "merge": 0,
         "comments": "HY yield valuations remain expensive. However, a positive macroeconomic environment may limit spread volatility and help reduce losses. Unlike IG bonds, HY remain in a high-yielding environment that continues to suggest a balanced mix between beta and bonds."
       },
       {
@@ -232,6 +251,7 @@
         "weight": "underweight",
         "position": 2,
         "separate": 0,
+        "merge": 0,
         "comments": "Tax-exempt bonds remain attractively valued. We see valuations beginning in August due to strong technical conditions. Specifically, the funds' value has been elevated for longer due to cuts in federal funding resulting in stable despite cuts in federal funding to municipal issuers, thanks to abundant state rainy-day funds until 2030 for their second year."
       },
       {
@@ -239,6 +259,7 @@
         "weight": "underweight",
         "position": 2,
         "separate": 0,
+        "merge": 0,
         "comments": "High yield munis are rich relative to IG munis, based on historical valuations. However, we do not see a catalyst for spread widening based on fundamentals."
       }
     ]
