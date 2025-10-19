@@ -338,5 +338,457 @@
         "comments": "Current yields are attractive for short-term investment. Tactical allocation depends on market conditions and opportunities."
       }
     ]
+  },
+  "table4ViewData": {
+    "headers": {
+      "assetClassHeader": "Asset Class",
+      "cioViewHeader": "CIO View"
+    },
+    "subtitle": "Current CIO views on asset classes with weight recommendations:",
+    "footnote": "*Alternative Investments include Hedge Strategies, Private Equity & Credit, and Real Assets.",
+    "assetClasses": [
+      {
+        "name": "Global Equities",
+        "position": 4,
+        "separate": 0
+      },
+      {
+        "name": "U.S. Large-cap Growth",
+        "position": 4,
+        "separate": 0
+      },
+      {
+        "name": "U.S. Large-cap Value",
+        "position": 4,
+        "separate": 0
+      },
+      {
+        "name": "U.S. Small-cap Growth",
+        "position": 4,
+        "separate": 0
+      },
+      {
+        "name": "U.S. Small-cap Value",
+        "position": 4,
+        "separate": 0
+      },
+      {
+        "name": "International Developed",
+        "position": 3,
+        "separate": 0
+      },
+      {
+        "name": "Emerging Markets",
+        "position": 3,
+        "separate": 1
+      },
+      {
+        "name": "Global Fixed Income",
+        "position": 2,
+        "separate": 0
+      },
+      {
+        "name": "U.S. Governments",
+        "position": 2,
+        "separate": 0
+      },
+      {
+        "name": "U.S. Mortgages",
+        "position": 2,
+        "separate": 0
+      },
+      {
+        "name": "U.S. Corporates",
+        "position": 2,
+        "separate": 0
+      },
+      {
+        "name": "International Fixed Income",
+        "position": 3,
+        "separate": 0
+      },
+      {
+        "name": "High Yield",
+        "position": 3,
+        "separate": 0
+      },
+      {
+        "name": "U.S. Investment-grade Tax Exempt",
+        "position": 2,
+        "separate": 0
+      },
+      {
+        "name": "U.S. High Yield Tax Exempt",
+        "position": 2,
+        "separate": 1
+      },
+      {
+        "name": "Alternative Investments*",
+        "isHeader": true,
+        "separate": 0
+      },
+      {
+        "name": "Hedge Strategies",
+        "isAltInvestment": true,
+        "rangePosition": "top",
+        "separate": 0
+      },
+      {
+        "name": "Private Equity & Credit",
+        "isAltInvestment": true,
+        "rangePosition": "middle",
+        "separate": 0
+      },
+      {
+        "name": "Real Assets",
+        "isAltInvestment": true,
+        "rangePosition": "bottom",
+        "separate": 1
+      },
+      {
+        "name": "Cash",
+        "isCash": true,
+        "separate": 0
+      }
+    ]
+  },
+  "table5ViewData": [
+    {
+      "category": "Transformative Innovation",
+      "level1Items": [
+        "Generative AI",
+        "Robotics/Automation",
+        "Digitization"
+      ],
+      "level2Items": [
+        {
+          "header": "Generative AI",
+          "description": "Power demand/generation, productivity wave"
+        },
+        {
+          "header": "Robotics/Automation",
+          "description": "Industrial/service robotics"
+        },
+        {
+          "header": "Digitization",
+          "description": "Cloud computing, data analytics, digital payments, internet of things, augmented reality and virtual reality, electrified transportation"
+        }
+      ]
+    },
+    {
+      "category": "Resilient Infrastructure",
+      "level1Items": [
+        "Energy Addition",
+        "Utility Infrastructure",
+        "Supply Chain Reconfiguration"
+      ],
+      "level2Items": [
+        {
+          "header": "Energy Addition",
+          "description": "Nuclear renaissance, solar, natural gas generation, hydrogen, battery storage"
+        },
+        {
+          "header": "Utility Infrastructure",
+          "description": "Data centers, grid (transmission/distribution), thermal management, water management, power generation"
+        },
+        {
+          "header": "Supply Chain Reconfiguration",
+          "description": "Onshoring/nearshoring buildout"
+        }
+      ]
+    },
+    {
+      "category": "Future Security",
+      "level1Items": [
+        "Aerospace & Defense",
+        "Cybersecurity",
+        "Resource Protectionism"
+      ],
+      "level2Items": [
+        {
+          "header": "Aerospace & Defense",
+          "description": "Remilitarization, space, drones"
+        },
+        {
+          "header": "Cybersecurity",
+          "description": "Network security, cloud evolution/security, endpoint security"
+        },
+        {
+          "header": "Resource Protectionism",
+          "description": "Food/agriculture/commodity scarcity (water), natural resources, metals/mining"
+        }
+      ]
+    },
+    {
+      "category": "Changing Demographics",
+      "level1Items": [
+        "Healthcare Innovation",
+        "Great Wealth Transfer",
+        "Global Labor Force Distribution"
+      ],
+      "level2Items": [
+        {
+          "header": "Healthcare Innovation",
+          "description": "Ageing, longevity, drug discovery, biotechnology (gene therapy, personalized medicine)"
+        },
+        {
+          "header": "Great Wealth Transfer",
+          "description": "Wealth creation, NextGen consumer/investor base"
+        },
+        {
+          "header": "Global Labor Force Distribution",
+          "description": "Immigration/migration, global fertility bust, automation \"cobots\""
+        }
+      ]
+    }
+  ],
+  "table6ViewData": {
+    "headers": {
+      "dateHeader": "(AS OF 8/1/2025)"
+    },
+    "title": "ECONOMIC FORECASTS",
+    "subtitle": "Quarterly and annual economic forecasts for key macroeconomic indicators",
+    "footnote": "The forecasts in the table are the baseline view from BofA Global Research. The Global Wealth & Investment Management (GWIM) Investment Strategy Committee (ISC) may make adjustments to this view over the course of the year and can express upside/downside to these forecasts. There can be no assurance that the forecasts will be achieved. Economic or financial forecasts are inherently limited and should not be relied on as indicators of future investment performance. A = Actual. E = Estimate. Sources: BofA Global Research; GWIM ISC as of August 5, 2025. Forecasts are subject to change. When assessing your portfolio in light of our current guidance, consider the tactical positioning around asset allocation in reference to your own individual risk tolerance, time horizon, objectives and liquidity needs. Certain investments may not be appropriate, given your specific circumstances and investment plan. Certain security types, like hedged strategies and private equity investments, are subject to eligibility and suitability criteria. Your advisor can help you customize your portfolio in light of your specific circumstances.",
+    "economicIndicators": [
+      {
+        "indicator": "Real global GDP\n(% y/y annualized)",
+        "q1_2025a": "-",
+        "q2_2025a": "-",
+        "q3_2025e": "-",
+        "q4_2025e": "-",
+        "2025e": "3.0",
+        "2026e": "3.1"
+      },
+      {
+        "indicator": "Real U.S. GDP\n(% q/q annualized)",
+        "q1_2025a": "-0.5",
+        "q2_2025a": "3.0*",
+        "q3_2025e": "1.0",
+        "q4_2025e": "1.6",
+        "2025e": "1.7",
+        "2026e": "1.7"
+      },
+      {
+        "indicator": "CPI inflation\n(% y/y)",
+        "q1_2025a": "2.7",
+        "q2_2025a": "2.5*",
+        "q3_2025e": "2.9",
+        "q4_2025e": "2.8",
+        "2025e": "2.7",
+        "2026e": "2.3"
+      },
+      {
+        "indicator": "Core CPI inflation\n(% y/y)",
+        "q1_2025a": "3.1",
+        "q2_2025a": "2.8*",
+        "q3_2025e": "3.1",
+        "q4_2025e": "3.1",
+        "2025e": "3.0",
+        "2026e": "2.6"
+      },
+      {
+        "indicator": "Unemployment rate (%)",
+        "q1_2025a": "4.1",
+        "q2_2025a": "4.2*",
+        "q3_2025e": "4.3",
+        "q4_2025e": "4.4",
+        "2025e": "4.2",
+        "2026e": "4.5"
+      },
+      {
+        "indicator": "Fed funds rate,\nend period (%)",
+        "q1_2025a": "4.38",
+        "q2_2025a": "4.38",
+        "q3_2025e": "4.38",
+        "q4_2025e": "4.38",
+        "2025e": "4.38",
+        "2026e": "3.38"
+      }
+    ]
+  },
+  "table7ViewData": {
+    "title": "S&P 500 Scenarios Based on Forward P/E and 2025 Earnings Per Share (EPS)",
+    "description": "The table below provides a rough indication of where the S&P 500 Index's central tendency could be, given various scenarios for EPS in 2025 and P/E ratio multiples. These scenarios are not official price targets and are not meant to signal levels where portfolio actions may always be needed. However, during times of market volatility, it's useful to keep this basic framework in mind when considering whether to incrementally add to or trim risk from portfolios while staying invested in one's strategic asset allocation framework.",
+    "footnote": "For illustrative purposes only. Source: Chief Investment Office as of August 5, 2025.",
+    "scenarios": [
+      {
+        "eps2025": "$305",
+        "pe_19x": "5,795",
+        "pe_20x": "6,100",
+        "pe_21x": "6,405",
+        "pe_22x": "6,710",
+        "pe_23x": "7,015"
+      },
+      {
+        "eps2025": "$295",
+        "pe_19x": "5,605",
+        "pe_20x": "5,900",
+        "pe_21x": "6,195",
+        "pe_22x": "6,490",
+        "pe_23x": "6,785"
+      },
+      {
+        "eps2025": "$285",
+        "pe_19x": "5,415",
+        "pe_20x": "5,700",
+        "pe_21x": "5,985",
+        "pe_22x": "6,270",
+        "pe_23x": "6,555"
+      },
+      {
+        "eps2025": "$275",
+        "pe_19x": "5,225",
+        "pe_20x": "5,500",
+        "pe_21x": "5,775",
+        "pe_22x": "6,050",
+        "pe_23x": "6,325"
+      },
+      {
+        "eps2025": "$265",
+        "pe_19x": "5,035",
+        "pe_20x": "5,300",
+        "pe_21x": "5,565",
+        "pe_22x": "5,830",
+        "pe_23x": "6,095"
+      },
+      {
+        "eps2025": "$255",
+        "pe_19x": "4,845",
+        "pe_20x": "5,100",
+        "pe_21x": "5,355",
+        "pe_22x": "5,610",
+        "pe_23x": "5,865"
+      },
+      {
+        "eps2025": "$245",
+        "pe_19x": "4,655",
+        "pe_20x": "4,900",
+        "pe_21x": "5,145",
+        "pe_22x": "5,390",
+        "pe_23x": "5,635"
+      }
+    ]
+  },
+  "table8ViewData": {
+    "title": "CIO Views on Alts Strategies",
+    "subtitle": "HEDGE STRATEGIES",
+    "footnote": "*Alpha is a measure of how well an investment performs relative to a benchmark index at what's expected based on its risk level. Bull case is an environment or set of factors that could represent tailwinds for the strategy. Bear case is an environment or set of factors that could represent headwinds for the strategy. + symbol indicates the strategy CIO views as having a relative opportunity for new investment within the Alts asset class.",
+    "strategies": [
+      {
+        "isStrategyHeader": true,
+        "strategyName": "Equity Hedge +"
+      },
+      {
+        "caseType": "Bull case",
+        "description": "Potential alpha* generation opportunities in high-dispersion or volatile markets; resumption of micro-dominated market would benefit stock selection; low net better positioned for market sell-off"
+      },
+      {
+        "caseType": "Bear case",
+        "description": "Macro-driven market dominated by trade challenging for fundamental stock pickers"
+      },
+      {
+        "isStrategyHeader": true,
+        "strategyName": "Event Driven"
+      },
+      {
+        "caseType": "Bull case",
+        "description": "Pressure of high rates could create distressed opportunities; if merger activity were to increase and deal spreads widen; higher risk-free rate positive for merger arbitrage"
+      },
+      {
+        "caseType": "Bear case",
+        "description": "Distress may not materialize in size or may be delayed; if merger activity fails to materialize; lower rates negative"
+      },
+      {
+        "isStrategyHeader": true,
+        "strategyName": "Relative Value"
+      },
+      {
+        "caseType": "Bull case",
+        "description": "Still in world of higher-though-volatile yields; tariff capitulation should support growth; decent dispersion in HY and Leveraged Loan."
+      },
+      {
+        "caseType": "Bear case",
+        "description": "Spreads very tight; potential increase in credit risk and defaults"
+      },
+      {
+        "isStrategyHeader": true,
+        "strategyName": "Macro +"
+      },
+      {
+        "caseType": "Bull case",
+        "description": "Possible 'higher-for-longer' rate regime could create cross-asset volatility in rates and foreign exchange; inflation stickiness with exacerbated macro volatility; possible transition to new trade regime could create long-term trends"
+      },
+      {
+        "caseType": "Bear case",
+        "description": "Choppy markets driven by erratic trade policy difficult for trend-following; if rate volatility structurally declined"
+      }
+    ]
+  },
+  "table9ViewData": [
+    {
+      "name": "S&P 500",
+      "currentPE": 23.5,
+      "averagePE": 17.5
+    },
+    {
+      "name": "Information Technology",
+      "currentPE": 29.5,
+      "averagePE": 18.5
+    },
+    {
+      "name": "Consumer Discretionary",
+      "currentPE": 25.0,
+      "averagePE": 20.5
+    },
+    {
+      "name": "Healthcare",
+      "currentPE": 19.0,
+      "averagePE": 16.5
+    },
+    {
+      "name": "Financials",
+      "currentPE": 17.5,
+      "averagePE": 14.5
+    },
+    {
+      "name": "Communication Services",
+      "currentPE": 19.5,
+      "averagePE": 17.0
+    },
+    {
+      "name": "Industrials",
+      "currentPE": 23.0,
+      "averagePE": 18.0
+    },
+    {
+      "name": "Consumer Staples",
+      "currentPE": 21.0,
+      "averagePE": 19.0
+    },
+    {
+      "name": "Energy",
+      "currentPE": 13.0,
+      "averagePE": 34.0
+    },
+    {
+      "name": "Real Estate",
+      "currentPE": 20.5,
+      "averagePE": 20.5
+    },
+    {
+      "name": "Materials",
+      "currentPE": 21.0,
+      "averagePE": 16.5
+    },
+    {
+      "name": "Utilities",
+      "currentPE": 19.0,
+      "averagePE": 16.5
+    }
+  ],
+  "table9XAxisConfig": {
+    "start": 10,
+    "end": 35,
+    "interval": 5
   }
 }

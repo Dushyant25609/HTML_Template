@@ -277,8 +277,13 @@
 
     // Global function to make text cells editable
     function makeTextCellsEditable() {
-      const dataCells = document.querySelectorAll('tbody td:first-child, tbody td:last-child');
+      const dataCells = document.querySelectorAll('tbody td:first-child:not(#table5-body td), tbody td:last-child:not(#table5-body td)');
       dataCells.forEach((cell, index) => {
+        // Additional check to ensure we're not in Table 5
+        if (cell.closest('#table5-body')) {
+          return; // Skip Table 5 cells
+        }
+        
         cell.addEventListener('dblclick', function() {
           // Check if this is a comments cell (last column)
           const row = this.parentElement;
@@ -603,16 +608,8 @@
 
         // Create form content
         popover.innerHTML = `
-          <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: bold;">Edit Range Settings</h3>
+          <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: bold;">Go Edit Range Settings</h3>
           
-          <div style="margin-bottom: 15px;">
-            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Implication:</label>
-            <select id="popover-implication" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-              <option value="positive" ${(factorData.implication || '').toLowerCase() === 'positive' ? 'selected' : ''}>Positive</option>
-              <option value="neutral" ${(factorData.implication || '').toLowerCase() === 'neutral' ? 'selected' : ''}>Neutral</option>
-              <option value="negative" ${(factorData.implication || '').toLowerCase() === 'negative' ? 'selected' : ''}>Negative</option>
-            </select>
-          </div>
           
           <div style="margin-bottom: 15px;">
             <label style="display: block; margin-bottom: 5px; font-weight: 600;">Trend:</label>
@@ -624,15 +621,14 @@
           </div>
           
           <div style="margin-bottom: 20px;">
-            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Value: <span id="value-display">${factorData.value || 50}</span></label>
-            <input type="range" id="popover-value" min="0" max="100" value="${factorData.value || 50}" 
-                   style="width: 100%; margin-bottom: 5px;"
-                   oninput="document.getElementById('value-display').textContent = this.value">
-            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666;">
-              <span>0</span>
-              <span>50</span>
-              <span>100</span>
-            </div>
+            <label style="display: block; margin-bottom: 5px; font-weight: 600;">Value:</label>
+            <select id="popover-value" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+              <option value="0" ${factorData.value === 0 ? 'selected' : ''}>0</option>
+              <option value="25" ${factorData.value === 25 ? 'selected' : ''}>25</option>
+              <option value="50" ${factorData.value === 50 ? 'selected' : ''}>50</option>
+              <option value="75" ${factorData.value === 75 ? 'selected' : ''}>75</option>
+              <option value="100" ${factorData.value === 100 ? 'selected' : ''}>100</option>
+            </select>
           </div>
           
           <div style="display: flex; gap: 10px; justify-content: flex-end;">
@@ -667,12 +663,21 @@
       };
 
       window.saveRangeChanges = function(rowIndex) {
-        const implication = document.getElementById('popover-implication').value;
         const trend = document.getElementById('popover-trend').value;
         const value = parseInt(document.getElementById('popover-value').value);
 
+        // Auto-set implication based on value
+        let implication;
+        if (value === 0) {
+          implication = 'Negative';
+        } else if (value === 25 || value === 50) {
+          implication = 'Neutral';
+        } else {
+          implication = 'Positive';
+        }
+
         // Update the data
-        window.factorsData[rowIndex].implication = implication.charAt(0).toUpperCase() + implication.slice(1);
+        window.factorsData[rowIndex].implication = implication;
         window.factorsData[rowIndex].trend = trend;
         window.factorsData[rowIndex].value = value;
 
@@ -1465,6 +1470,2846 @@
     </section>
   </main>
 
+  <!-- Table 4: New Table with Weight Indicators -->
+  <main class="max-w-7xl mx-auto mt-8 px-4">
+    <!-- Table 4 Specific Styles -->
+    <style>
+      /* Table 4 specific weight indicator styles */
+      .table4-weight-indicator {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 0;
+        min-width: 200px;
+      }
+
+      .table4-weight-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 2px solid #ddd;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .table4-weight-dot.filled {
+        border-color: transparent;
+      }
+
+      .table4-weight-dot.empty {
+        background-color: #f9f9f9;
+        border-color: #ccc;
+      }
+
+      /* Weight dot colors based on position */
+      .table4-weight-dot.filled.overweight { background-color: #4CAF50; } /* Green */
+      .table4-weight-dot.filled.neutral { background-color: #FFC107; } /* Yellow */
+      .table4-weight-dot.filled.underweight { background-color: #ef4444; } /* Red */
+
+      /* Hover effects for weight dots */
+      .table4-weight-dot:hover {
+        transform: scale(1.2);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+
+      .table4-weight-dot.empty:hover { border-color: #666; }
+      .table4-weight-dot.filled.overweight:hover { border-color: #2E7D32; }
+      .table4-weight-dot.filled.neutral:hover { border-color: #F57F17; }
+      .table4-weight-dot.filled.underweight:hover { border-color: #E65100; }
+
+      /* Vertical range indicator for Alternative Investments */
+      .table4-vertical-range {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 8px 0;
+        min-width: 200px;
+        position: relative;
+      }
+
+      .table4-range-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        position: relative;
+      }
+
+      .table4-range-dot {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background-color: #999;
+        border: 2px solid #999;
+        z-index: 2;
+        position: relative;
+      }
+
+      .table4-range-line {
+        width: 4px;
+        height: 35px;
+        background-color: #999;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Table 4 rows styling */
+      #table4-view-body tr {
+        cursor: default;
+      }
+
+      #table4-view-body tr:hover {
+        background-color: #f8f9fa !important;
+      }
+
+      /* Flexbox layout for Alternative Investments section */
+      .alt-investments-section {
+        border-bottom: 2px solid #333;
+        background-color: white;
+      }
+
+      .alt-investments-header {
+        font-weight: normal;
+        padding: 12px;
+        border-bottom: 2px solid #333;
+      }
+
+      .alt-investments-content {
+        display: flex;
+        align-items: stretch;
+        min-height: 150px;
+      }
+
+      .alt-investments-labels {
+        flex: 0 0 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 20px 12px;
+      }
+
+      .alt-investment-label {
+        padding: 8px 0;
+        font-weight: normal;
+      }
+
+      .alt-investments-indicator {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      /* Cash row with flexbox */
+      .cash-row-flex {
+        display: flex;
+        border-bottom: 2px solid #333;
+        background-color: white;
+        padding: 12px;
+      }
+
+      .cash-label {
+        flex: 0 0 250px;
+        font-weight: normal;
+      }
+
+      .cash-indicator {
+        flex: 1;
+      }
+
+      /* Override global bold font for Table 4 first column */
+      #table4-view-body td:first-child {
+        font-weight: normal;
+      }
+
+      /* Override bold font for Table 4 headers */
+      .factors-table thead th.align-middle {
+        font-weight: normal;
+      }
+
+      /* Ensure Table 4 headers specifically are not bold */
+      #table4-view-body ~ table thead th,
+      table.factors-table:has(#table4-view-body) thead th {
+        font-weight: normal !important;
+      }
+    </style>
+
+    <!-- Table 4 Specific JavaScript Functions -->
+    <script>
+      // Table 4: Create table row with weight indicators (matching the image structure)
+      window.createTable4Row = function(item, index, allItems) {
+        
+        // Handle Alternative Investments header - return empty, will be handled separately
+        if (item.isHeader) {
+          return '';
+        }
+
+        // Handle Alternative Investments items - return empty, will be handled separately
+        if (item.isAltInvestment) {
+          return '';
+        }
+
+        // Handle Cash row - return empty, will be handled separately
+        if (item.isCash) {
+          return '';
+        }
+
+        // Determine if row should have separation borders
+        const rowClass = item.separate === 1 ? ' class="separated-row"' : '';
+
+        // Create weight indicator dots for normal positions using the same markup as Table 2
+        const totalDots = 5;
+        let dotsHtml = '';
+
+        for (let i = 1; i <= totalDots; i++) {
+          let dotClass = 'weight-dot';
+
+          // Fill logic - only the selected position shows filled color
+          if (i === item.position) {
+            if (i <= 2) {
+              dotClass += ' filled underweight';
+            } else if (i === 3) {
+              dotClass += ' filled neutral';
+            } else {
+              dotClass += ' filled overweight';
+            }
+          } else {
+            dotClass += ' empty';
+          }
+
+          dotsHtml += `<div class="${dotClass}" data-position="${i}" title="Position ${i}"></div>`;
+        }
+
+        const weightIndicator = `
+          <div class="weight-indicator">
+            ${dotsHtml}
+          </div>
+        `;
+
+        return `
+          <tr${rowClass} data-row-index="${index}">
+            <td>${item.name}</td>
+            <td>${weightIndicator}</td>
+          </tr>
+        `;
+      };
+
+      // Table 4: Weight indicator editing functionality (mirror Table 2 behavior)
+      function addTable4WeightIndicatorEditing() {
+        const weightIndicators = document.querySelectorAll('#table4-view-body .weight-indicator');
+        weightIndicators.forEach((indicator, index) => {
+          // Handle hidden weight indicators (when position is -1)
+          if (indicator.classList.contains('hidden')) {
+            indicator.addEventListener('dblclick', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+
+              const row = this.closest('tr');
+              if (!row) return;
+              const tbody = row.parentElement;
+              if (!tbody) return;
+              const rowIndex = Array.from(tbody.children).indexOf(row);
+
+              if (window.table4ViewData && window.table4ViewData[rowIndex]) {
+                showWeightEditPopover(this, window.table4ViewData[rowIndex], rowIndex, 'table4');
+              }
+            });
+            return; // Skip regular functionality for hidden indicators
+          }
+
+          // Single click for quick position selection
+          indicator.addEventListener('click', function(e) {
+            const dots = this.querySelectorAll('.weight-dot');
+            const clickedDot = e.target.closest('.weight-dot');
+            if (!clickedDot) return;
+
+            const dotIndex = parseInt(clickedDot.getAttribute('data-position'));
+
+            // Update visual state
+            dots.forEach((dot) => {
+              const dotPosition = parseInt(dot.getAttribute('data-position'));
+              if (dotPosition === dotIndex) {
+                if (dotIndex <= 2) dot.className = 'weight-dot filled underweight';
+                else if (dotIndex === 3) dot.className = 'weight-dot filled neutral';
+                else dot.className = 'weight-dot filled overweight';
+              } else {
+                dot.className = 'weight-dot empty';
+              }
+            });
+
+            // Update data model
+            const row = this.closest('tr');
+            if (!row) return;
+            const tbody = row.parentElement;
+            if (!tbody) return;
+            const rowIndex = Array.from(tbody.children).indexOf(row);
+
+            if (window.table4ViewData && window.table4ViewData[rowIndex]) {
+              window.table4ViewData[rowIndex].position = dotIndex;
+              if (dotIndex <= 2) window.table4ViewData[rowIndex].weight = 'underweight';
+              else if (dotIndex === 3) window.table4ViewData[rowIndex].weight = 'neutral';
+              else window.table4ViewData[rowIndex].weight = 'overweight';
+
+              if (window.table4ViewData[rowIndex].separate === undefined) window.table4ViewData[rowIndex].separate = 0;
+              if (window.table4ViewData[rowIndex].trend === undefined) window.table4ViewData[rowIndex].trend = 0;
+
+              saveDataToStorage();
+              showWeightUpdateNotification();
+            }
+          });
+
+          // Double click behavior (open popover on filled dot, hide on empty area)
+          indicator.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const clickedDot = e.target.closest('.weight-dot');
+            const row = this.closest('tr');
+            if (!row) return;
+            const tbody = row.parentElement;
+            if (!tbody) return;
+            const rowIndex = Array.from(tbody.children).indexOf(row);
+
+            if (clickedDot && clickedDot.classList.contains('filled')) {
+              if (window.table4ViewData && window.table4ViewData[rowIndex]) {
+                showWeightEditPopover(clickedDot, window.table4ViewData[rowIndex], rowIndex, 'table4');
+              }
+            } else {
+              if (window.table4ViewData && window.table4ViewData[rowIndex]) {
+                window.table4ViewData[rowIndex].position = -1;
+                window.table4ViewData[rowIndex].weight = 'none';
+
+                if (window.table4ViewData[rowIndex].separate === undefined) window.table4ViewData[rowIndex].separate = 0;
+                if (window.table4ViewData[rowIndex].trend === undefined) window.table4ViewData[rowIndex].trend = 0;
+
+                const tbodyElem = document.getElementById('table4-view-body');
+                tbodyElem.innerHTML = window.table4ViewData.map(window.createTable4Row).join('');
+
+                makeHeadersEditable();
+                makeTextCellsEditable();
+                addTable4WeightIndicatorEditing();
+
+                saveDataToStorage();
+                showWeightUpdateNotification();
+              }
+            }
+          });
+        });
+      }
+
+      // Table 4: Render Alternative Investments and Cash with Flexbox
+      function renderTable4SpecialSections() {
+        if (!window.table4ViewData || !Array.isArray(window.table4ViewData)) return;
+        
+        // Find Alternative Investments items
+        const altInvestments = window.table4ViewData.filter(item => item.isAltInvestment);
+        const cashItem = window.table4ViewData.find(item => item.isCash);
+        
+        // Render Alternative Investments Section
+        if (altInvestments.length > 0) {
+          const altInvestmentsHtml = `
+            <div class="alt-investments-section">
+              <div class="alt-investments-header">Alternative Investments*</div>
+              <div class="alt-investments-content">
+                <div class="alt-investments-labels">
+                  ${altInvestments.map(item => `
+                    <div class="alt-investment-label">${item.name}</div>
+                  `).join('')}
+                </div>
+                <div class="alt-investments-indicator">
+                  <div class="table4-vertical-range">
+                    <div class="table4-range-container">
+                      <div class="table4-range-dot"></div>
+                      <div class="table4-range-line"></div>
+                      <div class="table4-range-dot"></div>
+                      <div class="table4-range-line"></div>
+                      <div class="table4-range-dot"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          
+          document.getElementById('alt-investments-container').innerHTML = altInvestmentsHtml;
+        }
+        
+        // Render Cash Row
+        if (cashItem) {
+          const cashHtml = `
+            <div class="cash-row-flex">
+              <div class="cash-label">${cashItem.name}</div>
+              <div class="cash-indicator"></div>
+            </div>
+          `;
+          
+          document.getElementById('cash-row-container').innerHTML = cashHtml;
+        }
+      }
+
+      // Table 4: Row double-click functionality (mirror Table 3/Table2 behavior)
+      function addTable4RowEditing() {
+        // Render special sections first
+        renderTable4SpecialSections();
+        
+        // Add double-click to rows for weight editing
+        const table4Rows = document.querySelectorAll('#table4-view-body tr');
+        table4Rows.forEach((row, index) => {
+          row.addEventListener('dblclick', (e) => {
+            // Only trigger if not clicking on weight indicator or editable cells
+            if (e.target.closest('.weight-indicator') || e.target.closest('td:first-child') || e.target.closest('td:last-child')) return;
+            
+            const rowIndex = parseInt(row.dataset.rowIndex);
+            const data = window.table4ViewData[rowIndex];
+            
+            if (data) {
+              const weightIndicator = row.querySelector('.weight-indicator');
+              showWeightEditPopover(weightIndicator, data, rowIndex, 'table4');
+            }
+          });
+          
+          row.title = 'Double-click to edit weight settings';
+        });
+
+        // Add double-click to first column (Asset Class name) for text editing
+        const table4FirstCells = document.querySelectorAll('#table4-view-body td:first-child');
+        table4FirstCells.forEach((cell, index) => {
+          cell.addEventListener('dblclick', function() {
+            const currentText = cell.textContent;
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.value = currentText;
+            input.style.width = '100%';
+            input.style.fontFamily = 'inherit';
+            input.style.fontSize = 'inherit';
+            input.style.fontWeight = 'inherit';
+            
+            cell.textContent = '';
+            cell.appendChild(input);
+            input.focus();
+            input.select();
+            
+            const saveEdit = () => {
+              const newText = input.value.trim();
+              if (newText && newText !== currentText) {
+                cell.textContent = newText;
+                
+                // Update the data
+                const row = cell.closest('tr');
+                const rowIndex = parseInt(row.dataset.rowIndex);
+                if (window.table4ViewData[rowIndex]) {
+                  window.table4ViewData[rowIndex].name = newText;
+                  saveDataToStorage();
+                  showUpdateNotification('Asset class name updated successfully!');
+                }
+              } else {
+                cell.textContent = currentText;
+              }
+            };
+            
+            input.addEventListener('blur', saveEdit);
+            input.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                saveEdit();
+              } else if (e.key === 'Escape') {
+                cell.textContent = currentText;
+              }
+            });
+          });
+          
+          cell.style.cursor = 'pointer';
+          cell.title = 'Double-click to edit asset class name';
+        });
+
+        // Add double-click to last column (Comments) for advanced editing with merge - NOT APPLICABLE for Table 4
+        // Table 4 has only 2 columns, so we skip this section
+      }
+    </script>
+
+    <section class="bg-white shadow-md rounded-lg p-8">
+      <h2 id="table4-subtitle" class="text-sm font-normal mb-6 pb-2 border-b border-gray-300">Current CIO views on asset classes with weight recommendations:</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full factors-table">
+          <thead>
+            <tr>
+              <th rowspan="2" class="align-middle">Asset Class</th>
+              <th class="align-middle">CIO View</th>
+            </tr>
+            <tr>
+              <th class="text-xs">
+                <div class="flex justify-between px-4">
+                  <span>Underweight</span>
+                  <span>Neutral</span>
+                  <span>Overweight</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="table4-view-body">
+            <!-- Table 4 rows will be inserted here by JavaScript -->
+          </tbody>
+        </table>
+        
+        <!-- Alternative Investments Section with Flexbox -->
+        <div id="alt-investments-container"></div>
+        
+        <!-- Cash Row with Flexbox -->
+        <div id="cash-row-container"></div>
+      </div>
+      <div class="text-xs text-gray-600">
+        <p class="font-bold" id="table4-footnote">*Alternative Investments include Hedge Strategies, Private Equity & Credit, and Real Assets.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Table 5: Thematic Investment Opportunities -->
+  <main class="max-w-7xl mx-auto mt-8 px-4">
+    <!-- Table 5 Specific Styles -->
+    <style>
+      /* Table 5 specific styles */
+      .table5-container {
+        border-collapse: separate;
+        border-spacing: 30px 8px;
+        width: 100%;
+        font-family: Arial, sans-serif;
+      }
+
+      .table5-container th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+        text-align: left;
+        padding: 12px;
+        border-top: 2px solid #333;
+        border-bottom: 2px solid #333;
+        font-size: 16px;
+      }
+
+      .table5-container td {
+        padding: 18px 12px;
+        vertical-align: top;
+        border: none;
+      }
+
+      /* Level 1 column styling */
+      .table5-level1 {
+        width: 35%;
+        padding-right: 20px;
+        position: relative;
+      }
+
+      .table5-level1-title {
+        color: #0066cc;
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      .table5-level1-list {
+        list-style: none;
+        padding-left: 0;
+        margin: 0;
+      }
+
+      .table5-level1-list li {
+        padding-left: 18px;
+        margin-bottom: 5px;
+        position: relative;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .table5-level1-list li:before {
+        content: "●";
+        position: absolute;
+        left: 0;
+        color: #0066cc;
+        font-size: 8px;
+        top: 6px;
+      }
+
+      /* Red arrow indicator - auto adjusts to row height */
+      .table5-arrow {
+        position: absolute;
+        right: -22px;
+        top: 0;
+        bottom: 0;
+        width: 45px;
+        background: linear-gradient(to right, transparent 0%, transparent 50%, #ef4444 50%, #ef4444 100%);
+        clip-path: polygon(0 0, 50% 0, 100% 50%, 50% 100%, 0 100%);
+        z-index: 1;
+      }
+
+      /* Level 2 column styling */
+      .table5-level2 {
+        width: 65%;
+        padding-left: 40px;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      .table5-level2-item {
+        margin-bottom: 8px;
+      }
+
+      .table5-level2-header {
+        font-weight: bold;
+        display: inline;
+        color: #000;
+      }
+
+      .table5-level2-description {
+        display: inline;
+        color: #333;
+      }
+
+      /* Make cells editable on double-click */
+      .table5-level1-title:hover,
+      .table5-level1-list li:hover,
+      .table5-level2:hover {
+        background-color: #f8f9fa;
+        cursor: pointer;
+      }
+
+      /* Same gray color for all rows */
+      .table5-row:nth-child(even),
+      .table5-row:nth-child(odd) {
+        background-color: #f3f4f6;
+      }
+    </style>
+
+    <!-- Table 5 Specific JavaScript Functions -->
+    <script>
+      // Table 5: Create thematic investment row
+      window.createTable5Row = function(item, index) {
+        
+        // Generate Level 1 list items
+        const level1Items = item.level1Items.map(subItem => 
+          `<li>${subItem}</li>`
+        ).join('');
+
+        // Generate Level 2 description items
+        const level2Items = item.level2Items.map(desc => 
+          `<div class="table5-level2-item">
+            <span class="table5-level2-header">${desc.header}:</span> 
+            <span class="table5-level2-description">${desc.description}</span>
+          </div>`
+        ).join('');
+
+        return `
+          <tr class="table5-row" data-row-index="${index}">
+            <td class="table5-level1">
+              <div class="table5-level1-title">${item.category}</div>
+              <ul class="table5-level1-list">
+                ${level1Items}
+              </ul>
+              <div class="table5-arrow"></div>
+            </td>
+            <td class="table5-level2">
+              ${level2Items}
+            </td>
+          </tr>
+        `;
+      };
+
+      // Table 5: Comprehensive editing functionality
+      function addTable5Editing() {
+        // Make table headers editable
+        const table5Headers = document.querySelectorAll('#table5-container th');
+        table5Headers.forEach((header, index) => {
+          header.addEventListener('dblclick', (e) => {
+            e.stopPropagation();
+            makeElementEditable(header, () => {
+              console.log('Header updated:', header.textContent);
+            });
+          });
+        });
+
+        const table5Rows = document.querySelectorAll('#table5-body tr');
+        
+        table5Rows.forEach((row, rowIndex) => {
+          // Disable any row-level editing - remove all event listeners on the row itself
+          row.style.cursor = 'default';
+          row.onclick = null;
+          row.ondblclick = null;
+          
+          // Disable any row-level click events for Level 1 column
+          const level1Column = row.querySelector('td:first-child');
+          if (level1Column) {
+            level1Column.style.cursor = 'default';
+            level1Column.onclick = null;
+            level1Column.ondblclick = null;
+            level1Column.addEventListener('click', (e) => {
+              e.stopPropagation();
+              // Prevent any row-level editing
+            });
+            level1Column.addEventListener('dblclick', (e) => {
+              e.stopPropagation();
+              // Prevent any row-level editing
+            });
+          }
+
+          // Make category title editable (double-click only)
+          const title = row.querySelector('.table5-level1-title');
+          if (title) {
+            title.style.cursor = 'pointer';
+            title.addEventListener('dblclick', (e) => {
+              e.stopPropagation();
+              makeElementEditable(title, () => {
+                if (window.table5ViewData && window.table5ViewData.assetClasses && window.table5ViewData.assetClasses[rowIndex]) {
+                  window.table5ViewData.assetClasses[rowIndex].category = title.textContent;
+                  saveDataToStorage();
+                }
+              }, {
+                fontSize: '16px',
+                fontWeight: 'bold',
+                color: '#0066cc'
+              });
+            });
+          }
+
+          // Make bullet points editable (double-click only)
+          const listItems = row.querySelectorAll('.table5-level1-list li');
+          listItems.forEach((li, liIndex) => {
+            li.style.cursor = 'pointer';
+            li.addEventListener('dblclick', (e) => {
+              e.stopPropagation();
+              makeElementEditable(li, () => {
+                if (window.table5ViewData && window.table5ViewData.assetClasses && window.table5ViewData.assetClasses[rowIndex]) {
+                  window.table5ViewData.assetClasses[rowIndex].items[liIndex] = li.textContent;
+                  saveDataToStorage();
+                }
+              });
+            });
+          });
+
+          // Make Level 2 items editable
+          const level2Items = row.querySelectorAll('.table5-level2-item');
+          level2Items.forEach((item, itemIndex) => {
+            const header = item.querySelector('.table5-level2-header');
+            const description = item.querySelector('.table5-level2-description');
+            
+            // Edit header
+            if (header) {
+              header.addEventListener('dblclick', (e) => {
+                e.stopPropagation();
+                const headerText = header.textContent.replace(':', '').trim();
+                makeElementEditable(header, () => {
+                  if (window.table5ViewData && window.table5ViewData.assetClasses && window.table5ViewData.assetClasses[rowIndex]) {
+                    window.table5ViewData.assetClasses[rowIndex].descriptions[itemIndex].title = header.textContent.replace(':', '').trim();
+                    header.textContent = header.textContent.replace(':', '').trim() + ':';
+                    saveDataToStorage();
+                  }
+                }, { fontWeight: 'bold' });
+              });
+            }
+
+            // Edit description
+            if (description) {
+              description.addEventListener('dblclick', (e) => {
+                e.stopPropagation();
+                makeElementEditable(description, () => {
+                  if (window.table5ViewData && window.table5ViewData.assetClasses && window.table5ViewData.assetClasses[rowIndex]) {
+                    window.table5ViewData.assetClasses[rowIndex].descriptions[itemIndex].description = description.textContent.trim();
+                    saveDataToStorage();
+                  }
+                });
+              });
+            }
+          });
+        });
+      }
+
+      // Helper function to make any element editable
+      function makeElementEditable(element, onSave, customStyles = {}) {
+        const originalText = element.textContent;
+        const input = document.createElement('input');
+        input.value = originalText;
+        
+        const defaultStyles = {
+          width: '100%',
+          fontSize: 'inherit',
+          fontWeight: 'inherit',
+          color: 'inherit',
+          fontFamily: 'inherit',
+          background: '#fff3cd',
+          border: '1px solid #ffc107',
+          borderRadius: '2px',
+          padding: '2px 4px',
+          outline: 'none'
+        };
+        
+        const styles = { ...defaultStyles, ...customStyles };
+        Object.assign(input.style, styles);
+        
+        element.innerHTML = '';
+        element.appendChild(input);
+        input.focus();
+        input.select();
+        
+        const saveEdit = () => {
+          const newValue = input.value.trim();
+          element.textContent = newValue || originalText;
+          if (onSave) onSave();
+        };
+        
+        const cancelEdit = () => {
+          element.textContent = originalText;
+        };
+        
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') saveEdit();
+          if (e.key === 'Escape') cancelEdit();
+        });
+      }
+    </script>
+
+    <section class="bg-white shadow-md rounded-lg p-8">
+      <h2 id="table5-subtitle" class="text-sm font-normal mb-6 pb-2 border-b border-gray-300">Thematic Investment Opportunities Across Multiple Horizons</h2>
+      <div class="overflow-x-auto">
+        <table class="table5-container">
+          <thead>
+            <tr>
+              <th>Level 1</th>
+              <th>Level 2</th>
+            </tr>
+          </thead>
+          <tbody id="table5-body">
+            <!-- Table 5 rows will be inserted here by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4 text-xs text-gray-600">
+        💡 Double-click any text to edit categories, items, or descriptions.
+      </div>
+    </section>
+  </main>
+
+  <!-- Table 6: Economic Forecasts -->
+  <main class="max-w-7xl mx-auto mt-8 px-4">
+    <!-- Table 6 Specific Styles -->
+    <style>
+      /* Table 6 Economic Forecasts specific styles */
+      .table6-container {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+        font-size: 15px;
+        border-top: 3px solid #000;
+      }
+
+      .table6-container th {
+        background-color: white;
+        color: #000;
+        padding: 10px 12px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 2px solid #000;
+        font-size: 14px;
+      }
+
+      .table6-container th:first-child {
+        text-align: left;
+        border-right: none;
+      }
+
+      .table6-container td {
+        padding: 12px 12px;
+        text-align: center;
+        border: none;
+        font-size: 15px;
+      }
+
+      .table6-container tbody td:first-child {
+        text-align: left;
+        font-weight: bold;
+        width: 250px;
+        padding-left: 12px;
+        line-height: 1.4;
+      }
+
+      /* Alternating row colors - even rows (2nd, 4th, 6th) are gray */
+      .table6-container tbody tr:nth-child(even) td {
+        background-color: #e8e8e8;
+      }
+
+      /* Odd rows (1st, 3rd, 5th) are white */
+      .table6-container tbody tr:nth-child(odd) td {
+        background-color: white;
+      }
+
+      .table6-container tbody tr:last-child td {
+        border-bottom: 2px solid #000;
+      }
+
+      /* Header styling */
+      .table6-header {
+        color: #1e5ba8;
+        padding: 10px 12px;
+        font-size: 18px;
+        text-align: left;
+        margin-bottom: 0;
+        letter-spacing: 0.5px;
+      }
+
+      .table6-date {
+        color: #1e5ba8;
+        font-size: 18px;
+      }
+
+      /* Editable header elements */
+      #table6-title:hover,
+      #table6-date-text:hover,
+      #table6-footnote:hover {
+        background-color: #f0f0f0;
+        border-radius: 3px;
+        padding: 2px 4px;
+        transition: background-color 0.2s ease;
+        cursor: pointer;
+      }
+
+      /* Editable table column headers */
+      .table6-container thead th:hover {
+        background-color: #f0f0f0;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      /* Remove subtitle styling */
+      #table6-subtitle {
+        display: none;
+      }
+
+      /* Editable cell styling */
+      .table6-container td:hover {
+        background-color: #e3f2fd;
+        cursor: pointer;
+      }
+
+      .table6-container td input {
+        border: none;
+        background: transparent;
+        width: 100%;
+        text-align: center;
+        font-family: inherit;
+        font-size: inherit;
+      }
+
+      .table6-container td:first-child input {
+        text-align: left;
+      }
+
+      .table6-container td input:focus {
+        outline: 2px solid #2196f3;
+        background-color: #fff;
+        border-radius: 2px;
+      }
+    </style>
+
+    <!-- Table 6 Specific JavaScript Functions -->
+    <script>
+      // Table 6: Create economic forecast row
+      window.createTable6Row = function(item, index) {
+        // Economic indicator name
+        let html = '<tr class="table6-row">';
+        html += `<td data-field="indicator">${item.indicator || ''}</td>`;
+        
+        // Quarterly data columns
+        const quarters = ['q1_2025a', 'q2_2025a', 'q3_2025e', 'q4_2025e', '2025e', '2026e'];
+        quarters.forEach(quarter => {
+          html += `<td data-field="${quarter}">${item[quarter] || '-'}</td>`;
+        });
+        
+        html += '</tr>';
+        return html;
+      };
+
+      // Table 6: Add editing functionality
+      function addTable6Editing() {
+        console.log('Initializing Table 6 editing...');
+        
+        const table6Body = document.getElementById('table6-body');
+        if (!table6Body) {
+          console.warn('Table 6 body not found!');
+          return;
+        }
+
+        // Make all cells editable on double-click
+        table6Body.addEventListener('dblclick', function(e) {
+          const cell = e.target.closest('td');
+          if (!cell) return;
+
+          const field = cell.getAttribute('data-field');
+          const rowIndex = Array.from(table6Body.children).indexOf(cell.closest('tr'));
+          
+          makeTable6CellEditable(cell, field, rowIndex);
+        });
+
+        // Make header title editable
+        const table6Title = document.getElementById('table6-title');
+        console.log('Table 6 title element:', table6Title);
+        if (table6Title) {
+          table6Title.addEventListener('dblclick', function(e) {
+            console.log('Title double-clicked!');
+            e.stopPropagation();
+            makeTable6HeaderEditable(table6Title, 'title');
+          });
+          console.log('Title event listener added');
+        } else {
+          console.warn('Table 6 title element not found!');
+        }
+
+        // Make header date editable
+        const table6Date = document.getElementById('table6-date-text');
+        console.log('Table 6 date element:', table6Date);
+        if (table6Date) {
+          table6Date.addEventListener('dblclick', function(e) {
+            console.log('Date double-clicked!');
+            e.stopPropagation();
+            makeTable6HeaderEditable(table6Date, 'date');
+          });
+          console.log('Date event listener added');
+        } else {
+          console.warn('Table 6 date element not found!');
+        }
+
+        // Make footnote editable
+        const table6Footnote = document.getElementById('table6-footnote');
+        console.log('Table 6 footnote element:', table6Footnote);
+        if (table6Footnote) {
+          table6Footnote.addEventListener('dblclick', function(e) {
+            console.log('Footnote double-clicked!');
+            e.stopPropagation();
+            makeTable6FootnoteEditable(table6Footnote);
+          });
+          console.log('Footnote event listener added');
+        } else {
+          console.warn('Table 6 footnote element not found!');
+        }
+
+        // Make table column headers editable
+        const table6Headers = document.querySelectorAll('.table6-container thead th');
+        console.log('Found', table6Headers.length, 'column headers');
+        table6Headers.forEach((header, index) => {
+          header.addEventListener('dblclick', function(e) {
+            console.log('Column header', index, 'double-clicked!');
+            e.stopPropagation();
+            makeTable6ColumnHeaderEditable(header, index);
+          });
+        });
+        
+        console.log('Table 6 editing initialization complete');
+      }
+
+      // Table 6: Make header editable
+      function makeTable6HeaderEditable(element, field) {
+        if (element.querySelector('input')) return; // Already editing
+
+        const originalText = element.textContent;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = originalText;
+        input.style.cssText = `
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 2px;
+          padding: 2px 6px;
+          font-size: inherit;
+          font-weight: inherit;
+          color: inherit;
+          outline: none;
+        `;
+        
+        // Clear element and add input
+        element.innerHTML = '';
+        element.appendChild(input);
+        input.focus();
+        input.select();
+
+        // Save on Enter or blur
+        function saveEdit() {
+          const newValue = input.value.trim();
+          element.textContent = newValue || originalText;
+          
+          // Update metadata
+          if (window.table6MetaData) {
+            if (field === 'title') {
+              window.table6MetaData.title = newValue;
+            } else if (field === 'date') {
+              if (!window.table6MetaData.headers) {
+                window.table6MetaData.headers = {};
+              }
+              window.table6MetaData.headers.dateHeader = newValue;
+            }
+            saveDataToStorage();
+            showTable6UpdateNotification();
+          }
+        }
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            element.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 6: Make footnote editable
+      function makeTable6FootnoteEditable(element) {
+        if (element.querySelector('textarea')) return; // Already editing
+
+        const originalText = element.textContent.trim();
+        const textarea = document.createElement('textarea');
+        textarea.value = originalText;
+        textarea.style.cssText = `
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 4px;
+          padding: 8px;
+          font-size: inherit;
+          font-family: inherit;
+          color: inherit;
+          outline: none;
+          width: 100%;
+          min-height: 120px;
+          resize: vertical;
+        `;
+        
+        // Clear element and add textarea
+        element.innerHTML = '';
+        element.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+
+        // Save on blur
+        function saveEdit() {
+          const newValue = textarea.value.trim();
+          element.textContent = newValue || originalText;
+          
+          // Update metadata
+          if (window.table6MetaData) {
+            window.table6MetaData.footnote = newValue;
+            saveDataToStorage();
+            showTable6UpdateNotification();
+          }
+        }
+
+        textarea.addEventListener('blur', saveEdit);
+        textarea.addEventListener('keydown', function(e) {
+          // Save on Ctrl+Enter or Cmd+Enter
+          if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            element.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 6: Make column header editable
+      function makeTable6ColumnHeaderEditable(header, index) {
+        if (header.querySelector('input')) return; // Already editing
+
+        const originalText = header.textContent.trim();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = originalText;
+        input.style.cssText = `
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 2px;
+          padding: 4px 8px;
+          font-size: inherit;
+          font-weight: inherit;
+          text-align: center;
+          color: inherit;
+          outline: none;
+          width: 100%;
+        `;
+        
+        // Clear header and add input
+        header.innerHTML = '';
+        header.appendChild(input);
+        input.focus();
+        input.select();
+
+        // Save on Enter or blur
+        function saveEdit() {
+          const newValue = input.value.trim();
+          header.textContent = newValue || originalText;
+          
+          // Update metadata
+          if (window.table6MetaData) {
+            if (!window.table6MetaData.headers) {
+              window.table6MetaData.headers = {};
+            }
+            
+            // Map index to column names
+            const columnNames = ['empty', 'Q1 2025A', 'Q2 2025A', 'Q3 2025E', 'Q4 2025E', '2025E', '2026E'];
+            const columnKey = `column${index}`;
+            
+            if (index === 0) {
+              window.table6MetaData.headers.firstColumn = newValue;
+            } else {
+              window.table6MetaData.headers[columnKey] = newValue;
+            }
+            
+            saveDataToStorage();
+            showTable6UpdateNotification();
+          }
+        }
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            header.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 6: Make cell editable
+      function makeTable6CellEditable(cell, field, rowIndex) {
+        if (cell.querySelector('input')) return; // Already editing
+
+        const originalText = cell.textContent;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = originalText;
+        input.style.width = '100%';
+        
+        // Clear cell and add input
+        cell.innerHTML = '';
+        cell.appendChild(input);
+        input.focus();
+        input.select();
+
+        // Save on Enter or blur
+        function saveEdit() {
+          const newValue = input.value.trim();
+          cell.textContent = newValue;
+          
+          // Update data
+          if (window.table6ViewData && window.table6ViewData[rowIndex]) {
+            window.table6ViewData[rowIndex][field] = newValue;
+            saveDataToStorage();
+            showTable6UpdateNotification();
+          }
+        }
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            cell.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 6: Show update notification
+      function showTable6UpdateNotification() {
+        showUpdateNotification('Economic forecasts updated successfully!');
+      }
+    </script>
+
+    <section class="bg-white shadow-md rounded-lg p-8">
+      <div class="table6-header">
+        <span id="table6-title" style="cursor: pointer;">ECONOMIC FORECASTS</span> <span id="table6-date-text" class="table6-date" style="cursor: pointer;">(AS OF 8/1/2025)</span>
+      </div>
+      <h2 id="table6-subtitle" class="text-sm font-normal mt-4 mb-4">Quarterly and annual economic forecasts for key macroeconomic indicators</h2>
+      <div class="overflow-x-auto">
+        <table class="table6-container">
+          <thead>
+            <tr>
+              <th style="text-align: left; width: 250px;"></th>
+              <th>Q1 2025A</th>
+              <th>Q2 2025A</th>
+              <th>Q3 2025E</th>
+              <th>Q4 2025E</th>
+              <th>2025E</th>
+              <th>2026E</th>
+            </tr>
+          </thead>
+          <tbody id="table6-body">
+            <!-- Table 6 rows will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      <div id="table6-footnote" class="mt-4 text-xs text-gray-600">
+The forecasts in the table are the baseline view from BofA Global Research. The Global Wealth & Investment Management (GWIM) Investment Strategy Committee (ISC) may make adjustments to this view over the course of ne year and can express upside/downside to these forecasts. There can be no assurance that the forecasts will be achieved. Economic or financial forecasts are inherently limited and should not be relied on as indicators of future
+investment performance. A = Actual. E/= Estimate. Sources: BofA Global Research; GWIM ISC as of August 5, 2025.
+Forecasts are subject to change. When assessing your portfolio in light of our current guidance, consider the tactical positioning arouna asset allocation in reterence to your own indıvidual risk tolerance, time norizon, objectives ana liquidity needs. Certain investments may not be appropriate, given your specitic circumstances and investment plan.
+Certain security types, like hedged strategies and private equity investments, are subject to eligibility and suitability criteria. Your advisor can help you customize your portfolio in light of your specific circumstances.      </div>
+    </section>
+  </main>
+
+  <!-- Table 7: S&P 500 Scenarios -->
+  <main class="max-w-7xl mx-auto mt-8 px-4">
+    <!-- Table 7 Specific Styles -->
+    <style>
+      /* Table 7 S&P 500 Scenarios specific styles */
+      .table7-header-box {
+        padding: 20px;
+        margin-bottom: 16px;
+        border-radius: 4px;
+      }
+
+      .table7-title {
+        color: #1e5ba8;
+        font-size: 24px;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+
+      /* Hover effect for editable title */
+      #table7-title:hover {
+        background-color: #e8f0f8;
+        border-radius: 3px;
+        padding: 4px 8px;
+        transition: background-color 0.2s ease;
+      }
+
+      .table7-description {
+        color: #333;
+        font-size: 14px;
+        line-height: 1.6;
+        font-weight: lighter;
+      }
+
+      /* Hover effect for editable description */
+      #table7-description:hover {
+        background-color: #f5f5f5;
+        border-radius: 3px;
+        padding: 8px;
+        transition: background-color 0.2s ease;
+      }
+
+      .table7-container {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        border: 1px solid #333;
+        font-weight: lighter;
+      }
+
+      .table7-container th {
+        background-color: white;
+        color: #000;
+        padding: 12px 10px;
+        text-align: center;
+        border: 1px solid #333;
+        font-size: 12px;
+      }
+
+      .table7-container th:first-child {
+        text-align: center;
+        background-color: white;
+      }
+
+      .table7-container thead tr:first-child th {
+        border-bottom: 1px solid #333;
+      }
+
+      .table7-container td {
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #333;
+        background-color: white;
+        font-size: 14px;
+      }
+
+      .table7-container tbody td:first-child {
+        text-align: center;
+        font-weight: bold;
+        background-color: #f5f5f5;
+      }
+      /* Editable cell styling */
+      .table7-container td:hover {
+        cursor: pointer;
+      }
+
+      .table7-container td input {
+        border: none;
+        background: transparent;
+        width: 100%;
+        text-align: center;
+        font-family: inherit;
+        font-size: inherit;
+      }
+
+      .table7-container td input:focus {
+        outline: 2px solid #2196f3;
+        background-color: #fff;
+        border-radius: 2px;
+      }
+
+      /* Footnote styling */
+      .table7-footnote {
+        margin-top: 12px;
+        font-size: 12px;
+        color: #666;
+        line-height: 1.5;
+      }
+    </style>
+
+    <!-- Table 7 Specific JavaScript Functions -->
+    <script>
+      // Table 7: Create S&P 500 scenario row
+      window.createTable7Row = function(item, index) {
+        let html = '<tr class="table7-row">';
+        html += `<td data-field="eps2025">${item.eps2025 || ''}</td>`;
+        
+        // P/E ratio columns
+        const peRatios = ['pe_19x', 'pe_20x', 'pe_21x', 'pe_22x', 'pe_23x'];
+        peRatios.forEach(pe => {
+          html += `<td data-field="${pe}">${item[pe] || ''}</td>`;
+        });
+        
+        html += '</tr>';
+        return html;
+      };
+
+      // Table 7: Add editing functionality
+      function addTable7Editing() {
+        const table7Body = document.getElementById('table7-body');
+        if (!table7Body) return;
+
+        // Make all cells editable on double-click
+        table7Body.addEventListener('dblclick', function(e) {
+          const cell = e.target.closest('td');
+          if (!cell) return;
+
+          const field = cell.getAttribute('data-field');
+          const rowIndex = Array.from(table7Body.children).indexOf(cell.closest('tr'));
+          
+          makeTable7CellEditable(cell, field, rowIndex);
+        });
+
+        // Make header title editable
+        const table7Title = document.getElementById('table7-title');
+        if (table7Title) {
+          table7Title.addEventListener('dblclick', function() {
+            makeTable7HeaderEditable(table7Title, 'title');
+          });
+        }
+
+        // Make header description editable
+        const table7Description = document.getElementById('table7-description');
+        if (table7Description) {
+          table7Description.addEventListener('dblclick', function() {
+            makeTable7HeaderEditable(table7Description, 'description');
+          });
+        }
+      }
+
+      // Table 7: Make header editable
+      function makeTable7HeaderEditable(element, field) {
+        if (element.querySelector('textarea') || element.querySelector('input')) return; // Already editing
+
+        const originalText = element.textContent;
+        
+        // Use textarea for description (multi-line) and input for title
+        const editElement = field === 'description' ? document.createElement('textarea') : document.createElement('input');
+        
+        if (field === 'description') {
+          editElement.value = originalText;
+          editElement.style.cssText = `
+            width: 100%;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 2px;
+            padding: 8px;
+            font-size: inherit;
+            font-family: inherit;
+            color: inherit;
+            outline: none;
+            line-height: 1.6;
+            min-height: 100px;
+            resize: vertical;
+          `;
+        } else {
+          editElement.type = 'text';
+          editElement.value = originalText;
+          editElement.style.cssText = `
+            width: 100%;
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 2px;
+            padding: 4px 8px;
+            font-size: inherit;
+            font-weight: inherit;
+            color: inherit;
+            outline: none;
+          `;
+        }
+        
+        // Clear element and add input/textarea
+        element.innerHTML = '';
+        element.appendChild(editElement);
+        editElement.focus();
+        editElement.select();
+
+        // Save on blur
+        function saveEdit() {
+          const newValue = editElement.value.trim();
+          element.textContent = newValue || originalText;
+          
+          // Update metadata
+          if (window.table7MetaData) {
+            if (field === 'title') {
+              window.table7MetaData.title = newValue;
+            } else if (field === 'description') {
+              window.table7MetaData.description = newValue;
+            }
+            saveDataToStorage();
+            showTable7UpdateNotification();
+          }
+        }
+
+        editElement.addEventListener('blur', saveEdit);
+        editElement.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && field !== 'description') {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            element.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 7: Make cell editable
+      function makeTable7CellEditable(cell, field, rowIndex) {
+        if (cell.querySelector('input')) return; // Already editing
+
+        const originalText = cell.textContent;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = originalText;
+        input.style.width = '100%';
+        
+        // Clear cell and add input
+        cell.innerHTML = '';
+        cell.appendChild(input);
+        input.focus();
+        input.select();
+
+        // Save on Enter or blur
+        function saveEdit() {
+          const newValue = input.value.trim();
+          cell.textContent = newValue;
+          
+          // Update data
+          if (window.table7ViewData && window.table7ViewData[rowIndex]) {
+            window.table7ViewData[rowIndex][field] = newValue;
+            saveDataToStorage();
+            showTable7UpdateNotification();
+          }
+        }
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            cell.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 7: Show update notification
+      function showTable7UpdateNotification() {
+        showUpdateNotification('S&P 500 scenarios updated successfully!');
+      }
+    </script>
+
+    <section class="bg-zinc-200 shadow-md rounded-lg p-8">
+      <div class="table7-header-box">
+        <div id="table7-title" class="table7-title" style="cursor: pointer;">S&P 500 Scenarios Based on Forward P/E and 2025 Earnings Per Share (EPS)</div>
+        <div id="table7-description" class="table7-description" style="cursor: pointer;">
+          The table below provides a rough indication of where the S&P 500 Index's central tendency could be, given various scenarios for EPS in 2025 and P/E ratio multiples. These scenarios are not official price targets and are not meant to signal levels where portfolio actions may always be needed. However, during times of market volatility, it's useful to keep this basic framework in mind when considering whether to incrementally add to or trim risk from portfolios while staying invested in one's strategic asset allocation framework.
+        </div>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <table class="table7-container">
+          <thead>
+            <tr>
+              <th rowspan="2">2025 EPS</th>
+              <th colspan="5">EPS Forward P/E (Next 12 months)</th>
+            </tr>
+            <tr>
+              <th>19.0x</th>
+              <th>20.0x</th>
+              <th>21.0x</th>
+              <th>22.0x</th>
+              <th>23.0x</th>
+            </tr>
+          </thead>
+          <tbody id="table7-body">
+            <!-- Table 7 rows will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="table7-footnote">
+        For illustrative purposes only. Source: Chief Investment Office as of August 5, 2025.
+      </div>
+    </section>
+  </main>
+
+  <!-- Table 8: CIO Views on Alts Strategies -->
+  <main class="max-w-7xl mx-auto mt-8 px-4">
+    <!-- Table 8 Specific Styles -->
+    <style>
+      /* Table 8 CIO Views on Alts Strategies specific styles */
+      .table8-container {
+        border-collapse: collapse;
+        width: 100%;
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        background-color: white;
+        border: none;
+      }
+
+      .table8-header {
+        background-color: white;
+        padding: 0;
+        margin-bottom: 4px;
+      }
+
+      .table8-title {
+        font-size: 14px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 4px;
+        padding: 0;
+      }
+
+      .table8-subtitle {
+        font-size: 14px;
+        font-weight: bold;
+        color: #1e5ba8;
+        margin-bottom: 0;
+        padding: 4px 0;
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+        margin-top: 2px;
+      }
+
+      /* Section headers styling - PRIVATE EQUITY & CREDIT */
+      .table8-container .section-header {
+        background-color: white;
+        padding: 4px 0;
+        font-weight: bolder;
+        color: #1e5ba8;
+        font-size: 14px;
+        text-align: left;
+        border-top: 2px solid #000;
+        border-bottom: 2px solid #000;
+        margin-top: 8px;
+      }
+
+      /* Strategy category headers with green + */
+      .table8-container .strategy-header {
+        background-color: white;
+        padding: 6px 0;
+        font-weight: bold !important;
+        color: #000;
+        font-size: 50px;
+        text-align: left;
+        border-bottom: 1px solid #000;
+        border-top: 0;
+      }
+
+      /* Cell styling */
+      .table8-container td {
+        padding: 4px 0;
+        vertical-align: top;
+        border-bottom: 1px solid #000;
+        line-height: 1.3;
+      }
+
+      .table8-container td:first-child {
+        font-weight: normal;
+        width: 50px;
+        color: #000;
+        font-size: 11px;
+        padding-right: 8px;
+      }
+
+      .table8-container td:last-child {
+        color: #000;
+        text-align: left;
+        font-size: 11px;
+        padding-left: 8px;
+      }
+
+      /* Alternating row colors for data rows */
+      .table8-container .table8-data-row:nth-of-type(odd) {
+        background-color: white;
+      }
+
+      .table8-container .table8-data-row:nth-of-type(even) {
+        background-color: #f5f5f5;
+      }
+
+      /* Remove bottom border from last row before section header */
+      .table8-container tr:last-child td {
+        border-bottom: none;
+      }
+
+      /* Green plus indicators */
+      .table8-plus {
+        color: #22c55e;
+        font-weight: bold;
+        font-size: 16px;
+        margin-left: 4px;
+      }
+
+      /* Footnote styling */
+      .table8-footnote {
+        font-size: 9px;
+        line-height: 1.35;
+        color: #000;
+        margin-top: 8px;
+        padding: 0;
+      }
+
+      /* Editable elements hover */
+      #table8-title:hover,
+      #table8-subtitle:hover {
+        background-color: #f0f0f0;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      
+      .table8-container .table8-data-row:hover {
+        background-color: #e8e8e8 !important;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      
+      .table8-container .strategy-header:hover,
+      .table8-container .section-header:hover {
+        background-color: #f0f0f0;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+    </style>
+
+    <!-- Table 8 Specific JavaScript Functions -->
+    <script>
+      // Table 8: Create strategy row
+      window.createTable8Row = function(item, index) {
+        // If it's a section header
+        if (item.isSection) {
+          return `
+            <tr data-row-index="${index}">
+              <td colspan="2" class="section-header">${item.sectionName}</td>
+            </tr>
+          `;
+        }
+
+        // If it's a strategy header
+        if (item.isStrategyHeader) {
+          // Check if strategy name has a "+" and format it
+          let strategyDisplay = item.strategyName;
+          if (item.strategyName.includes('+')) {
+            // Replace the + with a green styled +
+            strategyDisplay = item.strategyName.replace('+', '<span class="table8-plus">+</span>');
+          }
+          
+          return `
+            <tr data-row-index="${index}">
+              <td colspan="2" class="strategy-header">${strategyDisplay}</td>
+            </tr>
+          `;
+        }
+
+        // Regular bull/bear case row
+        return `
+          <tr data-row-index="${index}" class="table8-data-row">
+            <td data-field="caseType">${item.caseType}</td>
+            <td data-field="description">${item.description}</td>
+          </tr>
+        `;
+      };
+
+      // Table 8: Add editing functionality
+      function addTable8Editing() {
+        console.log('Initializing Table 8 editing...');
+
+        // Make title editable
+        const table8Title = document.getElementById('table8-title');
+        if (table8Title) {
+          table8Title.addEventListener('dblclick', function(e) {
+            e.stopPropagation();
+            makeTable8TextEditable(table8Title, 'title');
+          });
+        }
+
+        // Make subtitle editable
+        const table8Subtitle = document.getElementById('table8-subtitle');
+        if (table8Subtitle) {
+          table8Subtitle.addEventListener('dblclick', function(e) {
+            e.stopPropagation();
+            makeTable8TextEditable(table8Subtitle, 'subtitle');
+          });
+        }
+
+        // Make all table cells editable
+        const table8Body = document.getElementById('table8-body');
+        if (table8Body) {
+          table8Body.addEventListener('dblclick', function(e) {
+            const cell = e.target.closest('td');
+            if (!cell) return;
+            
+            const row = cell.closest('tr');
+            const rowIndex = parseInt(row.getAttribute('data-row-index'));
+            
+            // Handle section headers
+            if (cell.classList.contains('section-header')) {
+              makeTable8SectionHeaderEditable(cell, rowIndex);
+              return;
+            }
+            
+            // Handle strategy headers
+            if (cell.classList.contains('strategy-header')) {
+              makeTable8StrategyHeaderEditable(cell, rowIndex);
+              return;
+            }
+
+            const field = cell.getAttribute('data-field');
+            makeTable8CellEditable(cell, field, rowIndex);
+          });
+        }
+
+        // Make footnote editable
+        const table8Footnote = document.getElementById('table8-footnote');
+        if (table8Footnote) {
+          console.log('Found table 8 footnote element');
+          table8Footnote.addEventListener('dblclick', function(e) {
+            e.stopPropagation();
+            console.log('Table 8 footnote double-clicked');
+            makeTable8FootnoteEditable(table8Footnote);
+          });
+        } else {
+          console.warn('Table 8 footnote element not found');
+        }
+
+        console.log('Table 8 editing initialization complete');
+      }
+
+      // Table 8: Make text editable (for title/subtitle)
+      function makeTable8TextEditable(element, field) {
+        if (element.querySelector('input')) return;
+
+        const originalText = element.textContent.trim();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = originalText;
+        input.style.cssText = `
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 2px;
+          padding: 4px 8px;
+          font-size: inherit;
+          font-weight: inherit;
+          color: inherit;
+          width: 100%;
+          outline: none;
+        `;
+
+        element.innerHTML = '';
+        element.appendChild(input);
+        input.focus();
+        input.select();
+
+        function saveEdit() {
+          const newValue = input.value.trim();
+          element.textContent = newValue || originalText;
+          
+          if (window.table8MetaData) {
+            window.table8MetaData[field] = newValue;
+            saveDataToStorage();
+            showTable8UpdateNotification();
+          }
+        }
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            element.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 8: Make section header editable
+      function makeTable8SectionHeaderEditable(cell, rowIndex) {
+        if (cell.querySelector('input')) return;
+
+        const originalText = cell.textContent.trim();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = originalText;
+        input.style.cssText = `
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 2px;
+          padding: 8px;
+          font-size: inherit;
+          font-weight: inherit;
+          color: inherit;
+          width: 100%;
+          outline: none;
+        `;
+
+        cell.innerHTML = '';
+        cell.appendChild(input);
+        input.focus();
+        input.select();
+
+        function saveEdit() {
+          const newValue = input.value.trim();
+          cell.textContent = newValue || originalText;
+          
+          if (window.table8ViewData && window.table8ViewData[rowIndex]) {
+            window.table8ViewData[rowIndex].sectionName = newValue;
+            saveDataToStorage();
+            showTable8UpdateNotification();
+          }
+        }
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            cell.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 8: Make strategy header editable
+      function makeTable8StrategyHeaderEditable(cell, rowIndex) {
+        if (cell.querySelector('input')) return;
+
+        // Get text without HTML (strip the + symbol span)
+        const originalText = cell.textContent.trim();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = originalText;
+        input.style.cssText = `
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 2px;
+          padding: 8px;
+          font-size: inherit;
+          font-weight: inherit;
+          color: inherit;
+          width: 100%;
+          outline: none;
+        `;
+
+        cell.innerHTML = '';
+        cell.appendChild(input);
+        input.focus();
+        input.select();
+
+        function saveEdit() {
+          const newValue = input.value.trim();
+          
+          console.log('Saving strategy header:', {rowIndex, newValue, hasData: !!window.table8ViewData});
+          
+          if (window.table8ViewData && window.table8ViewData[rowIndex]) {
+            console.log('Found data at index:', rowIndex, window.table8ViewData[rowIndex]);
+            window.table8ViewData[rowIndex].strategyName = newValue;
+            
+            // Re-render with the green + symbol if present
+            const strategyDisplay = newValue.replace('+', '<span class="table8-plus">+</span>');
+            cell.innerHTML = strategyDisplay;
+            
+            saveDataToStorage();
+            showTable8UpdateNotification();
+          } else {
+            console.error('Could not find data at index:', rowIndex);
+            console.log('table8ViewData:', window.table8ViewData);
+            // Restore original if save fails
+            const strategyDisplay = originalText.replace('+', '<span class="table8-plus">+</span>');
+            cell.innerHTML = strategyDisplay;
+          }
+        }
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            const strategyDisplay = originalText.replace('+', '<span class="table8-plus">+</span>');
+            cell.innerHTML = strategyDisplay;
+          }
+        });
+      }
+
+      // Table 8: Make footnote editable
+      function makeTable8FootnoteEditable(footnoteElement) {
+        if (footnoteElement.querySelector('textarea')) return;
+
+        const originalText = footnoteElement.textContent.trim();
+        const textarea = document.createElement('textarea');
+        textarea.value = originalText;
+        textarea.style.cssText = `
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 2px;
+          padding: 8px;
+          font-size: inherit;
+          font-family: inherit;
+          color: inherit;
+          width: 100%;
+          min-height: 80px;
+          resize: vertical;
+          outline: none;
+        `;
+
+        footnoteElement.innerHTML = '';
+        footnoteElement.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+
+        function saveEdit() {
+          const newValue = textarea.value.trim();
+          footnoteElement.textContent = newValue || originalText;
+          
+          if (window.table8MetaData) {
+            window.table8MetaData.footnote = newValue;
+            saveDataToStorage();
+            showTable8UpdateNotification();
+          }
+        }
+
+        textarea.addEventListener('blur', saveEdit);
+        textarea.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            footnoteElement.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 8: Make cell editable
+      function makeTable8CellEditable(cell, field, rowIndex) {
+        if (cell.querySelector('textarea') || cell.querySelector('input')) return;
+
+        const originalText = cell.textContent.trim();
+        
+        // Use textarea for description field, input for case type
+        const isDescription = field === 'description';
+        const editElement = isDescription ? document.createElement('textarea') : document.createElement('input');
+        
+        if (!isDescription) {
+          editElement.type = 'text';
+        }
+        
+        editElement.value = originalText;
+        editElement.style.cssText = `
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 2px;
+          padding: 6px;
+          font-size: inherit;
+          font-family: inherit;
+          color: inherit;
+          width: 100%;
+          outline: none;
+          ${isDescription ? 'min-height: 60px; resize: vertical;' : ''}
+        `;
+
+        cell.innerHTML = '';
+        cell.appendChild(editElement);
+        editElement.focus();
+        editElement.select();
+
+        function saveEdit() {
+          const newValue = editElement.value.trim();
+          cell.textContent = newValue || originalText;
+          
+          if (window.table8ViewData && window.table8ViewData[rowIndex]) {
+            window.table8ViewData[rowIndex][field] = newValue;
+            saveDataToStorage();
+            showTable8UpdateNotification();
+          }
+        }
+
+        editElement.addEventListener('blur', saveEdit);
+        editElement.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && (!isDescription || (e.ctrlKey || e.metaKey))) {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            cell.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 8: Show update notification
+      function showTable8UpdateNotification() {
+        showUpdateNotification('CIO Views on Alts updated successfully!');
+      }
+    </script>
+
+    <section class="bg-white shadow-md rounded-lg p-8">
+      <div class="table8-header">
+        <div id="table8-title" class="table8-title">CIO Views on Alts Strategies</div>
+        <div id="table8-subtitle" class="table8-subtitle">HEDGE STRATEGIES</div>
+      </div>
+      
+      <div class="overflow-x-auto">
+        <table class="table8-container">
+          <tbody id="table8-body">
+            <!-- Table 8 rows will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      
+      <div id="table8-footnote" class="table8-footnote">
+        *Alpha is a measure of how well an investment performs relative to a benchmark index at what's expected based on its risk level. Bull case is an environment or set of factors that could represent tailwinds for the strategy. Bear case is an environment or set of factors that could represent headwinds for the strategy. + symbol indicates the strategy CIO views as having a relative opportunity for new investment within the Alts asset class.
+      </div>
+    </section>
+
+    <!-- Table 9: Sector Valuations -->
+    <style>
+      /* Table 9 Specific Styles */
+      .table9-container {
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+
+      .table9-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 20px;
+        text-align: left;
+      }
+
+      .table9-legend {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-bottom: 20px;
+        font-size: 14px;
+      }
+
+      .table9-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .table9-legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+      }
+
+      .table9-legend-dot.current {
+        background-color: #1e3a8a;
+      }
+
+      .table9-legend-dot.average {
+        background-color: #dc2626;
+      }
+
+      .table9-chart {
+        border-collapse: collapse;
+        width: 100%;
+        border-top: 2px solid #000;
+      }
+
+      .table9-chart tbody tr {
+        border-bottom: 1px solid #d1d5db;
+      }
+
+      .table9-chart tbody tr:last-child {
+        border-bottom: 2px solid #000;
+      }
+
+      .table9-sector-label {
+        text-align: right;
+        padding: 12px 16px;
+        font-size: 14px;
+        font-weight: normal;
+        width: 180px;
+        border-right: 1px solid #d1d5db;
+      }
+
+      .table9-chart-area {
+        position: relative;
+        padding: 12px 0;
+        background-image: 
+          linear-gradient(to right, #d1d5db 1px, transparent 1px),
+          linear-gradient(to right, #e5e7eb 1px, transparent 1px);
+        background-size: 20% 100%, 10% 100%;
+        background-position: 0 0, 0 0;
+      }
+
+      .table9-chart-container {
+        position: relative;
+        height: 20px;
+        margin: 0 10px;
+      }
+
+      .table9-dot {
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .table9-dot.current {
+        background-color: #1e3a8a;
+        z-index: 2;
+      }
+
+      .table9-dot.average {
+        background-color: #dc2626;
+        z-index: 1;
+      }
+
+      .table9-x-axis {
+        text-align: center;
+        padding: 8px 0;
+        font-size: 12px;
+        color: #666;
+        border-right: 1px solid #d1d5db;
+        border-top: 0;
+      }
+
+      .table9-x-axis-labels {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 10px;
+        font-size: 12px;
+        color: #666;
+        font-weight: 500;
+      }
+
+      .table9-x-axis-labels span {
+        flex: 0 0 auto;
+        text-align: center;
+      }
+
+      .table9-subtitle {
+        text-align: center;
+        font-size: 12px;
+        color: #666;
+        margin-top: 8px;
+        font-weight: 500;
+      }
+
+      /* Hover effects */
+      .table9-title:hover {
+        background-color: #f0f0f0;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .table9-sector-label:hover {
+        background-color: #f9fafb;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .table9-chart-area:hover {
+        background-color: rgba(249, 250, 251, 0.5);
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+
+      .table9-chart tbody tr:hover {
+        background-color: #f9fafb;
+      }
+
+      .table9-x-axis-labels:hover {
+        background-color: #f0f0f0;
+        transition: background-color 0.2s ease;
+      }
+
+      .table9-dot {
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+
+      .table9-dot:hover {
+        transform: translateY(-50%) scale(1.3);
+      }
+    </style>
+
+    <script>
+      // Table 9: Create sector row
+      window.createTable9Row = function(sector, index) {
+        const config = window.table9XAxisConfig || { start: 10, end: 35 };
+        const minValue = config.start;
+        const maxValue = config.end;
+        const range = maxValue - minValue;
+
+        // Calculate positions as percentages
+        const currentPos = ((sector.currentPE - minValue) / range) * 100;
+        const averagePos = ((sector.averagePE - minValue) / range) * 100;
+
+        return `
+          <tr data-row-index="${index}">
+            <td class="table9-sector-label">${sector.name}</td>
+            <td class="table9-chart-area">
+              <div class="table9-chart-container">
+                <div class="table9-dot average" style="left: ${averagePos}%;"></div>
+                <div class="table9-dot current" style="left: ${currentPos}%;"></div>
+              </div>
+            </td>
+          </tr>
+        `;
+      };
+
+      // Table 9: Initialize
+      function initializeTable9() {
+        console.log('Initializing Table 9...');
+        
+        // Initialize x-axis configuration
+        if (!window.table9XAxisConfig) {
+          window.table9XAxisConfig = {
+            start: 10,
+            end: 35,
+            interval: 5
+          };
+        }
+        
+        if (!window.table9ViewData) {
+          // Default data matching the image
+          window.table9ViewData = [
+            { name: "S&P 500", currentPE: 23.5, averagePE: 17.5 },
+            { name: "Information Technology", currentPE: 29.5, averagePE: 18.5 },
+            { name: "Consumer Discretionary", currentPE: 25.0, averagePE: 20.5 },
+            { name: "Healthcare", currentPE: 19.0, averagePE: 16.5 },
+            { name: "Financials", currentPE: 17.5, averagePE: 14.5 },
+            { name: "Communication Services", currentPE: 19.5, averagePE: 17.0 },
+            { name: "Industrials", currentPE: 23.0, averagePE: 18.0 },
+            { name: "Consumer Staples", currentPE: 21.0, averagePE: 19.0 },
+            { name: "Energy", currentPE: 13.0, averagePE: 34.0 },
+            { name: "Real Estate", currentPE: 20.5, averagePE: 20.5 },
+            { name: "Materials", currentPE: 21.0, averagePE: 16.5 },
+            { name: "Utilities", currentPE: 19.0, averagePE: 16.5 }
+          ];
+        }
+
+        const table9Body = document.getElementById('table9-body');
+        if (table9Body && window.table9ViewData) {
+          table9Body.innerHTML = window.table9ViewData
+            .map((sector, index) => createTable9Row(sector, index))
+            .join('');
+        }
+
+        // Render x-axis labels
+        renderTable9XAxisLabels();
+
+        // Add editing functionality
+        addTable9Editing();
+
+        console.log('Table 9 initialized');
+      }
+
+      // Table 9: Add editing functionality
+      function addTable9Editing() {
+        console.log('Initializing Table 9 editing...');
+
+        // Make title editable
+        const table9Title = document.querySelector('.table9-title');
+        if (table9Title) {
+          table9Title.addEventListener('dblclick', function(e) {
+            e.stopPropagation();
+            makeTable9TitleEditable(table9Title);
+          });
+        }
+
+        // Make sector labels editable
+        const table9Body = document.getElementById('table9-body');
+        if (table9Body) {
+          table9Body.addEventListener('dblclick', function(e) {
+            const label = e.target.closest('.table9-sector-label');
+            if (label) {
+              const row = label.closest('tr');
+              const rowIndex = Array.from(table9Body.children).indexOf(row);
+              makeTable9SectorLabelEditable(label, rowIndex);
+              return;
+            }
+
+            // Check if clicked on chart area or dots
+            const chartArea = e.target.closest('.table9-chart-area');
+            if (chartArea) {
+              const row = chartArea.closest('tr');
+              const rowIndex = Array.from(table9Body.children).indexOf(row);
+              showTable9EditPopover(rowIndex);
+            }
+          });
+        }
+
+        // Make x-axis editable (single click on x-axis labels)
+        const xAxisLabels = document.querySelector('.table9-x-axis-labels');
+        if (xAxisLabels) {
+          xAxisLabels.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showTable9XAxisEditPopover();
+          });
+          xAxisLabels.style.cursor = 'pointer';
+        }
+
+        console.log('Table 9 editing initialization complete');
+      }
+
+      // Table 9: Make title editable
+      function makeTable9TitleEditable(element) {
+        if (element.querySelector('input')) return;
+
+        const originalText = element.textContent.trim();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = originalText;
+        input.style.cssText = `
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 2px;
+          padding: 4px 8px;
+          font-size: inherit;
+          font-weight: inherit;
+          color: inherit;
+          width: 100%;
+          outline: none;
+        `;
+
+        element.innerHTML = '';
+        element.appendChild(input);
+        input.focus();
+        input.select();
+
+        function saveEdit() {
+          const newValue = input.value.trim();
+          element.textContent = newValue || originalText;
+          saveDataToStorage();
+          showTable9UpdateNotification();
+        }
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            element.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 9: Make sector label editable
+      function makeTable9SectorLabelEditable(label, rowIndex) {
+        if (label.querySelector('input')) return;
+
+        const originalText = label.textContent.trim();
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = originalText;
+        input.style.cssText = `
+          background: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 2px;
+          padding: 4px 8px;
+          font-size: inherit;
+          color: inherit;
+          width: 100%;
+          outline: none;
+        `;
+
+        label.innerHTML = '';
+        label.appendChild(input);
+        input.focus();
+        input.select();
+
+        function saveEdit() {
+          const newValue = input.value.trim();
+          label.textContent = newValue || originalText;
+          
+          if (window.table9ViewData && window.table9ViewData[rowIndex]) {
+            window.table9ViewData[rowIndex].name = newValue;
+            saveDataToStorage();
+            showTable9UpdateNotification();
+          }
+        }
+
+        input.addEventListener('blur', saveEdit);
+        input.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            saveEdit();
+          } else if (e.key === 'Escape') {
+            label.textContent = originalText;
+          }
+        });
+      }
+
+      // Table 9: Show edit popover for P/E values
+      function showTable9EditPopover(rowIndex) {
+        // Remove existing popover if any
+        const existingPopover = document.querySelector('.table9-edit-popover');
+        if (existingPopover) {
+          existingPopover.remove();
+        }
+
+        const sector = window.table9ViewData[rowIndex];
+        if (!sector) return;
+
+        // Create popover
+        const popover = document.createElement('div');
+        popover.className = 'table9-edit-popover';
+        popover.style.cssText = `
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: white;
+          border: 2px solid #1e3a8a;
+          border-radius: 8px;
+          padding: 24px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+          z-index: 1000;
+          min-width: 350px;
+          font-size: 14px;
+        `;
+
+        popover.innerHTML = `
+          <div style="margin-bottom: 16px; font-weight: bold; font-size: 16px; color: #1e3a8a;">
+            Edit P/E Values - ${sector.name}
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">
+              Current Fwd P/E (10-35):
+            </label>
+            <input type="number" id="table9-current-pe" value="${sector.currentPE}" 
+              min="10" max="35" step="0.5"
+              style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px;">
+          </div>
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">
+              15 Year Average P/E (10-35):
+            </label>
+            <input type="number" id="table9-average-pe" value="${sector.averagePE}" 
+              min="10" max="35" step="0.5"
+              style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px;">
+          </div>
+          <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button id="table9-cancel-btn" style="padding: 8px 16px; border: 1px solid #d1d5db; background: white; border-radius: 4px; cursor: pointer; font-size: 14px;">
+              Cancel
+            </button>
+            <button id="table9-save-btn" style="padding: 8px 16px; border: none; background: #1e3a8a; color: white; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 14px;">
+              Save
+            </button>
+          </div>
+        `;
+
+        // Create backdrop
+        const backdrop = document.createElement('div');
+        backdrop.className = 'table9-popover-backdrop';
+        backdrop.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0,0,0,0.3);
+          z-index: 999;
+        `;
+
+        document.body.appendChild(backdrop);
+        document.body.appendChild(popover);
+
+        // Handle save
+        document.getElementById('table9-save-btn').addEventListener('click', function() {
+          const currentPE = parseFloat(document.getElementById('table9-current-pe').value);
+          const averagePE = parseFloat(document.getElementById('table9-average-pe').value);
+
+          // Validate
+          if (currentPE < 10 || currentPE > 35 || averagePE < 10 || averagePE > 35) {
+            alert('P/E values must be between 10 and 35');
+            return;
+          }
+
+          // Update data
+          window.table9ViewData[rowIndex].currentPE = currentPE;
+          window.table9ViewData[rowIndex].averagePE = averagePE;
+
+          // Re-render the row
+          const table9Body = document.getElementById('table9-body');
+          const rows = table9Body.querySelectorAll('tr');
+          if (rows[rowIndex]) {
+            rows[rowIndex].outerHTML = createTable9Row(window.table9ViewData[rowIndex], rowIndex);
+          }
+
+          // Save and close
+          saveDataToStorage();
+          showTable9UpdateNotification();
+          backdrop.remove();
+          popover.remove();
+        });
+
+        // Handle cancel
+        function closePopover() {
+          backdrop.remove();
+          popover.remove();
+        }
+
+        document.getElementById('table9-cancel-btn').addEventListener('click', closePopover);
+        backdrop.addEventListener('click', closePopover);
+
+        // Handle Escape key
+        function handleEscape(e) {
+          if (e.key === 'Escape') {
+            closePopover();
+            document.removeEventListener('keydown', handleEscape);
+          }
+        }
+        document.addEventListener('keydown', handleEscape);
+      }
+
+      // Table 9: Show update notification
+      function showTable9UpdateNotification() {
+        showUpdateNotification('Sector Valuations updated successfully!');
+      }
+
+      // Table 9: Generate x-axis labels
+      function generateTable9XAxisLabels() {
+        const config = window.table9XAxisConfig || { start: 10, end: 35, interval: 5 };
+        const labels = [];
+        for (let value = config.start; value <= config.end; value += config.interval) {
+          labels.push(value);
+        }
+        return labels;
+      }
+
+      // Table 9: Render x-axis labels
+      function renderTable9XAxisLabels() {
+        const labelsContainer = document.querySelector('.table9-x-axis-labels');
+        if (labelsContainer) {
+          const labels = generateTable9XAxisLabels();
+          labelsContainer.innerHTML = labels.map(label => `<span>${label}</span>`).join('');
+        }
+      }
+
+      // Table 9: Show x-axis edit popover
+      function showTable9XAxisEditPopover() {
+        // Remove existing popover if any
+        const existingPopover = document.querySelector('.table9-xaxis-popover');
+        if (existingPopover) {
+          existingPopover.remove();
+        }
+
+        const config = window.table9XAxisConfig || { start: 10, end: 35, interval: 5 };
+
+        // Create popover
+        const popover = document.createElement('div');
+        popover.className = 'table9-xaxis-popover';
+        popover.style.cssText = `
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: white;
+          border: 2px solid #1e3a8a;
+          border-radius: 8px;
+          padding: 24px;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+          z-index: 1000;
+          min-width: 350px;
+          font-size: 14px;
+        `;
+
+        popover.innerHTML = `
+          <div style="margin-bottom: 16px; font-weight: bold; font-size: 16px; color: #1e3a8a;">
+            Edit X-Axis Configuration
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">
+              Start Value:
+            </label>
+            <input type="number" id="table9-xaxis-start" value="${config.start}" 
+              step="1"
+              style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px;">
+          </div>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">
+              End Value:
+            </label>
+            <input type="number" id="table9-xaxis-end" value="${config.end}" 
+              step="1"
+              style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px;">
+          </div>
+          <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 6px; font-weight: 500;">
+              Interval:
+            </label>
+            <input type="number" id="table9-xaxis-interval" value="${config.interval}" 
+              min="1" step="1"
+              style="width: 100%; padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px;">
+          </div>
+          <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button id="table9-xaxis-cancel-btn" style="padding: 8px 16px; border: 1px solid #d1d5db; background: white; border-radius: 4px; cursor: pointer; font-size: 14px;">
+              Cancel
+            </button>
+            <button id="table9-xaxis-save-btn" style="padding: 8px 16px; border: none; background: #1e3a8a; color: white; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 14px;">
+              Save
+            </button>
+          </div>
+        `;
+
+        // Create backdrop
+        const backdrop = document.createElement('div');
+        backdrop.className = 'table9-xaxis-backdrop';
+        backdrop.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0,0,0,0.3);
+          z-index: 999;
+        `;
+
+        document.body.appendChild(backdrop);
+        document.body.appendChild(popover);
+
+        // Handle save
+        document.getElementById('table9-xaxis-save-btn').addEventListener('click', function() {
+          const start = parseFloat(document.getElementById('table9-xaxis-start').value);
+          const end = parseFloat(document.getElementById('table9-xaxis-end').value);
+          const interval = parseFloat(document.getElementById('table9-xaxis-interval').value);
+
+          // Validate
+          if (isNaN(start) || isNaN(end) || isNaN(interval)) {
+            alert('Please enter valid numbers');
+            return;
+          }
+          if (start >= end) {
+            alert('Start value must be less than end value');
+            return;
+          }
+          if (interval <= 0) {
+            alert('Interval must be greater than 0');
+            return;
+          }
+
+          // Update config
+          window.table9XAxisConfig = { start, end, interval };
+
+          // Re-render x-axis labels
+          renderTable9XAxisLabels();
+
+          // Re-render all rows with new scale
+          const table9Body = document.getElementById('table9-body');
+          if (table9Body && window.table9ViewData) {
+            table9Body.innerHTML = window.table9ViewData
+              .map((sector, index) => createTable9Row(sector, index))
+              .join('');
+          }
+
+          // Save and close
+          saveDataToStorage();
+          showTable9UpdateNotification();
+          backdrop.remove();
+          popover.remove();
+        });
+
+        // Handle cancel
+        function closePopover() {
+          backdrop.remove();
+          popover.remove();
+        }
+
+        document.getElementById('table9-xaxis-cancel-btn').addEventListener('click', closePopover);
+        backdrop.addEventListener('click', closePopover);
+
+        // Handle Escape key
+        function handleEscape(e) {
+          if (e.key === 'Escape') {
+            closePopover();
+            document.removeEventListener('keydown', handleEscape);
+          }
+        }
+        document.addEventListener('keydown', handleEscape);
+      }
+    </script>
+
+    <section class="bg-white shadow-md rounded-lg p-8">
+      <div class="table9-container">
+        <div class="table9-title border-b-2 border-black font-bold">Sector Valuations</div>
+        
+        <div class="table9-legend">
+          <div class="table9-legend-item">
+            <div class="table9-legend-dot current"></div>
+            <span>Current Fwd P/E</span>
+          </div>
+          <div class="table9-legend-item">
+            <div class="table9-legend-dot average"></div>
+            <span>15 Year Average</span>
+          </div>
+        </div>
+
+        <table class="table9-chart">
+          <tbody id="table9-body">
+            <!-- Rows will be populated by JavaScript -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td class="table9-x-axis"></td>
+              <td class="table9-chart-area">
+                <div class="table9-x-axis-labels">
+                  <span>10</span>
+                  <span>15</span>
+                  <span>20</span>
+                  <span>25</span>
+                  <span>30</span>
+                  <span>35</span>
+                </div>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="table9-subtitle">
+          Forward Price-to-Earnings (P/E) for S&P 500 Sectors
+        </div>
+      </div>
+    </section>
+  </main>
+
   <!-- Footer -->
   <footer class="text-center text-gray-500 text-sm py-4 mt-10 border-t">
     Source: Chief Investment Office | CIO Viewpoint © 2025
@@ -1516,7 +4361,7 @@
         <div style="margin-bottom: 15px;">
           <label style="display: block; margin-bottom: 5px; font-weight: 600;">Position:</label>
           <select id="popover-weight-position" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-            <option value="-1" ${position === -1 ? 'selected' : ''}>Hidden (No Dots)</option>
+            ${tableType !== 'table4' ? `<option value="-1" ${position === -1 ? 'selected' : ''}>Hidden (No Dots)</option>` : ''}
             <option value="1" ${position === 1 ? 'selected' : ''}>Position 1 (Strong Underweight)</option>
             <option value="2" ${position === 2 ? 'selected' : ''}>Position 2 (Underweight)</option>
             <option value="3" ${position === 3 ? 'selected' : ''}>Position 3 (Neutral)</option>
@@ -1594,6 +4439,9 @@
       } else if (tableType === 'table3') {
         targetData = window.table3ViewData;
         targetTbodyId = 'table3-view-body';
+      } else if (tableType === 'table4') {
+        targetData = window.table4ViewData;
+        targetTbodyId = 'table4-view-body';
       }
       
       if (targetData && targetData[rowIndex]) {
@@ -1631,6 +4479,16 @@
           makeTextCellsEditable();
           addTable3WeightIndicatorEditing();
           addTable3RowEditing();
+        } else if (targetTbodyId === 'table4-view-body') {
+          const table4Tbody = document.getElementById("table4-view-body");
+          table4Tbody.innerHTML = window.table4ViewData.map(window.createTable4Row).join("");
+          // Render special sections
+          renderTable4SpecialSections();
+          // Re-initialize Table 4 functionality
+          makeHeadersEditable();
+          makeTextCellsEditable();
+          addTable4WeightIndicatorEditing();
+          addTable4RowEditing();
         }
         
         console.log(`Updated weight settings for ${tableType} row ${rowIndex}`);
@@ -1648,6 +4506,7 @@
       if (tableType === 'factors') targetData = window.factorsData;
       else if (tableType === 'cio-view') targetData = window.cioViewData;
       else if (tableType === 'table3') targetData = window.table3ViewData;
+      else if (tableType === 'table4') targetData = window.table4ViewData;
       
       if (targetData && rowIndex < targetData.length - 1) {
         return targetData[rowIndex + 1].comments || 'Empty';
@@ -1802,6 +4661,9 @@
       } else if (tableType === 'table3') {
         targetData = window.table3ViewData;
         targetTbodyId = 'table3-view-body';
+      } else if (tableType === 'table4') {
+        targetData = window.table4ViewData;
+        targetTbodyId = 'table4-view-body';
       }
       
       if (targetData && targetData[rowIndex]) {
@@ -2107,6 +4969,62 @@
         } else {
           console.error('No Table 3 View data available');
         }
+
+        // Generate fourth table with Table 4 View data
+        console.log('Checking for table4ViewData:', data.table4ViewData);
+        if (data.table4ViewData && data.table4ViewData.assetClasses) {
+          console.log('Table 4 data found:', data.table4ViewData.assetClasses);
+          window.table4ViewData = data.table4ViewData.assetClasses;
+          
+          // Update Table 4 headers
+          const table4Header1 = document.getElementById('table4-header-1');
+          const table4Header2 = document.getElementById('table4-header-2');
+          if (table4Header1 && data.table4ViewData.headers.assetClassHeader) {
+            table4Header1.childNodes[0].textContent = data.table4ViewData.headers.assetClassHeader;
+          }
+          if (table4Header2 && data.table4ViewData.headers.cioViewHeader) {
+            const headerText = table4Header2.childNodes[0];
+            if (headerText) headerText.textContent = data.table4ViewData.headers.cioViewHeader + ' ';
+          }
+          
+          // Update Table 4 subtitle
+          const table4Subtitle = document.getElementById('table4-subtitle');
+          if (table4Subtitle && data.table4ViewData.subtitle) {
+            table4Subtitle.textContent = data.table4ViewData.subtitle;
+          }
+          
+          // Update Table 4 footnote
+          const table4Footnote = document.getElementById('table4-footnote');
+          if (table4Footnote && data.table4ViewData.footnote) {
+            table4Footnote.textContent = data.table4ViewData.footnote;
+          }
+          
+          const table4Tbody = document.getElementById("table4-view-body");
+          if (window.table4ViewData && window.table4ViewData.length > 0) {
+            console.log('Populating Table 4 View table with', window.table4ViewData.length, 'items');
+            table4Tbody.innerHTML = window.table4ViewData.map(window.createTable4Row).join("");
+            renderTable4SpecialSections();
+            console.log('Table 4 View table populated');
+          } else {
+            console.error('No Table 4 View data available');
+          }
+        } else {
+          console.error('Table 4 ViewData not found in JSON or missing assetClasses property');
+          console.log('Data keys:', Object.keys(data));
+        }
+
+        // Initialize Table 5
+        console.log('Checking for table5ViewData:', data.table5ViewData);
+        if (data.table5ViewData && Array.isArray(data.table5ViewData)) {
+          window.table5ViewData = data.table5ViewData;
+          const table5Tbody = document.getElementById('table5-body');
+          if (table5Tbody) {
+            table5Tbody.innerHTML = window.table5ViewData.map(window.createTable5Row).join('');
+            console.log('Table 5 initialized with', window.table5ViewData.length, 'items');
+          }
+        } else {
+          console.log('table5ViewData not found in combined JSON, initializing with fallback');
+        }
         
         console.log('Combined dashboard data loaded successfully');
       } catch (error) {
@@ -2306,8 +5224,13 @@
       });
       
       // Make data cells editable (excluding range slider column and weight indicator column)
-      const dataCells = document.querySelectorAll('tbody td:first-child, tbody td:last-child');
+      const dataCells = document.querySelectorAll('tbody td:first-child:not(#table5-body td), tbody td:last-child:not(#table5-body td)');
       dataCells.forEach((cell, index) => {
+        // Additional check to ensure we're not in Table 5
+        if (cell.closest('#table5-body')) {
+          return; // Skip Table 5 cells
+        }
+        
         cell.addEventListener('dblclick', function() {
           if (this.querySelector('input')) return; // Already editing
           
@@ -2751,15 +5674,6 @@
         <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: bold;">Edit Range Settings</h3>
         
         <div style="margin-bottom: 15px;">
-          <label style="display: block; margin-bottom: 5px; font-weight: 600;">Implication:</label>
-          <select id="popover-implication" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-            <option value="positive" ${factorData.implication.toLowerCase() === 'positive' ? 'selected' : ''}>Positive</option>
-            <option value="neutral" ${factorData.implication.toLowerCase() === 'neutral' ? 'selected' : ''}>Neutral</option>
-            <option value="negative" ${factorData.implication.toLowerCase() === 'negative' ? 'selected' : ''}>Negative</option>
-          </select>
-        </div>
-        
-        <div style="margin-bottom: 15px;">
           <label style="display: block; margin-bottom: 5px; font-weight: 600;">Trend:</label>
           <select id="popover-trend" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
             <option value="up" ${factorData.trend === 'up' ? 'selected' : ''}>Up</option>
@@ -2769,15 +5683,14 @@
         </div>
         
         <div style="margin-bottom: 20px;">
-          <label style="display: block; margin-bottom: 5px; font-weight: 600;">Value: <span id="value-display">${factorData.value}</span></label>
-          <input type="range" id="popover-value" min="0" max="100" value="${factorData.value}" 
-                 style="width: 100%; margin-bottom: 5px;"
-                 oninput="document.getElementById('value-display').textContent = this.value">
-          <div style="display: flex; justify-content: space-between; font-size: 12px; color: #666;">
-            <span>0</span>
-            <span>50</span>
-            <span>100</span>
-          </div>
+          <label style="display: block; margin-bottom: 5px; font-weight: 600;">Value:</label>
+          <select id="popover-value" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <option value="0" ${factorData.value === 0 ? 'selected' : ''}>0</option>
+            <option value="25" ${factorData.value === 25 ? 'selected' : ''}>25</option>
+            <option value="50" ${factorData.value === 50 ? 'selected' : ''}>50</option>
+            <option value="75" ${factorData.value === 75 ? 'selected' : ''}>75</option>
+            <option value="100" ${factorData.value === 100 ? 'selected' : ''}>100</option>
+          </select>
         </div>
         
         <div style="display: flex; gap: 10px; justify-content: flex-end;">
@@ -2839,7 +5752,7 @@
         <div style="margin-bottom: 15px;">
           <label style="display: block; margin-bottom: 5px; font-weight: 600;">Position:</label>
           <select id="popover-weight-position" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-            <option value="-1" ${position === -1 ? 'selected' : ''}>Hidden (No Dots)</option>
+            ${tableType !== 'table4' ? `<option value="-1" ${position === -1 ? 'selected' : ''}>Hidden (No Dots)</option>` : ''}
             <option value="1" ${position === 1 ? 'selected' : ''}>Position 1 (Strong Underweight)</option>
             <option value="2" ${position === 2 ? 'selected' : ''}>Position 2 (Underweight)</option>
             <option value="3" ${position === 3 ? 'selected' : ''}>Position 3 (Neutral)</option>
@@ -2919,6 +5832,9 @@
       } else if (tableType === 'table3') {
         targetData = window.table3ViewData;
         targetTbodyId = 'table3-view-body';
+      } else if (tableType === 'table4') {
+        targetData = window.table4ViewData;
+        targetTbodyId = 'table4-view-body';
       }
       
       if (targetData && targetData[rowIndex]) {
@@ -2947,6 +5863,10 @@
         } else if (targetTbodyId === 'table3-view-body') {
           const table3Tbody = document.getElementById("table3-view-body");
           table3Tbody.innerHTML = window.table3ViewData.map(window.createTable3sectorRow).join("");
+        } else if (targetTbodyId === 'table4-view-body') {
+          const table4Tbody = document.getElementById("table4-view-body");
+          table4Tbody.innerHTML = window.table4ViewData.map(window.createTable4Row).join("");
+          renderTable4SpecialSections();
         }
         
         // Re-initialize editable functionality
@@ -3112,12 +6032,21 @@
 
     // Function to save range changes
     window.saveRangeChanges = function(rowIndex) {
-      const implication = document.getElementById('popover-implication').value;
       const trend = document.getElementById('popover-trend').value;
       const value = parseInt(document.getElementById('popover-value').value);
 
+      // Auto-set implication based on value
+      let implication;
+      if (value === 0) {
+        implication = 'Negative';
+      } else if (value === 25 || value === 50) {
+        implication = 'Neutral';
+      } else {
+        implication = 'Positive';
+      }
+
       // Update the data
-      window.factorsData[rowIndex].implication = implication.charAt(0).toUpperCase() + implication.slice(1);
+      window.factorsData[rowIndex].implication = implication;
       window.factorsData[rowIndex].trend = trend;
       window.factorsData[rowIndex].value = value;
 
@@ -3201,6 +6130,15 @@
           subtitle: "Additional CIO views on asset classes with weight recommendations:",
           footnote: "*This table represents additional asset class considerations for portfolio construction.",
           assetClasses: window.table3ViewData || []
+        },
+        table4ViewData: {
+          headers: {
+            assetClassHeader: "Asset Class",
+            cioViewHeader: "CIO View"
+          },
+          subtitle: "Current CIO views on asset classes with weight recommendations:",
+          footnote: "*Alternative Investments include Hedge Strategies, Private Equity & Credit, and Real Assets.",
+          assetClasses: window.table4ViewData || []
         }
       };
       
@@ -3362,6 +6300,7 @@
     window.copyJSONContent = function() {
       // Use the current JSON content that was displayed
       const jsonContent = window.currentJSONContent || window.updatedCombinedJSONContent || window.updatedJSONContent;
+      console.log('Copying JSON content to clipboard:', jsonContent);
       
       if (jsonContent) {
         navigator.clipboard.writeText(jsonContent).then(() => {
@@ -3491,6 +6430,12 @@
     let currentHeaderData = null;
     window.cioViewData = [];
     window.table3ViewData = [];
+    window.table4ViewData = [];
+    window.table5ViewData = [];
+    window.table6ViewData = [];
+    window.table7ViewData = [];
+    window.table8ViewData = [];
+    window.table9ViewData = [];
 
     // Data management functions
     function saveDataToStorage() {
@@ -3498,6 +6443,33 @@
         // Update the current data structure with the latest values
         currentData.assetClassViews = window.cioViewData;
         currentData.table3Views = window.table3ViewData;
+        if (currentData.table4ViewData) {
+          currentData.table4ViewData.assetClasses = window.table4ViewData;
+        }
+        if (currentData.table5ViewData) {
+          currentData.table5ViewData = window.table5ViewData;
+        }
+        if (currentData.table6ViewData) {
+          // Save structured data with metadata
+          currentData.table6ViewData = {
+            ...window.table6MetaData,
+            economicIndicators: window.table6ViewData
+          };
+        }
+        if (currentData.table7ViewData) {
+          // Save structured data with metadata
+          currentData.table7ViewData = {
+            ...window.table7MetaData,
+            scenarios: window.table7ViewData
+          };
+        }
+        if (currentData.table8ViewData) {
+          // Save structured data with metadata
+          currentData.table8ViewData = {
+            ...window.table8MetaData,
+            strategies: window.table8ViewData
+          };
+        }
         
         localStorage.setItem('dashboard_data', JSON.stringify(currentData));
         console.log('Data saved to localStorage');
@@ -3587,6 +6559,7 @@
         }
         
         currentData = data;
+        console.log('Current Data:', currentData);
         currentHeaderData = data.dashboardInfo || {};
         
         // Store data in global variables for table-specific functions
@@ -3594,10 +6567,31 @@
         window.cioViewData = currentData.assetClassViews?.assetClasses || currentData.assetClassViews || [];
         window.table3ViewData = currentData.table3Views?.sectores || currentData.table3Views?.assetClasses || currentData.table3Views || [];
         window.factorsData = currentData.equityFactors?.factors || currentData.equityFactors || [];
+        window.table4ViewData = currentData.table4ViewData?.assetClasses || currentData.table4ViewData || [];
+        window.table5ViewData = currentData.table5ViewData || [];
+        window.table6ViewData = currentData.table6ViewData?.economicIndicators || currentData.table6ViewData || [];
+        window.table6MetaData = currentData.table6ViewData || {};
+        window.table7ViewData = currentData.table7ViewData?.scenarios || currentData.table7ViewData || [];
+        window.table7MetaData = currentData.table7ViewData || {};
+        window.table8ViewData = currentData.table8ViewData?.strategies || currentData.table8ViewData || [];
+        window.table8MetaData = currentData.table8ViewData || {};
+        window.table9ViewData = currentData.table9ViewData || [];
+        window.table9XAxisConfig = currentData.table9XAxisConfig || { start: 10, end: 35, interval: 5 };
         
         console.log('CIO View Data:', window.cioViewData);
         console.log('Table 3 View Data:', window.table3ViewData);
         console.log('Factors Data:', window.factorsData);
+        console.log('Table 4 View Data:', window.table4ViewData);
+        console.log('Table 5 View Data:', window.table5ViewData);
+        console.log('Table 6 View Data:', window.table6ViewData);
+        console.log('Table 6 Meta Data:', window.table6MetaData);
+        console.log('Table 7 View Data:', window.table7ViewData);
+        console.log('Table 7 Meta Data:', window.table7MetaData);
+        console.log('Table 8 View Data:', window.table8ViewData);
+        console.log('Table 8 Meta Data:', window.table8MetaData);
+        console.log('Table 9 View Data:', window.table9ViewData);
+        console.log('Table 9 X-Axis Config:', window.table9XAxisConfig);
+        console.log('Table 9 View Data:', window.table9ViewData);
         
         // Populate headers
         if (currentHeaderData.title) {
@@ -3649,6 +6643,377 @@
         } else {
           console.log('Table 3: No data found');
         }
+        // Populate Table 4
+        if (window.table4ViewData.length > 0) {
+          const table4Tbody = document.getElementById("table4-view-body");
+          table4Tbody.innerHTML = window.table4ViewData.map(window.createTable4Row).join("");
+          console.log('Table 4 populated with', window.table4ViewData.length, 'items');
+          
+          // Render special flexbox sections (Alternative Investments & Cash)
+          renderTable4SpecialSections();
+        } else {
+          console.log('Table 4: No data found');
+        }
+
+        // Populate Table 5
+        if (window.table5ViewData.length > 0) {
+          const table5Tbody = document.getElementById("table5-body");
+          if (table5Tbody) {
+            table5Tbody.innerHTML = window.table5ViewData.map(window.createTable5Row).join("");
+            console.log('Table 5 populated with', window.table5ViewData.length, 'items');
+          } else {
+            console.error('Table 5 tbody element not found');
+          }
+        } else {
+          console.log('Table 5: No data found');
+        }
+
+        // Populate Table 6
+        if (window.table6ViewData.length > 0) {
+          const table6Tbody = document.getElementById("table6-body");
+          if (table6Tbody) {
+            table6Tbody.innerHTML = window.table6ViewData.map(window.createTable6Row).join("");
+            console.log('Table 6 populated with', window.table6ViewData.length, 'items');
+            
+            // Update Table 6 header and subtitle if available
+            if (window.table6MetaData.title) {
+              const table6Header = document.querySelector('.table6-header');
+              if (table6Header) {
+                const dateHeader = window.table6MetaData.headers?.dateHeader || '(AS OF 8/1/2025)';
+                table6Header.innerHTML = `${window.table6MetaData.title} <span class="table6-date">${dateHeader}</span>`;
+              }
+            }
+            
+            if (window.table6MetaData.subtitle) {
+              const table6Subtitle = document.getElementById('table6-subtitle');
+              if (table6Subtitle) {
+                table6Subtitle.textContent = window.table6MetaData.subtitle;
+              }
+            }
+            
+            if (window.table6MetaData.footnote) {
+              const table6Footnote = document.getElementById('table6-footnote');
+              if (table6Footnote) {
+                table6Footnote.textContent = window.table6MetaData.footnote;
+              }
+            }
+          } else {
+            console.error('Table 6 tbody element not found');
+          }
+        } else {
+          console.log('Table 6: No data found, initializing with default data');
+          // Initialize with default economic forecast data
+          window.table6ViewData = [
+            {
+              indicator: "Real global GDP\n(% y/y annualized)",
+              q1_2025a: "-",
+              q2_2025a: "-", 
+              q3_2025e: "-",
+              q4_2025e: "-",
+              "2025e": "3.0",
+              "2026e": "3.1"
+            },
+            {
+              indicator: "Real U.S. GDP\n(% q/q annualized)",
+              q1_2025a: "-0.5",
+              q2_2025a: "3.0*",
+              q3_2025e: "1.0",
+              q4_2025e: "1.6",
+              "2025e": "1.7",
+              "2026e": "1.7"
+            },
+            {
+              indicator: "CPI inflation\n(% y/y)",
+              q1_2025a: "2.7",
+              q2_2025a: "2.5*",
+              q3_2025e: "2.9",
+              q4_2025e: "2.8",
+              "2025e": "2.7",
+              "2026e": "2.3"
+            },
+            {
+              indicator: "Core CPI inflation\n(% y/y)",
+              q1_2025a: "3.1",
+              q2_2025a: "2.8*",
+              q3_2025e: "3.1",
+              q4_2025e: "3.1",
+              "2025e": "3.0",
+              "2026e": "2.6"
+            },
+            {
+              indicator: "Unemployment rate (%)",
+              q1_2025a: "4.1",
+              q2_2025a: "4.2*",
+              q3_2025e: "4.3",
+              q4_2025e: "4.4",
+              "2025e": "4.2",
+              "2026e": "4.5"
+            },
+            {
+              indicator: "Fed funds rate,\nend period (%)",
+              q1_2025a: "4.38",
+              q2_2025a: "4.38",
+              q3_2025e: "4.38",
+              q4_2025e: "4.38",
+              "2025e": "4.38",
+              "2026e": "3.38"
+            }
+          ];
+          
+          window.table6MetaData = {
+            title: "ECONOMIC FORECASTS",
+            headers: {
+              dateHeader: "(AS OF 8/1/2025)"
+            },
+            subtitle: "Quarterly and annual economic forecasts for key macroeconomic indicators",
+            footnote: "*Actual data. E = Estimated. The forecasts in the table above are as of Chief Global Research. The Chief Investment Office leverages the views and information from BofA Global Research."
+          };
+          
+          const table6Tbody = document.getElementById("table6-body");
+          if (table6Tbody) {
+            table6Tbody.innerHTML = window.table6ViewData.map(window.createTable6Row).join("");
+            console.log('Table 6 initialized with default data');
+          }
+          
+          // Save the initialized data
+          if (!currentData.table6ViewData) {
+            currentData.table6ViewData = {
+              ...window.table6MetaData,
+              economicIndicators: window.table6ViewData
+            };
+            saveDataToStorage();
+          }
+        }
+
+        // Populate Table 7
+        if (window.table7ViewData.length > 0) {
+          const table7Tbody = document.getElementById("table7-body");
+          if (table7Tbody) {
+            table7Tbody.innerHTML = window.table7ViewData.map(window.createTable7Row).join("");
+            console.log('Table 7 populated with', window.table7ViewData.length, 'items');
+          } else {
+            console.error('Table 7 tbody element not found');
+          }
+        } else {
+          console.log('Table 7: No data found, initializing with default data');
+          // Initialize with default S&P 500 scenarios data based on the image
+          window.table7ViewData = [
+            {
+              eps2025: "$305",
+              pe_19x: "5,795",
+              pe_20x: "6,100",
+              pe_21x: "6,405",
+              pe_22x: "6,710",
+              pe_23x: "7,015"
+            },
+            {
+              eps2025: "$295",
+              pe_19x: "5,605",
+              pe_20x: "5,900",
+              pe_21x: "6,195",
+              pe_22x: "6,490",
+              pe_23x: "6,785"
+            },
+            {
+              eps2025: "$285",
+              pe_19x: "5,415",
+              pe_20x: "5,700",
+              pe_21x: "5,985",
+              pe_22x: "6,270",
+              pe_23x: "6,555"
+            },
+            {
+              eps2025: "$275",
+              pe_19x: "5,225",
+              pe_20x: "5,500",
+              pe_21x: "5,775",
+              pe_22x: "6,050",
+              pe_23x: "6,325"
+            },
+            {
+              eps2025: "$265",
+              pe_19x: "5,035",
+              pe_20x: "5,300",
+              pe_21x: "5,565",
+              pe_22x: "5,830",
+              pe_23x: "6,095"
+            },
+            {
+              eps2025: "$255",
+              pe_19x: "4,845",
+              pe_20x: "5,100",
+              pe_21x: "5,355",
+              pe_22x: "5,610",
+              pe_23x: "5,865"
+            },
+            {
+              eps2025: "$245",
+              pe_19x: "4,655",
+              pe_20x: "4,900",
+              pe_21x: "5,145",
+              pe_22x: "5,390",
+              pe_23x: "5,635"
+            }
+          ];
+          
+          window.table7MetaData = {
+            title: "S&P 500 SCENARIOS BASED ON FORWARD P/E AND 2025 EARNINGS PER SHARE (EPS)",
+            description: "The table below provides a rough indication of where the S&P 500 Index's central tendency could be, given various scenarios for EPS in 2025 and P/E ratio multiples. These scenarios are not official price targets and are not meant to signal levels where portfolio actions may always be needed. However, during times of market volatility, it's useful to keep this basic framework in mind when considering whether to incrementally add to or trim risk from portfolios while staying invested in one's strategic asset allocation framework.",
+            footnote: "For illustrative purposes only. Source: Chief Investment Office as of August 5, 2025."
+          };
+          
+          const table7Tbody = document.getElementById("table7-body");
+          if (table7Tbody) {
+            table7Tbody.innerHTML = window.table7ViewData.map(window.createTable7Row).join("");
+            console.log('Table 7 initialized with default data');
+          }
+          
+          // Save the initialized data
+          if (!currentData.table7ViewData) {
+            currentData.table7ViewData = {
+              ...window.table7MetaData,
+              scenarios: window.table7ViewData
+            };
+            saveDataToStorage();
+          }
+        }
+        
+        // Populate Table 8
+        if (window.table8ViewData.length > 0) {
+          const table8Tbody = document.getElementById("table8-body");
+          if (table8Tbody) {
+            table8Tbody.innerHTML = window.table8ViewData.map(window.createTable8Row).join("");
+            console.log('Table 8 populated with', window.table8ViewData.length, 'items');
+          } else {
+            console.error('Table 8 tbody element not found');
+          }
+        } else {
+          console.log('Table 8: No data found, initializing with default data');
+          // Initialize with default CIO Views on Alts Strategies data based on the image
+          window.table8ViewData = [
+            {
+              isStrategyHeader: true,
+              strategyName: "Equity Hedge +"
+            },
+            {
+              caseType: "Bull case",
+              description: "Potential alpha* generation opportunities in high-dispersion or volatile markets; resumption of micro-dominated market would benefit stock selection; low net better positioned for market sell-off"
+            },
+            {
+              caseType: "Bear case",
+              description: "Macro-driven market dominated by trade challenging for fundamental stock pickers"
+            },
+            {
+              isStrategyHeader: true,
+              strategyName: "Event Driven"
+            },
+            {
+              caseType: "Bull case",
+              description: "Pressure of high rates could create distressed opportunities; if merger activity were to increase and deal spreads widen; higher risk-free rate positive for merger arbitrage"
+            },
+            {
+              caseType: "Bear case",
+              description: "Distress may not materialize in size or may be delayed; if merger activity fails to materialize; lower rates negative"
+            },
+            {
+              isStrategyHeader: true,
+              strategyName: "Relative Value"
+            },
+            {
+              caseType: "Bull case",
+              description: "Still in world of higher-though-volatile yields; tariff capitulation should support growth; decent dispersion in HY and Leveraged Loan."
+            },
+            {
+              caseType: "Bear case",
+              description: "Spreads very tight; potential increase in credit risk and defaults"
+            },
+            {
+              isStrategyHeader: true,
+              strategyName: "Macro +"
+            },
+            {
+              caseType: "Bull case",
+              description: "Possible 'higher-for-longer' rate regime could create cross-asset volatility in rates and foreign exchange; inflation stickiness with exacerbated macro volatility; possible transition to new trade regime could create long-term trends"
+            },
+            {
+              caseType: "Bear case",
+              description: "Choppy markets driven by erratic trade policy difficult for trend-following; if rate volatility structurally declined"
+            },
+            {
+              isSection: true,
+              sectionName: "PRIVATE EQUITY & CREDIT"
+            },
+            {
+              isStrategyHeader: true,
+              strategyName: "Buyout"
+            },
+            {
+              caseType: "Bull case",
+              description: "Current vintages likely attractive for long-term given profitability focus; within PE, Secondaries benefiting structural expansion; deal activity to increase if trade uncertainty declines"
+            },
+            {
+              caseType: "Bear case",
+              description: "Trade volatility could slow deals/exits, hurt margins; persistence of higher rates/valuation"
+            },
+            {
+              isStrategyHeader: true,
+              strategyName: "Venture/Growth"
+            },
+            {
+              caseType: "Bull case",
+              description: "Significant correction benefits capital providers; AI could drive investment supercycle; early stage/Venture Capital (VC) stages less insulated than later stages; falling rates would likely be tailwind Ex-AI VC market still challenged; VC focus on supporting portfolio companies, initial public offering drought could continue; timelines extended plus increased risk of dilution; higher rates falling"
+            },
+            {
+              caseType: "Bear case",
+              description: "Ex-AI VC market still challenged; VC focus on supporting portfolio companies, initial public offering drought could continue; timelines extended plus increased risk of dilution; higher rates falling"
+            },
+            {
+              isStrategyHeader: true,
+              strategyName: "Special Situations"
+            },
+            {
+              caseType: "Bull case",
+              description: "Default rates rising; higher-for-longer and tariffs would pressure levered balance sheets; companies seeking creative financing before maturities"
+            },
+            {
+              caseType: "Bear case",
+              description: "Trade policy capitulation or rate cuts could smooth out credit cycle keeping it more average"
+            },
+            {
+              isStrategyHeader: true,
+              strategyName: "Private Credit +"
+            },
+            {
+              caseType: "Bull case",
+              description: "High-though-declining yields; healthy spread to public credit at time; economy/corporate supportive of credit; secular tailwinds; fresh capital can underwrite to current risks"
+            },
+            {
+              caseType: "Bear case",
+              description: "Credit risk could rise & lower-quality most at risk; regulatory scrutiny; public leveraged credit competition; significant capital allocating to PC; rates falling."
+            }
+          ];
+          
+          window.table8MetaData = {
+            title: "CIO Views on Alts Strategies",
+            subtitle: "HEDGE STRATEGIES",
+            footnote: "*Alpha is a measure of how well an investment performs relative to a benchmark index at what's expected based on its risk level. Bull case is an environment or set of factors that could represent tailwinds for the strategy. Bear case is an environment or set of factors that could represent headwinds for the strategy. + symbol indicates the strategy CIO views as having a relative opportunity for new investment within the Alts asset class."
+          };
+          
+          const table8Tbody = document.getElementById("table8-body");
+          if (table8Tbody) {
+            table8Tbody.innerHTML = window.table8ViewData.map(window.createTable8Row).join("");
+            console.log('Table 8 initialized with default data');
+          }
+          
+          // Save the initialized data
+          if (!currentData.table8ViewData) {
+            currentData.table8ViewData = {
+              ...window.table8MetaData,
+              strategies: window.table8ViewData
+            };
+            saveDataToStorage();
+          }
+        }
         
         // Initialize all interactive functionality
         makeHeadersEditable();
@@ -3659,6 +7024,13 @@
         addTable2WeightIndicatorEditing();
         addTable3WeightIndicatorEditing();
         addTable3RowEditing();
+        addTable4WeightIndicatorEditing();
+        addTable4RowEditing();
+        addTable5Editing(); // Add Table 5 editing functionality
+        addTable6Editing(); // Add Table 6 editing functionality
+        addTable7Editing(); // Add Table 7 editing functionality
+        addTable8Editing(); // Add Table 8 editing functionality
+        initializeTable9(); // Initialize Table 9
         
         console.log('Dashboard initialized successfully');
         
@@ -3732,7 +7104,31 @@
           subtitle: 'Additional CIO views on asset classes with weight recommendations:',
           footnote: '*This table represents additional asset class considerations for portfolio construction.',
           sectores: window.table3ViewData || []
-        }
+        },
+        table4ViewData: {
+          headers: {
+            assetClassHeader: 'Asset Class',
+            cioViewHeader: 'CIO View'
+          },
+          subtitle: 'Current CIO views on asset classes with weight recommendations:',
+          footnote: '*Alternative Investments include Hedge Strategies, Private Equity & Credit, and Real Assets.',
+          assetClasses: window.table4ViewData || []
+        },
+        table5ViewData: window.table5ViewData || [],
+        table6ViewData: {
+          ...window.table6MetaData,
+          economicIndicators: window.table6ViewData || []
+        },
+        table7ViewData: {
+          ...window.table7MetaData,
+          scenarios: window.table7ViewData || []
+        },
+        table8ViewData: {
+          ...window.table8MetaData,
+          strategies: window.table8ViewData || []
+        },
+        table9ViewData: window.table9ViewData || [],
+        table9XAxisConfig: window.table9XAxisConfig || { start: 10, end: 35, interval: 5 }
       };
 
       return currentJSONData;
