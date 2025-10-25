@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A4 Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-gray: #f2f2f2;
+            --heading-blue: #1d7dec;
+            --box-gray: #555;
+            --box-light-gray: #999;
+        }
+
+        @font-face {
+            font-family: "Connections";
+            src: url("assests/OnlineWebFonts_COM_c21316a52e2c3a9fd845b29d61ff329b/Connections/Web Fonts/818e0cbab8a64eb716ce66593cdfa750.eot");
+            src: url("assests/OnlineWebFonts_COM_c21316a52e2c3a9fd845b29d61ff329b/Connections/Web Fonts/818e0cbab8a64eb716ce66593cdfa750.eot?#iefix") format("embedded-opentype"),
+                url("assests/OnlineWebFonts_COM_c21316a52e2c3a9fd845b29d61ff329b/Connections/Web Fonts/818e0cbab8a64eb716ce66593cdfa750.woff") format("woff"),
+                url("assests/OnlineWebFonts_COM_c21316a52e2c3a9fd845b29d61ff329b/Connections/Web Fonts/818e0cbab8a64eb716ce66593cdfa750.woff2") format("woff2"),
+                url("assests/OnlineWebFonts_COM_c21316a52e2c3a9fd845b29d61ff329b/Connections/Web Fonts/818e0cbab8a64eb716ce66593cdfa750.ttf") format("truetype"),
+                url("assests/OnlineWebFonts_COM_c21316a52e2c3a9fd845b29d61ff329b/Connections/Web Fonts/818e0cbab8a64eb716ce66593cdfa750.svg#Connections") format("svg");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body style */
+        body {
+            font-family: 'Connections', 'Arial', sans-serif;
+            background-color: #525659;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Page style */
+        .page {
+            width: 210mm;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            padding: 7mm;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Grey box */
+        .gray-box {
+            background-color: var(--bg-gray);
+            padding: 10px;
+            height: fit-content;
+        }
+        /* Print styles */
+        @media print {
+            body {
+                background-color: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                display: block !important;
+            }
+
+            .page {
+                width: 210mm !important;
+                box-shadow: none !important;
+                margin: 0 auto !important;
+                padding: 7mm !important;
+                page-break-after: always !important;
+                overflow: hidden !important;
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            
+            .button-container, .toast-message {
+                display: none !important;
+            }
+            
+            img, object, embed, svg {
+                max-width: 100% !important;
+                page-break-inside: avoid !important;
+                display: block !important;
+            }
+            
+            img.logo, img.banner {
+                position: absolute !important;
+                display: block !important;
+                z-index: 5 !important;
+            }
+            
+            table {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+            
+            a[href]:after {
+                content: none !important;
+            }
+            
+            .weight-dot, .table4-weight-dot {
+                print-color-adjust: exact !important;
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+            
+            /* Fix for PDF display in print */
+            object[type="application/pdf"], embed[type="application/pdf"] {
+                display: block !important;
+                height: auto !important;
+            }
+            
+            /* Ensure all colors print correctly */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+        }
+
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        /* Table 4 specific weight indicator styles */
+        .table4-weight-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #333;
+            gap: 8px;
+            padding: 8px 0;
+            min-width: 200px;
+        }
+
+        .table4-weight-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+
+        .table4-weight-dot.empty {
+            background-color: #f9f9f9;
+            border-color: #ccc;
+        }
+
+        /* Weight dot colors based on position */
+        .table4-weight-dot.filled.overweight { background-color: #4CAF50; border: 2px solid #333; } /* Green */
+        .table4-weight-dot.filled.neutral { background-color: #FFC107; border: 2px solid #333; } /* Yellow */
+        .table4-weight-dot.filled.underweight { background-color: #ef4444; border: 2px solid #333; } /* Red */
+
+        /* Hover effects for weight dots */
+        .table4-weight-dot:hover {
+            transform: scale(1.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .table4-weight-dot.empty:hover { border-color: #666; }
+        .table4-weight-dot.filled.overweight:hover { border-color: #333; }
+        .table4-weight-dot.filled.neutral:hover { border-color: #333; }
+        .table4-weight-dot.filled.underweight:hover { border-color: #333; }
+
+        /* Vertical range indicator for Alternative Investments */
+        .table4-vertical-range {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 0;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .table4-range-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            position: relative;
+        }
+
+        .table4-range-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: #999;
+            border: 2px solid #333;
+            z-index: 2;
+            position: relative;
+        }
+
+        .table4-range-line {
+            width: 4px;
+            height: 35px;
+            background-color: #999;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Table 4 rows styling */
+        #table4-view-body tr {
+            cursor: default;
+        }
+
+        #table4-view-body tr:hover {
+            background-color: #f8f9fa !important;
+        }
+
+        /* Flexbox layout for Alternative Investments section */
+        .alt-investments-section {
+            border-bottom: 2px solid #333;
+            background-color: white;
+        }
+
+        .alt-investments-header {
+            font-weight: normal;
+            padding: 12px;
+            border-bottom: 2px solid #333;
+        }
+
+        .alt-investments-content {
+            display: flex;
+            align-items: stretch;
+            min-height: 150px;
+        }
+
+        .alt-investments-labels {
+            flex: 0 0 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 20px 12px;
+        }
+
+        .alt-investment-label {
+            padding: 8px 0;
+            font-weight: normal;
+        }
+
+        .alt-investments-indicator {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Cash row with flexbox */
+        .cash-row-flex {
+            display: flex;
+            border-bottom: 2px solid #333;
+            background-color: white;
+            padding: 12px;
+        }
+
+        .cash-label {
+            flex: 0 0 250px;
+            font-weight: normal;
+        }
+
+        .cash-indicator {
+            flex: 1;
+        }
+
+        /* Override global bold font for Table 4 first column */
+        #table4-view-body td:first-child {
+            font-weight: normal;
+        }
+
+        /* Override bold font for Table 4 headers */
+        .factors-table thead th.align-middle {
+            font-weight: normal;
+        }
+
+        /* Ensure Table 4 headers specifically are not bold */
+        #table4-view-body ~ table thead th,
+        table.factors-table:has(#table4-view-body) thead th {
+            font-weight: normal !important;
+        }
+
+        /* Weight indicator styles - adjusted for 35% width */
+        .weight-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 0;
+            min-width: 120px;
+        }
+
+        .weight-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .weight-dot.filled {
+            border-color: transparent;
+        }
+
+        .weight-dot.empty {
+            background-color: #f9f9f9;
+            border-color: #ccc;
+        }
+
+        .weight-dot.filled.overweight { background-color: #4CAF50; border: 2px solid #333;}
+        .weight-dot.filled.neutral { background-color: #FFC107; border: 2px solid #333;}
+        .weight-dot.filled.underweight { background-color: #ef4444; border: 2px solid #333;}
+
+        .weight-dot:hover {
+            transform: scale(1.2);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .weight-dot.empty:hover { border-color: #666; }
+        .weight-dot.filled.overweight:hover { border-color: #333; }
+        .weight-dot.filled.neutral:hover { border-color: #333; }
+        .weight-dot.filled.underweight:hover { border-color: #333; }
+
+        /* Table styling - adjusted for 35% width */
+        .factors-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 0;
+            font-size: 10px;
+        }
+
+        .factors-table th,
+        .factors-table td {
+            padding: 3px 2px;
+            font-size: 10px;
+        }
+
+        .factors-table td{
+            font-size: 9px;
+        }
+        .factors-table tr:nth-child(2n) {
+            background-color: #f2f2f2;
+        }
+
+        .factors-table th {
+            background-color: #f8f9fa;
+            font-weight: 800;
+            color: #333;
+            font-size: 11px;
+        }
+
+        .factors-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Adjust special sections for 35% width */
+        .alt-investments-section {
+            border-bottom: 1px solid #333;
+            background-color: white;
+            font-size: 11px;
+        }
+
+        .alt-investments-header {
+            font-weight: normal;
+            padding: 8px 6px;
+            border-bottom: 1px solid #333;
+            font-size: 11px;
+        }
+
+        .alt-investments-content {
+            display: flex;
+            align-items: stretch;
+            min-height: 80px;
+        }
+
+        .alt-investments-labels {
+            flex: 0 0 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 10px 6px;
+        }
+
+        .alt-investment-label {
+            padding: 4px 0;
+            font-weight: normal;
+            font-size: 10px;
+        }
+
+        .alt-investments-indicator {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .cash-row-flex {
+            display: flex;
+            border-bottom: 1px solid #333;
+            background-color: white;
+            padding: 8px 6px;
+            font-size: 11px;
+        }
+
+        .cash-label {
+            flex: 0 0 120px;
+            font-weight: normal;
+            font-size: 10px;
+        }
+
+        .cash-indicator {
+            flex: 1;
+        }
+
+        .align-middle {
+            vertical-align: middle;
+        }
+
+        /* Section header styling */
+        .section-header td {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            border-top: 2px solid #333;
+            border-bottom: 1px solid #333;
+        }
+
+        /* Alternative investment group styling */
+        .alt-investment-group {
+            padding: 0 !important;
+            border: none !important;
+        }
+
+        .alt-investment-container {
+            display: flex;
+            align-items: stretch;
+            min-height: 80px;
+            padding: 12px;
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+        }
+
+        .alt-investment-labels {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding-right: 20px;
+        }
+
+        .alt-investment-label {
+            font-size: 11px;
+            color: #333;
+            padding: 4px 0;
+            line-height: 1.4;
+        }
+
+        .alt-investment-indicator {
+            flex: 0 0 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .alt-line-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+            position: relative;
+        }
+
+        .alt-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #666;
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            flex-shrink: 0;
+        }
+
+        .alt-line {
+            width: 2px;
+            background-color: #666;
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        /* Separated row styling */
+        .separated-row {
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+        }
+    </style>
+    <script>
+        // Show toast message
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toastMessage');
+            toast.textContent = message;
+            toast.className = `toast-message toast-${type} show`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Reset button - Reload data from JSON
+        async function resetData() {
+            try {
+                const response = await fetch('data.json');
+                if (response.ok) {
+                    const jsonData = await response.json();
+                    documentData = jsonData;
+                    document.getElementById('documentTitle').textContent = documentData.title;
+                    document.getElementById('documentDate').textContent = documentData.date;
+                    
+                    // Clear localStorage
+                    localStorage.removeItem('documentData');
+                    
+                    showToast('✓ Data reset from JSON file', 'success');
+                    console.log('Reset to original data:', JSON.stringify(documentData, null, 2));
+                } else {
+                    showToast('✗ Could not load data.json', 'error');
+                }
+            } catch (error) {
+                showToast('✗ Error loading data: ' + error.message, 'error');
+            }
+        }
+
+        // Save Updates button - Save to data.json file
+        async function saveUpdates() {
+            try {
+                // Note: Saving to file requires a server-side endpoint
+                // This will download the file or you need to implement a backend
+                const dataStr = JSON.stringify(documentData, null, 2);
+                
+                // Method 1: Download as file (client-side only)
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'data.json';
+                link.click();
+                URL.revokeObjectURL(url);
+                
+                showToast('✓ JSON file downloaded! Replace the old file.', 'success');
+                console.log('Saved data:', dataStr);
+                
+                // If you have a backend API, use this instead:
+                // const response = await fetch('/api/save-data', {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: dataStr
+                // });
+                // if (response.ok) {
+                //     showToast('✓ Data saved successfully', 'success');
+                // }
+            } catch (error) {
+                showToast('✗ Error saving data: ' + error.message, 'error');
+            }
+        }
+
+        // Copy JSON button - Copy to clipboard
+        async function copyJSON() {
+            try {
+                const dataStr = JSON.stringify(documentData, null, 2);
+                await navigator.clipboard.writeText(dataStr);
+                showToast('✓ JSON copied to clipboard!', 'success');
+                console.log('Copied JSON:', dataStr);
+            } catch (error) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = JSON.stringify(documentData, null, 2);
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('✓ JSON copied to clipboard!', 'success');
+                } catch (err) {
+                    showToast('✗ Could not copy: ' + err.message, 'error');
+                }
+                document.body.removeChild(textArea);
+            }
+        }
+
+        // Function to export JSON (keeping for compatibility)
+        function exportJSON() {
+            saveUpdates();
+        }
+    </script>
+</head>
+<body>
+    <div class="page relative">
+        <!-- Page Heading styles-->
+        <style>
+            /* Logo and banner styles */
+            .logo {
+                position: absolute;
+                top: -15mm;
+                right: 5mm;
+                height: 180px;
+                object-fit: contain;
+            }
+            .banner {
+                position: absolute;
+                top: 65px;
+                left: 0;
+                width: 101%;
+                height: auto;
+                z-index: 1;
+            }
+            .pageTitle {
+                position: relative;
+                margin-top: 150px;
+                z-index: 2;
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+            }
+
+            /* Sticky button container */
+            .button-container {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                z-index: 1000;
+            }
+
+            /* Modern button styles */
+            .action-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 10px 18px;
+                border: none;
+                border-radius: 8px;
+                font-family: 'Connections', 'Arial', sans-serif;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                outline: none;
+                white-space: nowrap;
+            }
+
+            .action-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+
+            .action-btn:active {
+                transform: translateY(0);
+            }
+
+            /* Reset button - Red */
+            .btn-reset {
+                background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+                color: white;
+            }
+
+            .btn-reset:hover {
+                background: linear-gradient(135deg, #ff5252, #e84a5f);
+            }
+
+            /* Save button - Green */
+            .btn-save {
+                background: linear-gradient(135deg, #51cf66, #37b24d);
+                color: white;
+            }
+
+            .btn-save:hover {
+                background: linear-gradient(135deg, #40c057, #2f9e44);
+            }
+
+            /* Copy button - Blue */
+            .btn-copy {
+                background: linear-gradient(135deg, #4dabf7, #339af0);
+                color: white;
+            }
+
+            .btn-copy:hover {
+                background: linear-gradient(135deg, #3b9cf5, #228be6);
+            }
+
+            /* Button icons */
+            .btn-icon {
+                font-size: 16px;
+            }
+
+            /* Success/Error message */
+            .toast-message {
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                padding: 12px 20px;
+                border-radius: 8px;
+                color: white;
+                font-size: 14px;
+                font-weight: 500;
+                z-index: 1001;
+                opacity: 0;
+                transform: translateY(-20px);
+                transition: all 0.3s ease;
+                pointer-events: none;
+            }
+
+            .toast-message.show {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .toast-success {
+                background: linear-gradient(135deg, #51cf66, #37b24d);
+            }
+
+            .toast-error {
+                background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            }
+
+            @media print {
+                .button-container {
+                    display: none;
+                }
+            }
+            .pageTitle p {
+                font-size: 12px;
+                color: #555;
+            }
+        </style>
+        <!-- Title and Date Editable Script -->
+        <script>
+            // JSON structure to store document data
+            let documentData = {
+                step1: {
+                    documentTitle: "Document Title",
+                    documentMonth: "Document Month",
+                    disclaimer: "Disclaimer text"
+                },
+                step2: {
+                    inBrief: [],
+                    cioAssetClassViews: "",
+                    hyperlinks: [],
+                    summary: {
+                        components: []
+                    },
+                    tableData: {
+                        headers: {
+                            assetClassHeader: "",
+                            cioViewHeader: ""
+                        },
+                        footnote: "",
+                        data: []
+                    }
+                }
+            };
+
+            // Load initial data from data.json
+            async function loadInitialData() {
+                try {
+                    const response = await fetch('data.json');
+                    if (response.ok) {
+                        const jsonData = await response.json();
+                        documentData = jsonData;
+                        // Update the page with loaded data
+                        document.getElementById('documentTitle').textContent = documentData.step1.documentTitle;
+                        document.getElementById('documentDate').textContent = documentData.step1.documentMonth;
+                        console.log('Loaded data from data.json:', JSON.stringify(documentData, null, 2));
+                    } else {
+                        console.warn('Could not load data.json, using default values');
+                    }
+                } catch (error) {
+                    console.warn('Error loading data.json:', error.message, '- using default values');
+                }
+            }
+
+            // Function to make element editable on double-click
+            function makeEditable(element, dataKey) {
+                element.addEventListener('dblclick', function() {
+                    const currentText = this.textContent;
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = currentText;
+                    input.style.cssText = window.getComputedStyle(this).cssText;
+                    input.style.width = '100%';
+                    input.style.border = '2px solid #4CAF50';
+                    input.style.padding = '5px';
+                    
+                    // Replace element with input
+                    this.textContent = '';
+                    this.appendChild(input);
+                    input.focus();
+                    input.select();
+                    
+                    // Save on blur or Enter key
+                    const saveEdit = () => {
+                        const newValue = input.value || currentText;
+                        documentData[dataKey] = newValue;
+                        this.textContent = newValue;
+                        console.log('Updated documentData:', JSON.stringify(documentData, null, 2));
+                        
+                        // Optional: Save to localStorage
+                        localStorage.setItem('documentData', JSON.stringify(documentData));
+                    };
+                    
+                    input.addEventListener('blur', saveEdit);
+                    input.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            input.blur();
+                        }
+                    });
+                    
+                    // Cancel on Escape
+                    input.addEventListener('keydown', function(e) {
+                        if (e.key === 'Escape') {
+                            this.textContent = currentText;
+                            input.remove();
+                        }
+                    }.bind(this));
+                });
+                
+                // Add visual indicator on hover
+                element.style.cursor = 'pointer';
+                element.title = 'Double-click to edit';
+            }
+
+            // Initialize on page load
+            window.addEventListener('DOMContentLoaded', async function() {
+                // First, load data from JSON file
+                await loadInitialData();
+                
+                // Then check localStorage for any saved edits (overrides JSON file)
+                const savedData = localStorage.getItem('documentData');
+                if (savedData) {
+                    documentData = JSON.parse(savedData);
+                    document.getElementById('documentTitle').textContent = documentData.step1.documentTitle;
+                    document.getElementById('documentDate').textContent = documentData.step1.documentMonth;
+                    console.log('Loaded saved edits from localStorage:', JSON.stringify(documentData, null, 2));
+                }
+                
+                // Make elements editable
+                makeEditable(document.getElementById('documentTitle'), 'step1.documentTitle');
+                makeEditable(document.getElementById('documentDate'), 'step1.documentMonth');
+                
+                console.log('Initial documentData:', JSON.stringify(documentData, null, 2));
+            });
+
+            // Function to export JSON
+            function exportJSON() {
+                const dataStr = JSON.stringify(documentData, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'document-data.json';
+                link.click();
+            }
+        </script>
+        
+        <!-- Sticky Button Container -->
+        <div class="button-container">
+            <button class="action-btn btn-reset" onclick="resetData()" title="Reset to original data">
+                <span>Reset</span>
+            </button>
+            <button class="action-btn btn-save" onclick="saveUpdates()" title="Save changes to JSON file">
+                <span>Save Updates</span>
+            </button>
+            <button class="action-btn btn-copy" onclick="copyJSON()" title="Copy JSON to clipboard">
+                <span>Copy JSON</span>
+            </button>
+        </div>
+
+        <!-- Toast Message -->
+        <div id="toastMessage" class="toast-message"></div>
+        
+        <!-- Page Heading -->
+         <img src="assests/logo.png" alt="Logo" class="absolute w-40 top-0 right-0" style="max-width: 160px; height: auto;">
+        <div>
+            <img class="banner" src="assests/banner.png" alt="Merrill Banner">
+            <div class="pageTitle">
+                <h3 id="documentTitle"></h3>
+                <p id="documentDate"></p>
+            </div>
+        </div>
+        
+        <!-- Section 1 (Start of the document) -->
+        <!-- Section 1 Style -->
+        <style>
+            .sectionOne .brief ul li {
+                font-size: 12px;
+                font-weight: lighter;
+                color: var(--box-gray);
+            }
+
+            .sectionOne .brief ul li::marker {
+                color: var(--heading-blue);
+            }
+        </style>
+
+        <section class="sectionOne mt-8">
+            <div>
+                <p id="disclaimer" class="text-xs font-bold"></p>
+                <div class="flex gap-3 mt-[10px]">
+                    <div style="width: 65%;">
+                        <div class="brief gray-box" >
+                            <h5 id="inBriefHeading" class="text-[--heading-blue] text-sm"></h5>
+                        <ul id="briefList" class="list-disc pl-5 mt-2">
+                        <!-- List items will be injected by script -->
+                        </ul>
+                        </div>
+                        <!-- Section 2: Summary Components -->
+                        <section class="mt-4">
+                            <div id="summaryComponents">
+                                <!-- Components will be dynamically added here -->
+                            </div>
+                        </section>
+                        <footer class="mt-4 relative hidden">
+                            <p id="footerText" class="text-[11px] text-[--box-gray]">Merrill Lynch, Pierce, Fenner & Smith Incorporated (also referred to as “MLPF&S” or “Merrill”) makes available certain investment
+products sponsored, managed, distributed or provided by companies that are affiliates of Bank of America Corporation (“BofA Corp.”).
+MLPF&S is a registered broker-dealer, registered investment adviser, Member SIPC and a wholly owned subsidiary of BofA Corp.
+Investment products:</p>
+                            <table class="table-fixed border-collapse border border-black">
+                                <colgroup>
+                                    <col class="w-1/3" />
+                                    <col class="w-1/3" />
+                                    <col class="w-1/3" />
+                                </colgroup>
+                                <tr>
+                                    <td class="text-[11px] font-bold text-center py-1 px-3">Are Not FDIC Insured</td>
+                                    <td class="text-[11px] font-bold text-center py-1 px-3 border-l border-black">Are Not Bank Guaranteed</td>
+                                    <td class="text-[11px] font-bold text-center py-1 px-3 border-l border-black">May Lose Value</td>
+                                </tr>
+                            </table>
+                            <div class="flex gap-16 items-center">
+                                <p class="text-[11px] font-black">Please see last page for important disclosure information.</p>
+                                <div class="flex gap-4 items-center">
+                                    <p id="footerDisclaimer" class="text-[11px] text-[--box-gray]">8107742</p>
+                                    <p id="footerDisclaimer" class="text-[11px] text-[--box-gray]">7/2025</p>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
+                    <div class="flex-wrap flex flex-col gap-3" style="width: 35%;">
+
+                        <!-- CIO Asset Class Views Gray Box -->
+                        <div class="gray-box">
+                            <h5 id="CIOHeading" class="mb-2 text-sm text-black"></h5>
+                            <p id="cioViews" class="text-[11px] flex flex-wrap text-[--box-light-gray]"></p>
+                        </div>
+
+                        <!-- HyperLinks -->
+                        <div id="hyperlinks" class="text-red-500 text-xs mt-2 font-bold flex flex-col gap-2"></div>
+
+                        <!-- Table Data -->
+                        <section class="">
+                            <div class="bg-white shadow-sm rounded-lg p-4">
+                                <div class="overflow-x-auto">
+                                    <table class="w-full factors-table text-xs">
+                                        <thead class="border-t border-b border-black">
+                                            <tr class="align-middle">
+                                                <th id="table4-header-1" rowspan="2" class="align-middle text-xs px-2 py-1"></th>
+                                                <th id="table4-header-2" class="align-middle text-center text-xs px-2 py-1 "></th>
+                                            </tr>
+                                            <tr>
+                                                <th class="text-xs px-2 py-1 border-t border-black">
+                                                    <div class="flex justify-between px-1">
+                                                        <span class="text-[8px] font-thin">Underweight</span>
+                                                        <span class="text-[9px] font-thin">Neutral</span>
+                                                        <span class="text-[8px] font-thin">Overweight</span>
+                    </div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="table4-view-body">
+                                            <!-- Table 4 rows will be inserted here by JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-xs text-gray-600 mt-2">
+                                    <p class="font-light text-[10px]" id="table4-footnote"></p>
+                </div>
+            </div>
+        </section>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+
+        <!-- Section 1 Editable Script -->
+        <script>
+        // Utility: Set nested value in object
+        function setNestedValue(obj, path, value) {
+            const keys = path.split('.');
+            const lastKey = keys.pop();
+            const target = keys.reduce((o, k) => o[k] = o[k] || {}, obj);
+            target[lastKey] = value;
+        }
+        function getNestedValue(obj, path) {
+            return path.split('.').reduce((o, k) => (o || {})[k], obj);
+        }
+        function makeEditable(element, dataPath, isTextArea = false) {
+            element.addEventListener('dblclick', function() {
+                const currentText = this.textContent;
+                const input = isTextArea ? document.createElement('textarea') : document.createElement('input');
+                if (!isTextArea) input.type = 'text'; else input.rows = 4;
+                input.value = currentText;
+                input.style.cssText = window.getComputedStyle(this).cssText;
+                input.style.width = '100%';
+                input.style.border = '2px solid #4CAF50';
+                input.style.padding = '5px';
+                input.style.fontFamily = 'inherit';
+                input.style.fontSize = 'inherit';
+                this.textContent = '';
+                this.appendChild(input);
+                input.focus();
+                input.select();
+                const saveEdit = () => {
+                    const newValue = input.value || currentText;
+                    if (dataPath.includes('[')) {
+                        const match = dataPath.match(/(.+)\[(\d+)\]/);
+                        if (match) {
+                            const arrayPath = match[1];
+                            const index = parseInt(match[2]);
+                            const array = getNestedValue(documentData, arrayPath);
+                            if (array && Array.isArray(array)) array[index] = newValue;
+                        }
+                    } else {
+                        setNestedValue(documentData, dataPath, newValue);
+                    }
+                    this.textContent = newValue;
+                    localStorage.setItem('documentData', JSON.stringify(documentData));
+                };
+                input.addEventListener('blur', saveEdit);
+                if (!isTextArea) {
+                    input.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') input.blur();
+                    });
+                }
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        this.textContent = currentText;
+                        input.remove();
+                    }
+                }.bind(this));
+            });
+            element.style.cursor = 'pointer';
+            element.title = 'Double-click to edit';
+        }
+
+        // Load initial data from data.json and populate Section 1
+        let sectionOneData = {};
+        window.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch('data.json');
+                if (response.ok) {
+                    sectionOneData = await response.json();
+                    // Disclaimer
+                    document.getElementById('disclaimer').textContent = sectionOneData.step1?.disclaimer || '';
+                    // IN BRIEF heading
+                    document.getElementById('inBriefHeading').textContent = 'IN BRIEF';
+                    // InBrief list items
+                    const briefList = document.getElementById('briefList');
+                    briefList.innerHTML = '';
+                    (sectionOneData.step2?.inBrief || []).forEach((text, idx) => {
+                        const li = document.createElement('li');
+                        li.textContent = text;
+                        briefList.appendChild(li);
+                        makeEditable(li, `step2.inBrief[${idx}]`);
+                    });
+                    // CIO heading
+                    const cioHeadingEl = document.getElementById('CIOHeading');
+                    if (cioHeadingEl) {
+                        cioHeadingEl.textContent = 'CIO ASSET CLASS VIEWS';
+                    }
+                    // CIO Asset Class Views
+                    document.getElementById('cioViews').textContent = sectionOneData.step2?.cioAssetClassViews || '';
+                    // Hyperlinks
+                    const hyperlinksDiv = document.getElementById('hyperlinks');
+                    if (hyperlinksDiv && sectionOneData.step2?.hyperlinks) {
+                        hyperlinksDiv.innerHTML = '';
+                        sectionOneData.step2.hyperlinks.forEach((linkObj, idx) => {
+                            const a = document.createElement('a');
+                            a.href = linkObj.url;
+                            a.textContent = linkObj.name;
+                            a.target = '_blank';
+                            a.className = 'mb-1';
+                            // Add right arrow triangle
+                            const triangle = document.createElement('span');
+                            triangle.style.display = 'inline-block';
+                            triangle.style.verticalAlign = 'middle';
+                            triangle.style.marginLeft = '4px';
+                            triangle.style.width = '0';
+                            triangle.style.height = '0';
+                            triangle.style.borderTop = '6px solid transparent';
+                            triangle.style.borderBottom = '6px solid transparent';
+                            triangle.style.borderLeft = '12px solid #e25b59';
+                            a.appendChild(triangle);
+                            hyperlinksDiv.appendChild(a);
+                        });
+                    }
+                }
+            } catch (err) {
+                console.warn('Could not load initial data from data.json:', err);
+            }
+            // Make editable after loading
+            const disclaimerEl = document.getElementById('disclaimer');
+            if (disclaimerEl) makeEditable(disclaimerEl, 'step1.disclaimer');
+            const briefHeadingEl = document.querySelector('.brief h5');
+            if (briefHeadingEl) makeEditable(briefHeadingEl, 'step2.inBrief');
+            document.querySelectorAll('.brief ul li').forEach((item, idx) => {
+                if (item) makeEditable(item, `step2.inBrief[${idx}]`);
+            });
+            const cioHeadingEl2 = document.querySelector('.flex-wrap.gray-box h5');
+            if (cioHeadingEl2) makeEditable(cioHeadingEl2, 'step2.cioAssetClassViews');
+            const cioViewsEl = document.getElementById('cioViews');
+            if (cioViewsEl) makeEditable(cioViewsEl, 'step2.cioAssetClassViews', true);
+
+            // Populate Summary Components
+            populateSummaryComponents(sectionOneData.step2?.summary?.components || []);
+            
+            // Populate Table Data
+            populateTableData(sectionOneData.step2?.tableData || {});
+        });
+
+        // Function to populate summary components
+        function populateSummaryComponents(components) {
+            const container = document.getElementById('summaryComponents');
+            container.innerHTML = '';
+            
+            components.forEach((component, idx) => {
+                const div = document.createElement('div');
+                div.setAttribute('data-component-id', idx);
+                let html = ``;
+                
+                switch(component.type) {
+                    case 'paragraph':
+                        html += `
+                                    <p class="text-gray-500 mt-8 leading-relaxed text-[12px] font-thin ">${(component.content || '').replace(/\\n/g, '<br>')}</p>
+                        `;
+                        break;
+                        
+                    case 'subsections':
+                        html += '<div class="space-y-3 mt-8">';
+                        (component.subsections || []).forEach(subsection => {
+                            html += `
+                                <div class="flex">
+                                    <h4 class="text-sm font-semibold text-gray-800">${subsection.heading || ''}: 
+                                        <span class="text-[12px] font-thin text-gray-500 leading-relaxed">${(subsection.content || '').replace(/\\n/g, '<br>')}</span>
+                                    </h4>
+                                </div>
+                            `;
+                        });
+                        html += '</div>';
+                        break;
+                        
+                    case 'compare-table':
+                        html += `
+                            <div class="grid grid-cols-2 w-[196mm] mt-8">
+                                <div>
+                                    <h4 class="text-sm font-semibold bg-[--bg-gray] mb-2 text-center">${component.mainHeading1 || ''}</h4>
+                                    <h5 class="text-xs font-semibold text-gray-800 mb-2 px-2">${component.subHeading1 || ''}</h5>
+                                    <ul class="text-xs disc-list text-gray-500 space-y-1 px-2">
+                                        ${(component.leftPoints || []).map(point => `<li>• ${(point).replace(/\n/g, '<br>')}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold bg-[--bg-gray] mb-2 text-center">${component.mainHeading2 || ''}</h4>
+                                    <h5 class="text-xs font-semibold text-gray-800 mb-2 px-2">${component.subHeading2 || ''}</h5>
+                                    <ul class="text-xs text-gray-500 space-y-1 px-2">
+                                        ${(component.rightPoints || []).map(point => `<li>• ${point.replace(/\n/g, '<br>')}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'bottom-line':
+                        html += '<div class="space-y-3 flex justify-between w-[196mm] mt-8">';
+                        (component.subsections || []).forEach(subsection => {
+                            html += `
+                                <div class="flex w-[65%]">
+                                    <h4 class="text-sm font-semibold text-gray-800">${subsection.subheading || ''}: 
+                                        <span class="text-[12px] font-thin text-gray-500 leading-relaxed">${(subsection.content || '').replace(/\\n/g, '<br>')}</span>
+                                    </h4>
+                                </div>
+                            `;
+                        });
+                        html += `
+                            <div class=" px-4 py-6 w-[30%] bg-[--bg-gray] h-fit pt-3">
+                                <h4 class="text-sm font-semibold text-gray-800 mb-1">Bottom Line</h4>
+                                <p class="text-sm text-gray-500 ">${(component.bottomLine || '').replace(/\\n/g, '<br>')}</p>
+                            </div>
+                        `;
+                        html += '</div>';
+                        break;
+                        
+                    case 'numbered-bottom-line':
+                        html += `
+                            <div class="space-y-3">
+                                <h4 class="text-sm font-semibold text-gray-800">${component.mainHeading || ''}</h4>
+                                <h5 class="text-sm font-medium text-gray-500">${component.subHeading || ''}</h5>
+                                <ol class="text-sm text-gray-500 space-y-1 list-decimal list-inside">
+                                    ${(component.points || []).map(point => `<li>${point}</li>`).join('')}
+                                </ol>
+                                <div class="border-t border-gray-300 pt-3">
+                                    <h4 class="text-sm font-semibold text-gray-800 mb-1">Bottom Line</h4>
+                                    <p class="text-sm text-gray-500 ">${component.bottomLine || ''}</p>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                        
+                    case 'two-sided-bullets':
+                        html += `
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <h4 class="text-sm font-semibold text-gray-800 mb-2">Left Side</h4>
+                                    <ul class="text-sm text-gray-500 space-y-1">
+                                        ${(component.leftPoints || []).map(point => `<li>• ${point}</li>`).join('')}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-gray-800 mb-2">Right Side</h4>
+                                    <ul class="text-sm text-gray-500 space-y-1">
+                                        ${(component.rightPoints || []).map(point => `<li>• ${point}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        `;
+                        break;
+                }
+                
+                div.innerHTML = html;
+                container.appendChild(div);
+            });
+        }
+
+        // Function to populate table data
+        function populateTableData(tableData) {
+            // Update subtitle and footnote
+            document.getElementById('table4-header-1').textContent = tableData.headers?.assetClassHeader || 'Asset Class';
+            document.getElementById('table4-header-2').textContent = tableData.headers?.cioViewHeader || 'CIO View';
+            document.getElementById('table4-footnote').textContent = tableData.footnote || '';
+            
+            // Create table rows from JSON data
+            const tbody = document.getElementById('table4-view-body');
+            tbody.innerHTML = '';
+            
+            // Process assets in the original order from JSON data
+            const assets = tableData.data || [];
+            let altInvestmentAssets = [];
+            let isInAltInvestmentGroup = false;
+            
+            assets.forEach((asset, index) => {
+                // Skip header assets
+                if (asset.isHeader) {
+                    return;
+                }
+                
+                // Handle alternative investments
+                if (asset.isAlternativeInvestment) {
+                    altInvestmentAssets.push(asset);
+                    isInAltInvestmentGroup = true;
+                }
+                // Handle cash items
+                else if (asset.isCash) {
+                    // If we were in an alt investment group, render it first
+                    if (isInAltInvestmentGroup && altInvestmentAssets.length > 0) {
+                        renderAltInvestmentGroup(tbody, altInvestmentAssets);
+                        altInvestmentAssets = [];
+                        isInAltInvestmentGroup = false;
+                    }
+                    addCashRow(tbody, asset);
+                }
+                // Handle regular assets
+                else {
+                    // If we were in an alt investment group, render it first
+                    if (isInAltInvestmentGroup && altInvestmentAssets.length > 0) {
+                        renderAltInvestmentGroup(tbody, altInvestmentAssets);
+                        altInvestmentAssets = [];
+                        isInAltInvestmentGroup = false;
+                    }
+                    addAssetRow(tbody, asset);
+                }
+            });
+            
+            // Render any remaining alt investment group
+            if (isInAltInvestmentGroup && altInvestmentAssets.length > 0) {
+                renderAltInvestmentGroup(tbody, altInvestmentAssets);
+            }
+        }
+        
+        // Helper function to render alternative investment group with vertical line
+        function renderAltInvestmentGroup(tbody, altAssets) {
+            if (altAssets.length === 0) return;
+            
+            // Create a single row that spans the full width
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td colspan="2" class="alt-investment-group">
+                    <div class="alt-investment-container">
+                        <div class="alt-investment-labels">
+                            ${altAssets.map(asset => `
+                                <div class="alt-investment-label">${asset.name || ''}</div>
+                            `).join('')}
+                        </div>
+                        <div class="alt-investment-indicator">
+                            <div class="alt-line-container">
+                                <div class="alt-dot"></div>
+                                <div class="alt-line"></div>
+                                <div class="alt-dot"></div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+
+        // Helper function to add section header
+        function addSectionHeader(tbody, sectionName) {
+            const row = document.createElement('tr');
+            row.className = 'section-header';
+            row.innerHTML = `
+                <td colspan="2" class="font-bold text-xs py-2 border-t-2 border-b border-gray-800">${sectionName}</td>
+            `;
+            tbody.appendChild(row);
+        }
+        
+        // Helper function to add asset row
+        function addAssetRow(tbody, asset) {
+            const row = document.createElement('tr');
+            
+            // Add top and bottom border if separate is 1
+            if (asset.separate === 1) {
+                row.className = 'separated-row';
+            }
+            
+            // Handle assets without position (hide dots completely)
+            if (!asset.position || asset.position === null || asset.position === undefined) {
+                row.innerHTML = `
+                    <td class="text-xs py-1 pl-2">${asset.name || ''}</td>
+                    <td class="text-center py-1"></td>
+                `;
+            } else {
+                const category = getWeightCategory(asset.position);
+                const weightIndicator = createWeightIndicator(asset.position, category);
+                row.innerHTML = `
+                    <td class="text-xs py-1 pl-2">${asset.name || ''}</td>
+                    <td class="text-center py-1">${weightIndicator}</td>
+                `;
+            }
+            
+            tbody.appendChild(row);
+        }
+        
+        // Helper function to add alternative investment row
+        function addAltInvestmentRow(tbody, asset) {
+            const row = document.createElement('tr');
+            
+            // Add top and bottom border if separate is 1
+            if (asset.separate === 1) {
+                row.className = 'separated-row';
+            }
+            
+            // Alternative investments with vertical line indicator
+            row.innerHTML = `
+                <td class="text-xs py-1 pl-2">${asset.name || ''}</td>
+                <td class="text-center py-1">
+                    <div class="alt-investment-indicator">
+                        <div class="alt-line-container">
+                            <div class="alt-dot"></div>
+                            <div class="alt-line"></div>
+                            <div class="alt-dot"></div>
+                        </div>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        }
+        
+        // Helper function to add cash row
+        function addCashRow(tbody, asset) {
+            const row = document.createElement('tr');
+            
+            // Add top and bottom border if separate is 1
+            if (asset.separate === 1) {
+                row.className = 'separated-row';
+            }
+            
+            row.innerHTML = `
+                <td class="text-xs py-1 pl-2">${asset.name || ''}</td>
+                <td class="text-center py-1"></td>
+            `;
+            tbody.appendChild(row);
+        }
+        
+        // Helper function to determine weight category
+        function getWeightCategory(position) {
+            if (position <= 2) return 'underweight';
+            if (position === 3) return 'neutral';
+            if (position >= 4) return 'overweight';
+            return 'neutral';
+        }
+        
+        // Function to create weight indicator
+        function createWeightIndicator(position, category) {
+            const totalDots = 5;
+            let dotsHtml = '';
+            
+            for (let i = 1; i <= totalDots; i++) {
+                let dotClass = 'weight-dot';
+                
+                // If position is null/undefined, show all empty dots
+                if (position === null || position === undefined) {
+                    dotClass += ' empty';
+                } else if (i === position) {
+                    if (category === 'underweight') {
+                        dotClass += ' filled underweight';
+                    } else if (category === 'neutral') {
+                        dotClass += ' filled neutral';
+                    } else if (category === 'overweight') {
+                        dotClass += ' filled overweight';
+                    } else {
+                        dotClass += ' empty';
+                    }
+                } else {
+                    dotClass += ' empty';
+                }
+                
+                dotsHtml += `<div class="${dotClass}" data-position="${i}" title="Position ${i}"></div>`;
+            }
+            
+            return `
+                <div class="weight-indicator">
+                    ${dotsHtml}
+                </div>
+            `;
+        }
+
+        
+        </script>
+        <!-- Your content goes here -->
+    </div>
+</body>
+</html>

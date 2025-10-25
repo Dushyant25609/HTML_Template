@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multi-Step Form - Step 1 & 2</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .fade-in {
+      animation: fadeIn 0.6s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .progress::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 100%;
+      background-color: #dbeafe;
+      z-index: 0;
+    }
+    .hidden-step {
+      display: none;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-white flex items-center justify-center min-h-screen">
+
+  <div class="flex bg-white rounded-2xl shadow-xl overflow-hidden w-full max-w-5xl h-[85vh]">
+
+    <!-- Sidebar / Step Indicator -->
+    <div class="relative bg-blue-600 text-white w-64 p-8 flex flex-col items-center justify-between">
+      <div class="w-full">
+        <h1 class="text-2xl font-bold mb-6 text-center">Setup Progress</h1>
+        <div class="relative progress flex flex-col gap-10 items-center">
+          <!-- Step 1 -->
+          <div id="step1Indicator" class="relative z-10 flex flex-col items-center">
+            <div class="w-10 h-10 rounded-full bg-white text-blue-600 flex items-center justify-center font-bold shadow-lg ring-4 ring-blue-200">1</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Document Details</span>
+          </div>
+          <!-- Step 2 -->
+          <div id="step2Indicator" class="relative z-10 flex flex-col items-center opacity-60">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">2</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Section 1</span>
+          </div>
+          <!-- Step 3 -->
+          <div class="relative z-10 flex flex-col items-center opacity-60">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">3</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Preview</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center text-xs opacity-70">
+        <p>© 2025 DocFlow</p>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col items-center justify-center px-10 py-12 overflow-y-auto">
+
+      <!-- Step 1 Form -->
+      <div id="step1" class="w-full max-w-xl fade-in">
+        <div class="text-center mb-8">
+          <img src="assests//images/title.png" alt="Title Image" class="mx-auto w-full object-contain mb-4">
+          <h2 class="text-2xl font-bold text-blue-700">Step 1: Document Details</h2>
+          <p class="text-gray-500 mt-2">Enter basic information about your document.</p>
+        </div>
+
+        <form id="step1Form" class="space-y-6">
+          <div>
+            <label for="documentTitle" class="block text-sm font-semibold text-gray-700 mb-1">Document Title</label>
+            <input type="text" id="documentTitle" name="documentTitle" required
+              class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5"
+              placeholder="e.g., Monthly Report" />
+          </div>
+
+          <div>
+            <label for="documentMonth" class="block text-sm font-semibold text-gray-700 mb-1">Document Month</label>
+            <input type="text" id="documentMonth" name="documentMonth" required
+              class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5"
+              placeholder="e.g., July 2025" />
+          </div>
+
+          <div>
+            <label for="disclaimer" class="block text-sm font-semibold text-gray-700 mb-1">Disclaimer</label>
+            <textarea id="disclaimer" name="disclaimer" rows="3" required
+              class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5"
+              placeholder="Enter disclaimer text..."></textarea>
+          </div>
+
+          <div class="flex justify-end">
+            <button type="submit" id="nextBtn"
+              class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">
+              Next →
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 2 Form -->
+      <div id="step2" class="w-full max-w-xl hidden-step fade-in">
+        <div class="text-center mb-8">
+          <h2 class="text-2xl font-bold text-blue-700">Section 1</h2>
+        </div>
+
+        <form id="step2Form" class="space-y-6">
+          <div class="border border-gray-300 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-1">
+              <label for="inBrief" class="block text-sm font-semibold text-gray-700">In Brief</label>
+              <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/brief.png">View</button>
+            </div>
+            <textarea id="inBrief" name="inBrief" rows="2" required
+              class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5"
+              placeholder="Briefly describe the purpose of this document..."></textarea>
+              <button type="button" id="addPointBtn"
+                class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">
+                Add Point
+              </button>
+          </div>
+          <div class="border border-gray-300 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-1">
+              <label for="cioAssetClassViews" class="block text-sm font-semibold text-gray-700">CIO Asset Class Views</label>
+              <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/CIOAssetView.png">View</button>
+            </div>
+            <textarea id="cioAssetClassViews" name="cioAssetClassViews" rows="2" required
+              class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5"
+              placeholder="What have the CIO Advisors done this month..."></textarea>
+          </div>
+           <div id="summarySection" class="border border-gray-300 rounded-lg p-4">
+             <label for="summary" class="block text-sm font-semibold text-gray-700 mb-1">Summary</label>
+             <div id="summaryComponents" class="space-y-4"></div>
+             <div class="relative mt-4">
+               <button type="button" id="addComponentBtn"
+                 class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">
+                 Add Component
+               </button>
+               <div id="componentDropdown" class="hidden absolute top-full left-0 mt-2 w-64 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+                 <div class="py-2">
+                   <div class="flex items-center justify-between px-4 py-2 hover:bg-gray-100 transition">
+                     <button type="button" class="component-option flex-1 text-left" data-type="paragraph">Paragraph</button>
+                     <button type="button" class="viewBtn ml-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/paragraph.png">View</button>
+                   </div>
+                   <div class="flex items-center justify-between px-4 py-2 hover:bg-gray-100 transition">
+                     <button type="button" class="component-option flex-1 text-left" data-type="bullet-points">2 sided bullet points</button>
+                     <button type="button" class="viewBtn ml-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/twoSideBulletpoints.png">View</button>
+                   </div>
+                   <div class="flex items-center justify-between px-4 py-2 hover:bg-gray-100 transition">
+                     <button type="button" class="component-option flex-1 text-left" data-type="subsections">Subsections Paragraphs</button>
+                     <button type="button" class="viewBtn ml-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/subsectionParagraph.png">View</button>
+                   </div>
+                   <div class="flex items-center justify-between px-4 py-2 hover:bg-gray-100 transition">
+                     <button type="button" class="component-option flex-1 text-left" data-type="numbered-bullet">Number bullet with Bottom line</button>
+                     <button type="button" class="viewBtn ml-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/numberedBottomLine.png">View</button>
+                   </div>
+                   <div class="flex items-center justify-between px-4 py-2 hover:bg-gray-100 transition">
+                     <button type="button" class="component-option flex-1 text-left" data-type="compare-table">Compare table</button>
+                     <button type="button" class="viewBtn ml-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/tableCompare.png">View</button>
+                   </div>
+                   <div class="flex items-center justify-between px-4 py-2 hover:bg-gray-100 transition">
+                     <button type="button" class="component-option flex-1 text-left" data-type="bottom-line">Bottom Line paragraph</button>
+                     <button type="button" class="viewBtn ml-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/BottomLineParagraph.png">View</button>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+
+           <div class="border border-gray-300 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-sm font-semibold text-gray-700">Hyperlinks</label>
+              <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/hyperlinks.png">View</button>
+            </div>
+            <label for="hyperlinks1" class="block text-sm font-semibold text-gray-700 mb-1">Name</label>
+            <input type="text" id="hyperlinks1Name" name="hyperlinks1Name" required
+              class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5"
+              placeholder="Enter name here..." />
+            <label for="hyperlinks1" class="block text-sm font-semibold text-gray-700 mb-1">URL</label>
+            <input type="text" id="hyperlinks1" name="hyperlinks1" required
+              class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5"
+              placeholder="Enter hyperlinks here..." />
+            <label for="hyperlinks2" class="block text-sm font-semibold text-gray-700 mb-1">Name</label>
+            <input type="text" id="hyperlinks2Name" name="hyperlinks2Name" required
+              class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5"
+              placeholder="Enter name here..." />
+            <label for="hyperlinks2" class="block text-sm font-semibold text-gray-700 mb-1">URL</label>
+            <input type="text" id="hyperlinks2" name="hyperlinks2" required
+              class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5"
+              placeholder="Enter hyperlinks here..." />
+           </div>
+
+           <div id="tableDataSection" class="border border-gray-300 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-2">
+              <label class="block text-sm font-semibold text-gray-700">Table Data Input</label>
+              <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/table.png">View</button>
+            </div>
+            
+            <!-- Headers Section -->
+            <div class="mb-4 p-3 border border-gray-200 rounded-lg bg-gray-50">
+              <h4 class="text-sm font-semibold text-gray-700 mb-3">Table Headers</h4>
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">Asset Class Header</label>
+                  <input type="text" id="assetClassHeader" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Asset Class">
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">CIO View Header</label>
+                  <input type="text" id="cioViewHeader" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., CIO View">
+                </div>
+              </div>
+            </div>
+
+            <!--Footnote -->
+            <div class="mb-4 space-y-3">
+              <div>
+                <label class="block text-xs text-gray-600 mb-1">Footnote</label>
+                <input type="text" id="tableFootnote" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Table footnote...">
+              </div>
+            </div>
+
+            <!-- Asset Classes Section -->
+            <div class="mb-4">
+              <div class="flex justify-between items-center mb-3">
+                <h4 class="text-sm font-semibold text-gray-700">Asset Classes</h4>
+                <button type="button" class="addAssetClassBtn bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition text-xs">
+                  Add Asset Class
+                </button>
+              </div>
+              <div id="assetClassesContainer" class="space-y-3">
+                  <!-- Initial asset class row -->
+                  <div class="relative p-3 border border-gray-200 rounded-lg bg-white">
+                    <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
+                      ×
+                    </button>
+                    <div class="grid grid-cols-2 gap-4 mb-3">
+                      <div>
+                        <label class="block text-xs text-gray-600 mb-1">Asset Class Name</label>
+                        <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Equities">
+                      </div>
+                      <div>
+                        <label class="block text-xs text-gray-600 mb-1">Position (1-4)</label>
+                        <select class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
+                          <option value="">Select Position</option>
+                          <option value="1">1 - Underweight</option>
+                          <option value="2">2 - Underweight</option>
+                          <option value="3">3 - Neutral</option>
+                          <option value="4">4 - Overweight</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                      <div class="flex items-center">
+                        <input type="checkbox" id="separate1" class="mr-2">
+                        <label for="separate1" class="text-xs text-gray-600">Separate Row</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" id="isHeader1" class="mr-2">
+                        <label for="isHeader1" class="text-xs text-gray-600">Is Header</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" id="isAltInvestment1" class="mr-2">
+                        <label for="isAltInvestment1" class="text-xs text-gray-600">Alternative Investment</label>
+                      </div>
+                      <div class="flex items-center">
+                        <input type="checkbox" id="isCash1" class="mr-2">
+                        <label for="isCash1" class="text-xs text-gray-600">Is Cash</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+           </div>
+
+          <div class="flex justify-end">
+            <button type="button" id="backBtn"
+              class="bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">
+              ← Back
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- JSON Data Viewer Button -->
+  <button id="jsonViewerBtn" class="fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition shadow-lg z-50">
+    View JSON Data
+  </button>
+
+  <!-- JSON Modal -->
+  <div id="jsonModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="bg-white rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
+        <div class="flex justify-between items-center p-4 border-b">
+          <h3 class="text-lg font-semibold">Generated JSON Data</h3>
+          <button id="closeJsonModal" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="p-4 overflow-y-auto max-h-[60vh]">
+          <pre id="jsonContent" class="bg-gray-100 p-4 rounded text-sm overflow-x-auto"></pre>
+        </div>
+        <div class="flex justify-end p-4 border-t">
+          <button id="copyJsonBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            Copy JSON
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image View Modal -->
+  <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+        <div class="flex justify-between items-center p-4 border-b">
+          <h3 class="text-lg font-semibold">Component Preview</h3>
+          <button id="closeImageModal" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="p-4 overflow-y-auto max-h-[80vh] flex justify-center">
+          <img id="modalImage" src="" alt="Component Preview" class="max-w-full h-auto rounded-lg">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const step1 = document.getElementById('step1');
+    const step2 = document.getElementById('step2');
+    const step1Indicator = document.getElementById('step1Indicator');
+    const step2Indicator = document.getElementById('step2Indicator');
+    const step1Form = document.getElementById('step1Form');
+    const step2Form = document.getElementById('step2Form');
+    const backBtn = document.getElementById('backBtn');
+
+    // Step 1 Submit → Show Step 2
+    step1Form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = {
+        documentTitle: step1Form.documentTitle.value.trim(),
+        documentMonth: step1Form.documentMonth.value.trim(),
+        disclaimer: step1Form.disclaimer.value.trim()
+      };
+
+      if (!data.documentTitle || !data.documentMonth || !data.disclaimer) {
+        alert("Please fill out all fields before continuing.");
+        return;
+      }
+
+      localStorage.setItem('step1Data', JSON.stringify(data));
+
+      step1.classList.add('hidden-step');
+      step2.classList.remove('hidden-step');
+
+      // Update sidebar progress
+      step1Indicator.classList.add('opacity-60');
+      step2Indicator.classList.remove('opacity-60');
+      step2Indicator.querySelector('div').classList.replace('bg-blue-100', 'bg-white');
+      step2Indicator.querySelector('div').classList.add('text-blue-600', 'ring-4', 'ring-blue-200');
+    });
+
+     // Add more In Brief textareas
+     function addInBriefPoint() {
+       const addBtn = document.getElementById('addPointBtn');
+       if (!addBtn) return;
+       const container = addBtn.parentElement; // the wrapping div that contains the first textarea and the button
+       
+       const textareaContainer = document.createElement('div');
+       textareaContainer.className = 'relative mt-4';
+       textareaContainer.innerHTML = `
+         <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
+           ×
+         </button>
+         <textarea rows="2" name="inBrief" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Another point..."></textarea>
+       `;
+       
+       container.insertBefore(textareaContainer, addBtn);
+     }
+
+     const addPointBtn = document.getElementById('addPointBtn');
+     if (addPointBtn) {
+       addPointBtn.addEventListener('click', addInBriefPoint);
+     }
+
+     // Function to add more bullet points using IDs
+     function addBulletPoint(componentId, side) {
+       const leftColumn = document.getElementById(componentId + '_left');
+       const rightColumn = document.getElementById(componentId + '_right');
+       
+       if (side === 'left' && leftColumn) {
+         const textareaContainer = document.createElement('div');
+         textareaContainer.className = 'relative mt-2';
+         textareaContainer.innerHTML = `
+           <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
+             ×
+           </button>
+           <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Additional left bullet point..."></textarea>
+         `;
+         leftColumn.appendChild(textareaContainer);
+       } else if (side === 'right' && rightColumn) {
+         const textareaContainer = document.createElement('div');
+         textareaContainer.className = 'relative mt-2';
+         textareaContainer.innerHTML = `
+           <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
+             ×
+           </button>
+           <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Additional right bullet point..."></textarea>
+         `;
+         rightColumn.appendChild(textareaContainer);
+       }
+     }
+
+     // Add event listeners for bullet point buttons (using event delegation)
+     document.addEventListener('click', (e) => {
+       if (e.target.classList.contains('addLeftBulletBtn')) {
+         e.preventDefault();
+         const componentId = e.target.getAttribute('data-component-id');
+         addBulletPoint(componentId, 'left');
+       } else if (e.target.classList.contains('addRightBulletBtn')) {
+         e.preventDefault();
+         const componentId = e.target.getAttribute('data-component-id');
+         addBulletPoint(componentId, 'right');
+       }
+     });
+
+     // Add more subsections
+     function addSubsection(componentId) {
+       const subsectionContainer = document.getElementById(componentId + '_subsections');
+       if (!subsectionContainer) return;
+       
+       const newSubsection = document.createElement('div');
+       newSubsection.className = 'relative flex flex-col gap-2 mt-4 p-3 border border-gray-200 rounded-lg bg-gray-50';
+       newSubsection.innerHTML = `
+         <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
+           ×
+         </button>
+         <label class="block text-xs text-gray-600 mb-1">Subsection</label>
+         <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Heading...">
+         <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Content..."></textarea>
+       `;
+       
+       subsectionContainer.appendChild(newSubsection);
+     }
+
+     // Add event listener for subsection buttons using event delegation
+     document.addEventListener('click', (e) => {
+       if (e.target.classList.contains('addSubsectionBtn')) {
+         e.preventDefault();
+         const componentId = e.target.getAttribute('data-component-id');
+         addSubsection(componentId);
+       }
+     });
+
+     // Add more numbered bullet points
+     function addNumberedBullet(componentId) {
+       const pointsContainer = document.getElementById(componentId + '_points');
+       if (!pointsContainer) return;
+       
+       const spaceContainer = pointsContainer.querySelector('.space-y-2');
+       if (!spaceContainer) return;
+       
+       const newBulletPoint = document.createElement('div');
+       newBulletPoint.className = 'relative flex flex-col gap-2 mt-4 p-3 border border-gray-200 rounded-lg bg-gray-50';
+       newBulletPoint.innerHTML = `
+         <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
+           ×
+         </button>
+         <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Subheading...">
+         <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Content..."></textarea>
+       `;
+       
+       spaceContainer.appendChild(newBulletPoint);
+     }
+
+     // Add event listener for numbered bullet buttons using event delegation
+     document.addEventListener('click', (e) => {
+       if (e.target.classList.contains('addNumberedBulletBtn')) {
+         e.preventDefault();
+         const componentId = e.target.getAttribute('data-component-id');
+         addNumberedBullet(componentId);
+       }
+     });
+
+     // Add more difference points
+     function addDiffPoint(componentId, side) {
+       if (side === 'left') {
+         const leftPointsContainer = document.getElementById(componentId + '_leftPoints');
+         if (!leftPointsContainer) return;
+         
+         const newPointContainer = document.createElement('div');
+         newPointContainer.className = 'relative p-3 border border-gray-200 rounded-lg bg-gray-50';
+         newPointContainer.innerHTML = `
+           <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
+             ×
+           </button>
+           <div class="space-y-2">
+             <label class="block text-xs text-gray-600">Additional Left Point</label>
+             <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter additional point for Main Heading 1..."></textarea>
+           </div>
+         `;
+         
+         leftPointsContainer.appendChild(newPointContainer);
+       } else if (side === 'right') {
+         const rightPointsContainer = document.getElementById(componentId + '_rightPoints');
+         if (!rightPointsContainer) return;
+         
+         const newPointContainer = document.createElement('div');
+         newPointContainer.className = 'relative p-3 border border-gray-200 rounded-lg bg-gray-50';
+         newPointContainer.innerHTML = `
+           <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
+             ×
+           </button>
+           <div class="space-y-2">
+             <label class="block text-xs text-gray-600">Additional Right Point</label>
+             <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter additional point for Main Heading 2..."></textarea>
+           </div>
+         `;
+         
+         rightPointsContainer.appendChild(newPointContainer);
+       }
+     }
+
+     // Add event listener for difference table buttons using event delegation
+     document.addEventListener('click', (e) => {
+       if (e.target.classList.contains('addLeftDiffPointBtn')) {
+         e.preventDefault();
+         const componentId = e.target.getAttribute('data-component-id');
+         addDiffPoint(componentId, 'left');
+       } else if (e.target.classList.contains('addRightDiffPointBtn')) {
+         e.preventDefault();
+         const componentId = e.target.getAttribute('data-component-id');
+         addDiffPoint(componentId, 'right');
+       }
+     });
+
+     // Add more bottom line subsections
+     function addBottomLineSubsection(componentId) {
+       const bottomLineContainer = document.getElementById(componentId);
+       if (!bottomLineContainer) return;
+       
+       // Find the "Add Bottom Line" button to insert before it
+       const addButton = bottomLineContainer.querySelector('.addBottomLineBtn');
+       if (!addButton) return;
+       
+       const newSubsection = document.createElement('div');
+       newSubsection.className = 'relative mt-4 p-3 border border-gray-200 rounded-lg bg-gray-50';
+       newSubsection.innerHTML = `
+         <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
+           ×
+         </button>
+         <div class="space-y-2">
+           <label class="block text-xs text-gray-600">Sub heading</label>
+           <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Sub heading...">
+           <label class="block text-xs text-gray-600">Content</label>
+           <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Content..."></textarea>
+         </div>
+       `;
+       
+       bottomLineContainer.insertBefore(newSubsection, addButton);
+     }
+
+     // Add event listener for bottom line buttons using event delegation
+     document.addEventListener('click', (e) => {
+       if (e.target.classList.contains('addBottomLineBtn')) {
+         e.preventDefault();
+         const componentId = e.target.getAttribute('data-component-id');
+         addBottomLineSubsection(componentId);
+       }
+     });
+
+     // Add more asset classes to table data
+     function addAssetClass(componentId) {
+       const assetClassesContainer = document.getElementById(componentId + '_assetClasses');
+       if (!assetClassesContainer) return;
+       
+       const assetClassCount = assetClassesContainer.children.length + 1;
+       
+       const newAssetClass = document.createElement('div');
+       newAssetClass.className = 'relative p-3 border border-gray-200 rounded-lg bg-white';
+       newAssetClass.innerHTML = `
+         <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
+           ×
+         </button>
+         <div class="grid grid-cols-2 gap-4 mb-3">
+           <div>
+             <label class="block text-xs text-gray-600 mb-1">Asset Class Name</label>
+             <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Equities">
+           </div>
+           <div>
+             <label class="block text-xs text-gray-600 mb-1">Position (1-4)</label>
+             <select class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
+               <option value="">Select Position</option>
+               <option value="1">1 - Underweight</option>
+               <option value="2">2 - Underweight</option>
+               <option value="3">3 - Neutral</option>
+               <option value="4">4 - Overweight</option>
+             </select>
+           </div>
+         </div>
+         <div class="grid grid-cols-2 gap-4">
+           <div class="flex items-center">
+             <input type="checkbox" id="separate${assetClassCount}" class="mr-2">
+             <label for="separate${assetClassCount}" class="text-xs text-gray-600">Separate Row</label>
+           </div>
+           <div class="flex items-center">
+             <input type="checkbox" id="isHeader${assetClassCount}" class="mr-2">
+             <label for="isHeader${assetClassCount}" class="text-xs text-gray-600">Is Header</label>
+           </div>
+           <div class="flex items-center">
+             <input type="checkbox" id="isAltInvestment${assetClassCount}" class="mr-2">
+             <label for="isAltInvestment${assetClassCount}" class="text-xs text-gray-600">Alternative Investment</label>
+           </div>
+           <div class="flex items-center">
+             <input type="checkbox" id="isCash${assetClassCount}" class="mr-2">
+             <label for="isCash${assetClassCount}" class="text-xs text-gray-600">Is Cash</label>
+           </div>
+         </div>
+       `;
+       
+       assetClassesContainer.appendChild(newAssetClass);
+     }
+
+     // Add event listener for asset class buttons using event delegation
+     document.addEventListener('click', (e) => {
+       if (e.target.classList.contains('addAssetClassBtn')) {
+         e.preventDefault();
+         const componentId = e.target.getAttribute('data-component-id');
+         if (componentId) {
+           addAssetClass(componentId);
+         } else {
+           // Static add asset class button (no component ID)
+           addStaticAssetClass();
+         }
+       }
+     });
+
+     // Add static asset class (not part of a component)
+     function addStaticAssetClass() {
+       const assetClassesContainer = document.getElementById('assetClassesContainer');
+       if (!assetClassesContainer) return;
+       
+       const assetClassCount = assetClassesContainer.children.length + 1;
+       
+       const newAssetClass = document.createElement('div');
+       newAssetClass.className = 'relative p-3 border border-gray-200 rounded-lg bg-white';
+       newAssetClass.innerHTML = `
+         <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
+           ×
+         </button>
+         <div class="grid grid-cols-2 gap-4 mb-3">
+           <div>
+             <label class="block text-xs text-gray-600 mb-1">Asset Class Name</label>
+             <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Equities">
+           </div>
+           <div>
+             <label class="block text-xs text-gray-600 mb-1">Position (1-4)</label>
+             <select class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
+               <option value="">Select Position</option>
+               <option value="1">1 - Underweight</option>
+               <option value="2">2 - Underweight</option>
+               <option value="3">3 - Neutral</option>
+               <option value="4">4 - Overweight</option>
+             </select>
+           </div>
+         </div>
+         <div class="grid grid-cols-2 gap-4">
+           <div class="flex items-center">
+             <input type="checkbox" class="mr-2">
+             <label class="text-xs text-gray-600">Separate Row</label>
+           </div>
+           <div class="flex items-center">
+             <input type="checkbox" class="mr-2">
+             <label class="text-xs text-gray-600">Is Header</label>
+           </div>
+           <div class="flex items-center">
+             <input type="checkbox" class="mr-2">
+             <label class="text-xs text-gray-600">Alternative Investment</label>
+           </div>
+           <div class="flex items-center">
+             <input type="checkbox" class="mr-2">
+             <label class="text-xs text-gray-600">Is Cash</label>
+           </div>
+         </div>
+       `;
+       
+       assetClassesContainer.appendChild(newAssetClass);
+     }
+
+     // Add event listener for remove buttons using event delegation
+     document.addEventListener('click', (e) => {
+       if (e.target.classList.contains('removeBtn')) {
+         e.preventDefault();
+         e.target.closest('.relative').remove();
+       } else if (e.target.classList.contains('removeComponentBtn')) {
+         e.preventDefault();
+         e.target.closest('.relative').remove();
+       }
+     });
+
+     // JSON Data Collection and Display
+     function collectAllFormData() {
+       const data = {
+         step1: {
+           documentTitle: document.getElementById('documentTitle')?.value || '',
+           documentMonth: document.getElementById('documentMonth')?.value || '',
+           disclaimer: document.getElementById('disclaimer')?.value || ''
+         },
+         step2: {
+           inBrief: [],
+           cioAssetClassViews: document.getElementById('cioAssetClassViews')?.value || '',
+           hyperlinks: [],
+           summary: {
+             components: []
+           },
+           tableData: {
+             headers: {},
+             footnote: "",
+             data: []
+           }
+         }
+       };
+
+       // Collect In Brief points
+       const inBriefTextareas = document.querySelectorAll('textarea[name="inBrief"]');
+       inBriefTextareas.forEach(textarea => {
+         if (textarea.value.trim()) {
+           data.step2.inBrief.push(textarea.value.trim());
+         }
+       });
+
+       // Collect hyperlinks
+       const hyperlinkNames = document.querySelectorAll('input[id*="hyperlinks"][id*="Name"]');
+       const hyperlinkUrls = document.querySelectorAll('input[id*="hyperlinks"]:not([id*="Name"])');
+       
+       hyperlinkNames.forEach((nameInput, index) => {
+         const urlInput = hyperlinkUrls[index];
+         if (nameInput.value.trim() && urlInput.value.trim()) {
+           data.step2.hyperlinks.push({
+             name: nameInput.value.trim(),
+             url: urlInput.value.trim()
+           });
+         }
+       });
+
+       // Collect summary components (exclude table-data components)
+       const summaryComponents = document.querySelectorAll('#summaryComponents > div');
+       summaryComponents.forEach(component => {
+         const componentData = collectComponentData(component);
+         if (componentData && componentData.type !== 'table-data') {
+           data.step2.summary.components.push(componentData);
+         }
+       });
+
+       // Collect table data from static section
+       const assetClassHeader = document.getElementById('assetClassHeader')?.value || '';
+       const cioViewHeader = document.getElementById('cioViewHeader')?.value || '';
+       const tableFootnote = document.getElementById('tableFootnote')?.value || '';
+       const assetClasses = Array.from(document.querySelectorAll('#assetClassesContainer > div')).map(assetClass => ({
+         name: assetClass.querySelector('input[placeholder*="Equities"]')?.value || '',
+         position: parseInt(assetClass.querySelector('select')?.value) || undefined,
+         separate: assetClass.querySelectorAll('input[type="checkbox"]')[0]?.checked || false,
+         isHeader: assetClass.querySelectorAll('input[type="checkbox"]')[1]?.checked || false,
+         isAltInvestment: assetClass.querySelectorAll('input[type="checkbox"]')[2]?.checked || false,
+         isCash: assetClass.querySelectorAll('input[type="checkbox"]')[3]?.checked || false
+       }));
+
+       data.step2.tableData = {
+         headers: {
+           assetClassHeader: assetClassHeader,
+           cioViewHeader: cioViewHeader
+         },
+         footnote: tableFootnote,
+         data: assetClasses.map(assetClass => ({
+           name: assetClass.name,
+           position: assetClass.position,
+           separate: assetClass.separate ? 1 : 0,
+           isAlternativeInvestment: assetClass.isAltInvestment ? 1 : 0,
+           isCash: assetClass.isCash ? 1 : 0,
+           isHeader: assetClass.isHeader ? 1 : 0
+         }))
+       };
+
+       return data;
+     }
+
+     function collectComponentData(component) {
+       const componentType = getComponentType(component);
+       
+       switch (componentType) {
+         case 'paragraph':
+           return {
+             type: 'paragraph',
+             content: component.querySelector('textarea')?.value || ''
+           };
+           
+         case 'bullet-points':
+           return {
+             type: 'bullet-points',
+             heading: component.querySelector('textarea[rows="1"]')?.value || '',
+             leftPoints: Array.from(component.querySelectorAll('#leftPoints textarea')).map(ta => ta.value.trim()).filter(v => v),
+             rightPoints: Array.from(component.querySelectorAll('#rightPoints textarea')).map(ta => ta.value.trim()).filter(v => v)
+           };
+           
+         case 'subsections':
+           return {
+             type: 'subsections',
+             subsections: Array.from(component.querySelectorAll('.space-y-3 > div')).map(sub => ({
+               heading: sub.querySelector('input[type="text"]')?.value || '',
+               content: sub.querySelector('textarea')?.value || ''
+             }))
+           };
+           
+         case 'numbered-bullet': {
+            const pointsContainer = component.querySelector(`#${component.id}_points`) || component.querySelector('[id$="_points"]');
+            const mainHeading = component.querySelector('input[placeholder="Main Heading..."]')?.value || '';
+            const subHeading = component.querySelector('input[placeholder="Sub Heading..."]')?.value || '';
+            const bulletPoints = [];
+ 
+            // Initial content-only bullet
+            const initialContent = pointsContainer?.querySelector(':scope > div.space-y-2 > textarea[placeholder="Content..."]')?.value || '';
+            if (initialContent) {
+              bulletPoints.push({ subheading: '', content: initialContent });
+            }
+ 
+            // Additional bullets with subheading + content
+            const bulletPointContainers = pointsContainer?.querySelectorAll('.relative.flex.flex-col, .relative.mt-4.p-3') || [];
+            bulletPointContainers.forEach(bp => {
+              const bulletSubheading = bp.querySelector('input[placeholder="Subheading..."]')?.value || '';
+              const bulletContent = bp.querySelector('textarea[placeholder="Content..."]')?.value || '';
+              bulletPoints.push({ subheading: bulletSubheading, content: bulletContent });
+            });
+ 
+            const bottomLine = component.querySelector('textarea[placeholder="Bottom Line Content..."]')?.value || '';
+ 
+            return {
+              type: 'numbered-bullet',
+              mainHeading,
+              subHeading,
+              bulletPoints,
+              bottomLine
+            };
+          }
+           
+         case 'compare-table':
+           const tableId = component.id;
+           return {
+             type: 'compare-table',
+             mainHeading1: component.querySelector('input[placeholder*="Main Heading 1"]')?.value || '',
+             subHeading1: component.querySelector('input[placeholder*="Subheading (optional)"]')?.value || '',
+             mainHeading2: component.querySelector('input[placeholder*="Main Heading 2"]')?.value || '',
+             subHeading2: component.querySelectorAll('input[placeholder*="Subheading (optional)"]')[1]?.value || '',
+             leftPoints: [
+               component.querySelector('textarea[placeholder*="Enter points for Main Heading 1"]')?.value || '',
+               ...Array.from(component.querySelectorAll(`#${tableId}_leftPoints textarea`)).map(ta => ta.value.trim()).filter(v => v)
+             ].filter(v => v),
+             rightPoints: [
+               component.querySelector('textarea[placeholder*="Enter points for Main Heading 2"]')?.value || '',
+               ...Array.from(component.querySelectorAll(`#${tableId}_rightPoints textarea`)).map(ta => ta.value.trim()).filter(v => v)
+             ].filter(v => v)
+           };
+           
+         case 'bottom-line':
+           const bottomLineId = component.id;
+           // Get all input and textarea pairs directly from the component
+           const subsections = [];
+           
+           // Get the initial subsection (always present in the component)
+           const initialSubheading = component.querySelector('input[type="text"][placeholder*="Sub heading"]')?.value || '';
+           const initialContent = component.querySelector('textarea[placeholder*="Content"]')?.value || '';
+           if (initialSubheading || initialContent) {
+             subsections.push({
+               subheading: initialSubheading,
+               content: initialContent
+             });
+           }
+           
+           // Get additional subsections added by the user
+           const additionalSubsections = component.querySelectorAll('.space-y-2 > div');
+           if (additionalSubsections.length > 0) {
+             additionalSubsections.forEach(sub => {
+               const subheading = sub.querySelector('input[type="text"]')?.value || '';
+               const content = sub.querySelector('textarea')?.value || '';
+               if (subheading || content) {
+                 subsections.push({
+                   subheading: subheading,
+                   content: content
+                 });
+               }
+             });
+           }
+           
+           return {
+             type: 'bottom-line',
+             subsections: subsections,
+             bottomLine: component.querySelector('textarea[placeholder*="Key conclusion" i]')?.value || 
+                         component.querySelector('textarea[placeholder*="bottom line" i]')?.value ||
+                         component.querySelector('textarea:last-child')?.value || ''
+           };
+           
+         case 'table-data':
+           return {
+             type: 'table-data',
+             headers: {
+               assetClassHeader: component.querySelector('input[placeholder*="Asset Class"]')?.value || '',
+               cioViewHeader: component.querySelector('input[placeholder*="CIO View"]')?.value || ''
+             },
+             footnote: component.querySelector('input[placeholder*="footnote"]')?.value || '',
+             assetClasses: Array.from(component.querySelectorAll('[id$="_assetClasses"] > div')).map(assetClass => ({
+               name: assetClass.querySelector('input[placeholder*="Equities"]')?.value || '',
+               position: parseInt(assetClass.querySelector('select')?.value) || undefined,
+               separate: assetClass.querySelectorAll('input[type="checkbox"]')[0]?.checked || false,
+               isHeader: assetClass.querySelectorAll('input[type="checkbox"]')[1]?.checked || false,
+               isAltInvestment: assetClass.querySelectorAll('input[type="checkbox"]')[2]?.checked || false,
+               isCash: assetClass.querySelectorAll('input[type="checkbox"]')[3]?.checked || false
+             }))
+           };
+           
+         default:
+           return null;
+       }
+     }
+
+     function getComponentType(component) {
+       if (component.querySelector('textarea[placeholder*="paragraph content"]')) return 'paragraph';
+       if (component.querySelector('input[placeholder*="Enter heading"]')) return 'bullet-points';
+       if (component.querySelector('input[placeholder*="Heading"]') && component.querySelector('textarea[placeholder*="Content"]')) return 'subsections';
+       if (component.querySelector('textarea[placeholder*="Bottom Line"]')) return 'numbered-bullet';
+       if (component.querySelector('input[placeholder*="Main Heading 1"]')) return 'compare-table';
+       if (component.querySelector('textarea[placeholder*="Key conclusion"]')) return 'bottom-line';
+       if (component.querySelector('input[placeholder*="Asset Class Header"]')) return 'table-data';
+       return 'unknown';
+     }
+
+     // JSON Modal functionality
+     const jsonViewerBtn = document.getElementById('jsonViewerBtn');
+     const jsonModal = document.getElementById('jsonModal');
+     const closeJsonModal = document.getElementById('closeJsonModal');
+     const jsonContent = document.getElementById('jsonContent');
+     const copyJsonBtn = document.getElementById('copyJsonBtn');
+
+     jsonViewerBtn.addEventListener('click', () => {
+       const formData = collectAllFormData();
+       jsonContent.textContent = JSON.stringify(formData, null, 2);
+       jsonModal.classList.remove('hidden');
+     });
+
+     closeJsonModal.addEventListener('click', () => {
+       jsonModal.classList.add('hidden');
+     });
+
+     copyJsonBtn.addEventListener('click', () => {
+       navigator.clipboard.writeText(jsonContent.textContent).then(() => {
+         copyJsonBtn.textContent = 'Copied!';
+         setTimeout(() => {
+           copyJsonBtn.textContent = 'Copy JSON';
+         }, 2000);
+       });
+     });
+
+     // Close modal when clicking outside
+     jsonModal.addEventListener('click', (e) => {
+       if (e.target === jsonModal) {
+         jsonModal.classList.add('hidden');
+       }
+     });
+
+     // Image Modal functionality
+     const imageModal = document.getElementById('imageModal');
+     const closeImageModal = document.getElementById('closeImageModal');
+     const modalImage = document.getElementById('modalImage');
+     const viewButtons = document.querySelectorAll('.viewBtn');
+
+     viewButtons.forEach(btn => {
+       btn.addEventListener('click', (e) => {
+         e.stopPropagation();
+         const imagePath = btn.getAttribute('data-image');
+         modalImage.src = imagePath;
+         imageModal.classList.remove('hidden');
+       });
+     });
+
+     closeImageModal.addEventListener('click', () => {
+       imageModal.classList.add('hidden');
+     });
+
+     // Close image modal when clicking outside
+     imageModal.addEventListener('click', (e) => {
+       if (e.target === imageModal) {
+         imageModal.classList.add('hidden');
+       }
+     });
+
+     // Component dropdown functionality
+     const addComponentBtn = document.getElementById('addComponentBtn');
+     const componentDropdown = document.getElementById('componentDropdown');
+     const componentOptions = document.querySelectorAll('.component-option');
+
+     if (addComponentBtn && componentDropdown) {
+       addComponentBtn.addEventListener('click', (e) => {
+         e.stopPropagation();
+         componentDropdown.classList.toggle('hidden');
+       });
+
+       // Close dropdown when clicking outside
+       document.addEventListener('click', (e) => {
+         if (!addComponentBtn.contains(e.target) && !componentDropdown.contains(e.target)) {
+           componentDropdown.classList.add('hidden');
+         }
+       });
+
+       // Handle component selection
+       componentOptions.forEach(option => {
+         option.addEventListener('click', (e) => {
+           e.stopPropagation();
+           const componentType = option.getAttribute('data-type');
+           addComponent(componentType);
+           componentDropdown.classList.add('hidden');
+         });
+       });
+     }
+
+     function addComponent(type) {
+       // Find the Summary section container using ID
+       const summarySection = document.getElementById('summarySection');
+       if (!summarySection) return;
+
+       let componentHTML = '';
+       
+       switch(type) {
+         case 'paragraph':
+           const paragraphComponentId = 'paragraphComponent_' + Date.now();
+           componentHTML = `
+             <div id="${paragraphComponentId}" class="relative mt-4 p-4 border border-gray-200 rounded-lg">
+               <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">
+                 ×
+               </button>
+               <label class="block text-sm font-semibold text-gray-700 mb-2">Paragraph</label>
+               <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter paragraph content..."></textarea>
+             </div>
+           `;
+           break;
+         case 'bullet-points':
+           const bulletComponentId = 'bulletComponent_' + Date.now();
+           componentHTML = `
+             <div id="${bulletComponentId}" class="relative mt-4 p-4 border border-gray-200 rounded-lg">
+               <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">
+                 ×
+               </button>
+               <label class="block text-sm font-semibold text-gray-700 mb-2">2 Sided Bullet Points</label>
+               <label class="block text-xs text-gray-600 mb-1">Heading</label>
+               <textarea rows="1" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter heading..."></textarea>
+               <div id="${bulletComponentId}_grid" class="grid grid-cols-2 gap-4">
+                 <div id="${bulletComponentId}_left">
+                   <label class="block text-xs text-gray-600 mb-1">Left Side</label>
+                   <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Left bullet points..."></textarea>
+                 </div>
+                 <div id="${bulletComponentId}_right">
+                   <label class="block text-xs text-gray-600 mb-1">Right Side</label>
+                   <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Right bullet points..."></textarea>
+                 </div>
+               </div>
+               <div class="flex justify-between gap-2">
+                 <button type="button" data-component-id="${bulletComponentId}"
+                  class="addLeftBulletBtn bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition mt-2 text-xs w-full">
+                  Add Left Side Bullet Point
+                </button>
+               <button type="button" data-component-id="${bulletComponentId}"
+                 class="addRightBulletBtn bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition mt-2 text-xs w-full">
+                 Add Right Side Bullet Point
+               </button>
+               </div>
+             </div>
+           `;
+           break;
+         case 'subsections':
+           const subsectionComponentId = 'subsectionComponent_' + Date.now();
+           componentHTML = `
+             <div id="${subsectionComponentId}" class="relative mt-4 p-4 border border-gray-200 rounded-lg">
+               <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">
+                 ×
+               </button>
+               <label class="block text-sm font-semibold text-gray-700 mb-2">Subsections Paragraphs</label>
+               <div id="${subsectionComponentId}_subsections" class="space-y-3">
+                 <div class="flex flex-col gap-2">
+                   <label class="block text-xs text-gray-600 mb-1">Subsection</label>
+                   <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Heading...">
+                   <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Content..."></textarea>
+                 </div>
+               </div>
+               <button type="button" class="addSubsectionBtn bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition mt-4 text-xs w-full" data-component-id="${subsectionComponentId}">
+                 Add Subsection
+               </button>
+             </div>
+           `;
+           break;
+         case 'numbered-bullet':
+           const numberedComponentId = 'numberedComponent_' + Date.now();
+           componentHTML = `
+             <div id="${numberedComponentId}" class="relative mt-4 p-4 border border-gray-200 rounded-lg">
+               <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">
+                 ×
+               </button>
+               <label class="block text-sm font-semibold text-gray-700 mb-2">Numbered Bullet with Bottom Line</label>
+               <div class="space-y-3">
+                 <div>
+                   <label class="block text-xs text-gray-600 mb-1">Main Heading</label>
+                   <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Main Heading...">
+                 </div>
+                 <div>
+                   <label class="block text-xs text-gray-600 mb-1">Sub Heading</label>
+                   <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Sub Heading...">
+                 </div>
+                 <div id="${numberedComponentId}_points">
+                   <label class="block text-xs text-gray-600 mb-1">Numbered Points</label>
+                   <div class="space-y-2">
+                     <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Content..."></textarea>
+                   </div>
+                 </div>
+                 <button type="button" class="addNumberedBulletBtn bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition mt-2 text-xs w-full" data-component-id="${numberedComponentId}">
+                   Add Numbered Bullet
+                 </button>
+                 <div>
+                   <label class="block text-xs text-gray-600 mb-1">Bottom Line</label>
+                   <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Bottom Line Content..."></textarea>
+                 </div>
+               </div>
+             </div>
+           `;
+           break;
+         case 'compare-table':
+           const tableComponentId = 'tableComponent_' + Date.now();
+           componentHTML = `
+             <div id="${tableComponentId}" class="relative mt-4 p-4 border border-gray-200 rounded-lg">
+               <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">
+                 ×
+               </button>
+               <label class="block text-sm font-semibold text-gray-700 mb-2">Difference Table</label>
+               <div class="mb-4 flex flex-col md:flex-row gap-2 md:gap-6">
+                 <div class="flex-1 min-w-0">
+                   <label class="block text-xs text-gray-600 mb-1">Main Heading 1</label>
+                   <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5 mb-1" placeholder="Main Heading 1...">
+                   <input type="text" class="w-full rounded-lg border border-gray-200 focus:border-blue-300 focus:ring focus:ring-blue-50 transition p-2.5 text-xs" placeholder="Subheading (optional)">
+                 </div>
+                 <div class="flex-1 min-w-0">
+                   <label class="block text-xs text-gray-600 mb-1">Main Heading 2</label>
+                   <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5 mb-1" placeholder="Main Heading 2...">
+                   <input type="text" class="w-full rounded-lg border border-gray-200 focus:border-blue-300 focus:ring focus:ring-blue-50 transition p-2.5 text-xs" placeholder="Subheading (optional)">
+                 </div>
+               </div>
+               <div id="${tableComponentId}_diffPoints" class="space-y-3">
+                 <div class="grid grid-cols-2 gap-4">
+                   <div class="space-y-2">
+                     <label class="block text-xs text-gray-600">Main Heading 1 Points</label>
+                     <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter points for Main Heading 1..."></textarea>
+                     <div id="${tableComponentId}_leftPoints" class="space-y-2"></div>
+                   </div>
+                   <div class="space-y-2">
+                     <label class="block text-xs text-gray-600">Main Heading 2 Points</label>
+                     <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter points for Main Heading 2..."></textarea>
+                     <div id="${tableComponentId}_rightPoints" class="space-y-2"></div>
+                   </div>
+                 </div>
+               </div>
+               <div class="flex justify-between w-full mt-4 gap-2">
+                 <button type="button" class="addLeftDiffPointBtn bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition text-xs w-full"
+                   data-component-id="${tableComponentId}">
+                   Add Left Point
+                 </button>
+                 <button type="button" class="addRightDiffPointBtn bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition text-xs w-full"
+                   data-component-id="${tableComponentId}">
+                   Add Right Point
+                 </button>
+               </div>
+             </div>
+           `;
+           break;
+         case 'bottom-line':
+           const bottomLineComponentId = 'bottomLineComponent_' + Date.now();
+           componentHTML = `
+             <div id="${bottomLineComponentId}" class="relative mt-4 p-4 border border-gray-200 rounded-lg">
+               <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">
+                 ×
+               </button>
+               <label class="block text-xs text-gray-600 mb-1">Sub heading</label>
+               <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Sub heading...">
+               <label class="block text-xs text-gray-600 mb-1">Content</label>
+               <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Content..."></textarea>
+               <button type="button" class="addBottomLineBtn bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition mt-2 text-xs w-full" data-component-id="${bottomLineComponentId}">
+                 Add Bottom Line
+               </button>
+               <label class="block text-sm font-semibold text-gray-700 mb-2">Bottom Line Paragraph</label>
+               <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Key conclusion or bottom line..."></textarea>
+             </div>
+           `;
+           break;
+       }
+
+       // Insert the component into the components container (newest at bottom, oldest at top)
+       const summaryComponents = summarySection.querySelector('#summaryComponents');
+       if (summaryComponents) {
+         summaryComponents.insertAdjacentHTML('beforeend', componentHTML);
+       } else {
+         // Fallback: insert at the end of the summary section
+         summarySection.insertAdjacentHTML('beforeend', componentHTML);
+       }
+     }
+
+    // Step 2 Back Button
+    backBtn.addEventListener('click', () => {
+      step2.classList.add('hidden-step');
+      step1.classList.remove('hidden-step');
+      step2Indicator.classList.add('opacity-60');
+      step1Indicator.classList.remove('opacity-60');
+      step2Indicator.querySelector('div').classList.replace('bg-white', 'bg-blue-100');
+      step2Indicator.querySelector('div').classList.remove('ring-4', 'ring-blue-200');
+    });
+
+    // Step 2 Submit → Proceed (simulate)
+    step2Form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const summary = step2Form.summary.value.trim();
+      if (!summary) return alert("Please enter a summary before continuing.");
+      
+      // Collect all components data
+      const summaryComponents = document.querySelectorAll('#summaryComponents > div');
+      const componentsData = [];
+      
+      summaryComponents.forEach(component => {
+        // Determine component type
+         if (component.id.startsWith('numberedComponent_')) {
+           // Numbered bullet component
+          const mainHeading = component.querySelector('input[placeholder="Main Heading..."]')?.value || '';
+          const subHeading = component.querySelector('input[placeholder="Sub Heading..."]')?.value || '';
+          const bulletPoints = [];
+          
+          // Get all bullet points (subheadings and content)
+          const pointsContainer = component.querySelector('[id$="_points"]');
+          const bulletPointContainers = pointsContainer?.querySelectorAll('.relative.flex.flex-col, .relative.mt-4.p-3') || [];
+          
+          // Add the initial content textarea if it exists
+          const initialContent = pointsContainer?.querySelector(':scope > div.space-y-2 > textarea[placeholder="Content..."]')?.value || '';
+          if (initialContent) {
+            bulletPoints.push({
+              subheading: '',
+              content: initialContent
+            });
+          }
+          
+          // Add all additional bullet points
+          bulletPointContainers.forEach(bulletPoint => {
+            const bulletSubheading = bulletPoint.querySelector('input[placeholder="Subheading..."]')?.value || '';
+            const bulletContent = bulletPoint.querySelector('textarea[placeholder="Content..."]')?.value || '';
+            
+            bulletPoints.push({
+              subheading: bulletSubheading,
+              content: bulletContent
+            });
+          });
+          
+          // Get bottom line content
+          const bottomLine = component.querySelector('textarea[placeholder="Bottom Line Content..."]')?.value || '';
+          
+          componentsData.push({
+            type: 'numbered-bullet',
+            mainHeading,
+            subHeading,
+            bulletPoints,
+            bottomLine
+          });
+        } else if (component.id.startsWith('subsectionComponent_')) {
+          // Subsection component
+          // Add code for subsection components if needed
+        } else if (component.id.startsWith('tableComponent_')) {
+          // Compare table component
+          // Add code for table components if needed
+        } else if (component.id.startsWith('bottomLineComponent_')) {
+          // Bottom line component
+          // Add code for bottom line components if needed
+        }
+      });
+      
+      // Save all data to localStorage
+      localStorage.setItem('step2Data', JSON.stringify({ 
+        summary,
+        components: componentsData
+      }));
+      
+      // Also save to format.json file for easier access
+      try {
+        const jsonData = { 
+          summary,
+          components: componentsData
+        };
+        localStorage.setItem('format_json', JSON.stringify(jsonData));
+      } catch (error) {
+        console.error('Error saving to format_json:', error);
+      }
+      
+      alert('Step 2 data saved! Proceeding to Step 3...');
+      // window.location.href = 'step3.html';
+    });
+  </script>
+</body>
+</html>
