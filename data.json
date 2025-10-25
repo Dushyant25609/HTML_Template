@@ -62,6 +62,28 @@
             }
           ],
           "bottomLine": "The incorporation of rapidly\nevolving AI technology into the\nglobal economy is a powerful\nforce for growth and productivity\nenhancements."
+        },
+        {
+          "type": "numbered-bottom-line",
+          "mainHeading": "fsdf",
+          "bulletPoints": [
+            {
+              "subheading": "sdfsd",
+              "content": "sdfsd"
+            }
+          ],
+          "bottomLine": "sdfds"
+        },
+        {
+          "type": "bullet-points",
+          "heading": "safdag",
+          "leftPoints": [
+            "gfhgf",
+            "oiuyt"
+          ],
+          "rightPoints": [
+            "jhfdj"
+          ]
         }
       ]
     },

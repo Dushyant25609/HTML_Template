@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1219,21 +1219,52 @@ Investment products:</p>
                         break;
                         
                     case 'numbered-bottom-line':
+                        // Handle both old format (string) and new format (object with heading/content)
+                        const bottomLineHeading = typeof component.bottomLine === 'object' ? (component.bottomLine?.heading || '') : '';
+                        const bottomLineContent = typeof component.bottomLine === 'object' ? (component.bottomLine?.content || '') : (component.bottomLine || '');
+
                         html += `
-                            <div class="space-y-3">
-                                <h4 class="text-sm font-semibold text-gray-800">${component.mainHeading || ''}</h4>
-                                <h5 class="text-sm font-medium text-gray-500">${component.subHeading || ''}</h5>
-                                <ol class="text-sm text-gray-500 space-y-1 list-decimal list-inside">
-                                    ${(component.points || []).map(point => `<li>${point}</li>`).join('')}
-                                </ol>
-                                <div class="border-t border-gray-300 pt-3">
-                                    <h4 class="text-sm font-semibold text-gray-800 mb-1">Bottom Line</h4>
-                                    <p class="text-sm text-gray-500 ">${component.bottomLine || ''}</p>
+                            <div class="flex justify-between w-[196mm] mt-8 gap-4">
+                                <div class="w-[65%]">
+                                    <h4 class="text-sm font-semibold text-gray-800 mb-3">${component.mainHeading || ''}</h4>
+                                    <ol class="list-decimal list-outside ml-5 space-y-2">
+                                        ${(component.bulletPoints || []).map(point => {
+                                            if (point.subheading) {
+                                                return `<li class="text-[11px]"><span class="font-semibold">${point.subheading}</span>—${point.content || ''}</li>`;
+                                            } else {
+                                                return `<li class="text-[11px]">${point.content || ''}</li>`;
+                                            }
+                                        }).join('')}
+                                    </ol>
+                                </div>
+                                <div class="w-[30%] bg-[--bg-gray] px-4 py-3 h-fit">
+                                    <h4 class="text-sm font-semibold text-gray-800 mb-2">Bottom Line${bottomLineHeading ? ': ' + bottomLineHeading : ''}</h4>
+                                    <p class="text-[11px] text-[--box-gray]">${bottomLineContent}</p>
                                 </div>
                             </div>
                         `;
                         break;
-                        
+
+                    case 'bullet-points':
+                        html += `
+                            <div class="mt-8">
+                                <h4 class="text-sm font-semibold text-gray-800 mb-3">${component.heading || ''}</h4>
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div>
+                                        <ul class="list-disc list-outside ml-5 space-y-1">
+                                            ${(component.leftPoints || []).map(point => `<li class="text-[11px] text-[--box-gray]">${point}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="list-disc list-outside ml-5 space-y-1">
+                                            ${(component.rightPoints || []).map(point => `<li class="text-[11px] text-[--box-gray]">${point}</li>`).join('')}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        break;
+
                     case 'two-sided-bullets':
                         html += `
                             <div class="grid grid-cols-2 gap-4">

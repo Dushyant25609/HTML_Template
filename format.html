@@ -27,6 +27,28 @@
     .hidden-step {
       display: none;
     }
+
+    /* Smooth scrolling for main content area */
+    .main-content-scroll {
+      scroll-behavior: smooth;
+    }
+
+    /* Ensure forms can grow without breaking scroll */
+    .form-container {
+      width: 100%;
+      max-width: 42rem; /* max-w-xl */
+      flex-shrink: 0;
+    }
+
+    /* Prevent nested scrolling issues in summary components */
+    #summaryComponents {
+      overflow: visible;
+    }
+
+    /* Ensure asset classes container doesn't cause scroll issues */
+    #assetClassesContainer {
+      overflow: visible;
+    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-white flex items-center justify-center min-h-screen">
@@ -62,10 +84,10 @@
     </div>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col items-center justify-center px-10 py-12 overflow-y-auto">
+    <div class="flex-1 flex flex-col items-center px-10 py-12 overflow-y-auto main-content-scroll">
 
       <!-- Step 1 Form -->
-      <div id="step1" class="w-full max-w-xl fade-in">
+      <div id="step1" class="form-container fade-in">
         <div class="text-center mb-8">
           <img src="assests//images/title.png" alt="Title Image" class="mx-auto w-full object-contain mb-4">
           <h2 class="text-2xl font-bold text-blue-700">Step 1: Document Details</h2>
@@ -104,7 +126,7 @@
       </div>
 
       <!-- Step 2 Form -->
-      <div id="step2" class="w-full max-w-xl hidden-step fade-in">
+      <div id="step2" class="form-container hidden-step fade-in">
         <div class="text-center mb-8">
           <h2 class="text-2xl font-bold text-blue-700">Section 1</h2>
         </div>
@@ -155,7 +177,7 @@
                      <button type="button" class="viewBtn ml-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/subsectionParagraph.png">View</button>
                    </div>
                    <div class="flex items-center justify-between px-4 py-2 hover:bg-gray-100 transition">
-                     <button type="button" class="component-option flex-1 text-left" data-type="numbered-bullet">Number bullet with Bottom line</button>
+                     <button type="button" class="component-option flex-1 text-left" data-type="numbered-bottom-line">Number bullet with Bottom line</button>
                      <button type="button" class="viewBtn ml-2 px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assests/images/sectionOne/numberedBottomLine.png">View</button>
                    </div>
                    <div class="flex items-center justify-between px-4 py-2 hover:bg-gray-100 transition">
@@ -809,8 +831,8 @@
            return {
              type: 'bullet-points',
              heading: component.querySelector('textarea[rows="1"]')?.value || '',
-             leftPoints: Array.from(component.querySelectorAll('#leftPoints textarea')).map(ta => ta.value.trim()).filter(v => v),
-             rightPoints: Array.from(component.querySelectorAll('#rightPoints textarea')).map(ta => ta.value.trim()).filter(v => v)
+             leftPoints: Array.from(component.querySelectorAll('[id$="_left"] textarea')).map(ta => ta.value.trim()).filter(v => v),
+             rightPoints: Array.from(component.querySelectorAll('[id$="_right"] textarea')).map(ta => ta.value.trim()).filter(v => v)
            };
            
          case 'subsections':
@@ -822,34 +844,41 @@
              }))
            };
            
-         case 'numbered-bullet': {
+         case 'numbered-bottom-line': {
             const pointsContainer = component.querySelector(`#${component.id}_points`) || component.querySelector('[id$="_points"]');
-            const mainHeading = component.querySelector('input[placeholder="Main Heading..."]')?.value || '';
-            const subHeading = component.querySelector('input[placeholder="Sub Heading..."]')?.value || '';
+            const mainHeading = component.querySelector('input[placeholder*="Why We\'re Bullish"]')?.value ||
+                               component.querySelector('input[placeholder*="Main Heading"]')?.value || '';
             const bulletPoints = [];
- 
-            // Initial content-only bullet
-            const initialContent = pointsContainer?.querySelector(':scope > div.space-y-2 > textarea[placeholder="Content..."]')?.value || '';
-            if (initialContent) {
-              bulletPoints.push({ subheading: '', content: initialContent });
+
+            // Initial bullet with subheading + content
+            const initialSubheading = pointsContainer?.querySelector(':scope > div.space-y-2 > input[placeholder*="Solid Profit"]')?.value ||
+                                     pointsContainer?.querySelector(':scope > div.space-y-2 > input[type="text"]')?.value || '';
+            const initialContent = pointsContainer?.querySelector(':scope > div.space-y-2 > textarea')?.value || '';
+            if (initialContent || initialSubheading) {
+              bulletPoints.push({ subheading: initialSubheading, content: initialContent });
             }
- 
+
             // Additional bullets with subheading + content
             const bulletPointContainers = pointsContainer?.querySelectorAll('.relative.flex.flex-col, .relative.mt-4.p-3') || [];
             bulletPointContainers.forEach(bp => {
-              const bulletSubheading = bp.querySelector('input[placeholder="Subheading..."]')?.value || '';
-              const bulletContent = bp.querySelector('textarea[placeholder="Content..."]')?.value || '';
+              const bulletSubheading = bp.querySelector('input[type="text"]')?.value || '';
+              const bulletContent = bp.querySelector('textarea')?.value || '';
               bulletPoints.push({ subheading: bulletSubheading, content: bulletContent });
             });
- 
-            const bottomLine = component.querySelector('textarea[placeholder="Bottom Line Content..."]')?.value || '';
- 
+
+            const bottomLineHeading = component.querySelector('input[placeholder*="Expect Higher Highs"]')?.value ||
+                                     component.querySelector('input[placeholder*="Bottom Line Heading"]')?.value || '';
+            const bottomLineContent = component.querySelector('textarea[placeholder*="We remain overweight"]')?.value ||
+                                     component.querySelector('textarea[placeholder*="Bottom Line Content"]')?.value || '';
+
             return {
-              type: 'numbered-bullet',
+              type: 'numbered-bottom-line',
               mainHeading,
-              subHeading,
               bulletPoints,
-              bottomLine
+              bottomLine: {
+                heading: bottomLineHeading,
+                content: bottomLineContent
+              }
             };
           }
            
@@ -934,12 +963,12 @@
 
      function getComponentType(component) {
        if (component.querySelector('textarea[placeholder*="paragraph content"]')) return 'paragraph';
-       if (component.querySelector('input[placeholder*="Enter heading"]')) return 'bullet-points';
-       if (component.querySelector('input[placeholder*="Heading"]') && component.querySelector('textarea[placeholder*="Content"]')) return 'subsections';
-       if (component.querySelector('textarea[placeholder*="Bottom Line"]')) return 'numbered-bullet';
+       if (component.querySelector('textarea[placeholder*="Enter heading"]')) return 'bullet-points';
        if (component.querySelector('input[placeholder*="Main Heading 1"]')) return 'compare-table';
+       if (component.querySelector('input[placeholder*="Main Heading"]')) return 'numbered-bottom-line';
        if (component.querySelector('textarea[placeholder*="Key conclusion"]')) return 'bottom-line';
        if (component.querySelector('input[placeholder*="Asset Class Header"]')) return 'table-data';
+       if (component.querySelector('input[placeholder*="Heading"]') && component.querySelector('textarea[placeholder*="Content"]')) return 'subsections';
        return 'unknown';
      }
 
@@ -1105,7 +1134,7 @@
              </div>
            `;
            break;
-         case 'numbered-bullet':
+         case 'numbered-bottom-line':
            const numberedComponentId = 'numberedComponent_' + Date.now();
            componentHTML = `
              <div id="${numberedComponentId}" class="relative mt-4 p-4 border border-gray-200 rounded-lg">
@@ -1116,24 +1145,30 @@
                <div class="space-y-3">
                  <div>
                    <label class="block text-xs text-gray-600 mb-1">Main Heading</label>
-                   <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Main Heading...">
-                 </div>
-                 <div>
-                   <label class="block text-xs text-gray-600 mb-1">Sub Heading</label>
-                   <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Sub Heading...">
+                   <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Why We're Bullish: The 'Alive Five'">
                  </div>
                  <div id="${numberedComponentId}_points">
                    <label class="block text-xs text-gray-600 mb-1">Numbered Points</label>
                    <div class="space-y-2">
-                     <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Content..."></textarea>
+                     <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Solid Profit Cycle">
+                     <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Earnings resilience across sectors..."></textarea>
                    </div>
                  </div>
                  <button type="button" class="addNumberedBulletBtn bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition mt-2 text-xs w-full" data-component-id="${numberedComponentId}">
                    Add Numbered Bullet
                  </button>
-                 <div>
-                   <label class="block text-xs text-gray-600 mb-1">Bottom Line</label>
-                   <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Bottom Line Content..."></textarea>
+                 <div class="border-t pt-3">
+                   <label class="block text-sm font-semibold text-gray-700 mb-2">Bottom Line Section</label>
+                   <div class="space-y-2">
+                     <div>
+                       <label class="block text-xs text-gray-600 mb-1">Bottom Line Heading</label>
+                       <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Expect Higher Highs in Equities in The Intermediate Term">
+                     </div>
+                     <div>
+                       <label class="block text-xs text-gray-600 mb-1">Bottom Line Content</label>
+                       <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., We remain overweight Equities relative to Fixed Income..."></textarea>
+                     </div>
+                   </div>
                  </div>
                </div>
              </div>
@@ -1241,43 +1276,49 @@
         // Determine component type
          if (component.id.startsWith('numberedComponent_')) {
            // Numbered bullet component
-          const mainHeading = component.querySelector('input[placeholder="Main Heading..."]')?.value || '';
-          const subHeading = component.querySelector('input[placeholder="Sub Heading..."]')?.value || '';
+          const mainHeading = component.querySelector('input[placeholder*="Why We\'re Bullish"]')?.value ||
+                             component.querySelector('input[placeholder*="Main Heading"]')?.value || '';
           const bulletPoints = [];
-          
+
           // Get all bullet points (subheadings and content)
           const pointsContainer = component.querySelector('[id$="_points"]');
           const bulletPointContainers = pointsContainer?.querySelectorAll('.relative.flex.flex-col, .relative.mt-4.p-3') || [];
-          
-          // Add the initial content textarea if it exists
-          const initialContent = pointsContainer?.querySelector(':scope > div.space-y-2 > textarea[placeholder="Content..."]')?.value || '';
-          if (initialContent) {
+
+          // Add the initial bullet with subheading and content
+          const initialSubheading = pointsContainer?.querySelector(':scope > div.space-y-2 > input[type="text"]')?.value || '';
+          const initialContent = pointsContainer?.querySelector(':scope > div.space-y-2 > textarea')?.value || '';
+          if (initialContent || initialSubheading) {
             bulletPoints.push({
-              subheading: '',
+              subheading: initialSubheading,
               content: initialContent
             });
           }
-          
+
           // Add all additional bullet points
           bulletPointContainers.forEach(bulletPoint => {
-            const bulletSubheading = bulletPoint.querySelector('input[placeholder="Subheading..."]')?.value || '';
-            const bulletContent = bulletPoint.querySelector('textarea[placeholder="Content..."]')?.value || '';
-            
+            const bulletSubheading = bulletPoint.querySelector('input[type="text"]')?.value || '';
+            const bulletContent = bulletPoint.querySelector('textarea')?.value || '';
+
             bulletPoints.push({
               subheading: bulletSubheading,
               content: bulletContent
             });
           });
-          
-          // Get bottom line content
-          const bottomLine = component.querySelector('textarea[placeholder="Bottom Line Content..."]')?.value || '';
-          
+
+          // Get bottom line heading and content
+          const bottomLineHeading = component.querySelector('input[placeholder*="Expect Higher Highs"]')?.value ||
+                                   component.querySelector('input[placeholder*="Bottom Line Heading"]')?.value || '';
+          const bottomLineContent = component.querySelector('textarea[placeholder*="We remain overweight"]')?.value ||
+                                   component.querySelector('textarea[placeholder*="Bottom Line Content"]')?.value || '';
+
           componentsData.push({
-            type: 'numbered-bullet',
+            type: 'numbered-bottom-line',
             mainHeading,
-            subHeading,
             bulletPoints,
-            bottomLine
+            bottomLine: {
+              heading: bottomLineHeading,
+              content: bottomLineContent
+            }
           });
         } else if (component.id.startsWith('subsectionComponent_')) {
           // Subsection component
