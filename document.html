@@ -149,180 +149,20 @@
             margin: 0;
         }
 
-        /* Table 4 specific weight indicator styles */
-        .table4-weight-indicator {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid #333;
-            gap: 8px;
-            padding: 8px 0;
-            min-width: 200px;
-        }
-
-        .table4-weight-dot {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: 2px solid #333;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-
-        .table4-weight-dot.empty {
-            background-color: #f9f9f9;
-            border-color: #ccc;
-        }
-
-        /* Weight dot colors based on position */
-        .table4-weight-dot.filled.overweight { background-color: #4CAF50; border: 2px solid #333; } /* Green */
-        .table4-weight-dot.filled.neutral { background-color: #FFC107; border: 2px solid #333; } /* Yellow */
-        .table4-weight-dot.filled.underweight { background-color: #ef4444; border: 2px solid #333; } /* Red */
-
-        /* Hover effects for weight dots */
-        .table4-weight-dot:hover {
-            transform: scale(1.2);
-            
-        }
-
-        .table4-weight-dot.empty:hover { border-color: #666; }
-        .table4-weight-dot.filled.overweight:hover { border-color: #333; }
-        .table4-weight-dot.filled.neutral:hover { border-color: #333; }
-        .table4-weight-dot.filled.underweight:hover { border-color: #333; }
-
-        /* Vertical range indicator for Alternative Investments */
-        .table4-vertical-range {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 8px 0;
-            min-width: 200px;
-            position: relative;
-        }
-
-        .table4-range-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0;
-            position: relative;
-        }
-
-        .table4-range-dot {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background-color: #999;
-            border: 2px solid #333;
-            z-index: 2;
-            position: relative;
-        }
-
-        .table4-range-line {
-            width: 4px;
-            height: 35px;
-            background-color: #999;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Table 4 rows styling */
-        #table4-view-body tr {
-            cursor: default;
-        }
-
-        #table4-view-body tr:hover {
-            background-color: #f8f9fa !important;
-        }
-
-        /* Flexbox layout for Alternative Investments section */
-        .alt-investments-section {
-            border-bottom: 2px solid #333;
-            background-color: white;
-        }
-
-        .alt-investments-header {
-            font-weight: normal;
-            padding: 12px;
-            border-bottom: 2px solid #333;
-        }
-
-        .alt-investments-content {
-            display: flex;
-            align-items: stretch;
-            min-height: 150px;
-        }
-
-        .alt-investments-labels {
-            flex: 0 0 250px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            padding: 20px 12px;
-        }
-
-        .alt-investment-label {
-            padding: 8px 0;
-            font-weight: normal;
-        }
-
-        .alt-investments-indicator {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        /* Cash row with flexbox */
-        .cash-row-flex {
-            display: flex;
-            border-bottom: 2px solid #333;
-            background-color: white;
-            padding: 12px;
-        }
-
-        .cash-label {
-            flex: 0 0 250px;
-            font-weight: normal;
-        }
-
-        .cash-indicator {
-            flex: 1;
-        }
-
-        /* Override global bold font for Table 4 first column */
-        #table4-view-body td:first-child {
-            font-weight: normal;
-        }
-
-        /* Override bold font for Table 4 headers */
-        .factors-table thead th.align-middle {
-            font-weight: normal;
-        }
-
-        /* Ensure Table 4 headers specifically are not bold */
-        #table4-view-body ~ table thead th,
-        table.factors-table:has(#table4-view-body) thead th {
-            font-weight: normal !important;
-        }
-
         /* Weight indicator styles - adjusted for 35% width */
         .weight-indicator {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 4px;
-            padding: 4px 0;
+            gap: 16px;
             min-width: 120px;
         }
 
         .weight-dot {
-            width: 12px;
-            height: 12px;
+            width: 11px;
+            height: 11px;
             border-radius: 50%;
-            border: 1px solid #ddd;
+            border: 0.5px solid #ddd;
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -332,13 +172,14 @@
         }
 
         .weight-dot.empty {
-            background-color: #f9f9f9;
-            border-color: #ccc;
+            background-color: #b8b8b8;
+            width: 6px;
+            height: 6px;
         }
 
-        .weight-dot.filled.overweight { background-color: #4CAF50; border: 2px solid #333;}
-        .weight-dot.filled.neutral { background-color: #FFC107; border: 2px solid #333;}
-        .weight-dot.filled.underweight { background-color: #ef4444; border: 2px solid #333;}
+        .weight-dot.filled.overweight { background-color: #4CAF50; border: 1px solid #333;}
+        .weight-dot.filled.neutral { background-color: #FFC107; border: 1px solid #333;}
+        .weight-dot.filled.underweight { background-color: #ef4444; border: 1px solid #333;}
 
         .weight-dot:hover {
             transform: scale(1.2);
@@ -355,103 +196,17 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 0;
-            font-size: 10px;
-        }
-
-        .factors-table th,
-        .factors-table td {
-            padding: 3px 2px;
-            font-size: 10px;
-        }
-
-        .factors-table td{
-            font-size: 9px;
-        }
-        .factors-table tr:nth-child(2n) {
-            background-color: #f2f2f2;
         }
 
         .factors-table th {
             background-color: #f8f9fa;
-            font-weight: 800;
+            font-weight: lighter;
             color: #333;
-            font-size: 11px;
+            font-size: 10px;
         }
 
         .factors-table tbody tr:hover {
             background-color: #f8f9fa;
-        }
-
-        /* Adjust special sections for 35% width */
-        .alt-investments-section {
-            border-bottom: 1px solid #333;
-            background-color: white;
-            font-size: 11px;
-        }
-
-        .alt-investments-header {
-            font-weight: normal;
-            padding: 8px 6px;
-            border-bottom: 1px solid #333;
-            font-size: 11px;
-        }
-
-        .alt-investments-content {
-            display: flex;
-            align-items: stretch;
-            min-height: 80px;
-        }
-
-        .alt-investments-labels {
-            flex: 0 0 120px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            padding: 10px 6px;
-        }
-
-        .alt-investment-label {
-            padding: 4px 0;
-            font-weight: normal;
-            font-size: 10px;
-        }
-
-        .alt-investments-indicator {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-
-        .cash-row-flex {
-            display: flex;
-            border-bottom: 1px solid #333;
-            background-color: white;
-            padding: 8px 6px;
-            font-size: 11px;
-        }
-
-        .cash-label {
-            flex: 0 0 120px;
-            font-weight: normal;
-            font-size: 10px;
-        }
-
-        .cash-indicator {
-            flex: 1;
-        }
-
-        .align-middle {
-            vertical-align: middle;
-        }
-
-        /* Section header styling */
-        .section-header td {
-            background-color: #f8f9fa;
-            font-weight: bold;
-            border-top: 2px solid #333;
-            border-bottom: 1px solid #333;
         }
 
         /* Alternative investment group styling */
@@ -463,8 +218,6 @@
         .alt-investment-container {
             display: flex;
             align-items: stretch;
-            min-height: 80px;
-            padding: 12px;
             background-color: #f8f9fa;
             border: 1px solid #e9ecef;
         }
@@ -476,14 +229,6 @@
             justify-content: space-around;
             padding-right: 20px;
         }
-
-        .alt-investment-label {
-            font-size: 11px;
-            color: #333;
-            padding: 4px 0;
-            line-height: 1.4;
-        }
-
         .alt-investment-indicator {
             flex: 0 0 40px;
             display: flex;
@@ -504,7 +249,7 @@
         .alt-dot {
             width: 8px;
             height: 8px;
-            background-color: #666;
+            background-color: #999;
             border-radius: 50%;
             position: relative;
             z-index: 2;
@@ -513,7 +258,7 @@
 
         .alt-line {
             width: 2px;
-            background-color: #666;
+            background-color: #999;
             position: absolute;
             top: 4px;
             bottom: 4px;
@@ -992,21 +737,20 @@ Investment products:</p>
 
                         <!-- Table Data -->
                         <section class="">
-                            <div class="bg-white shadow-sm rounded-lg p-4">
                                 <div class="overflow-x-auto">
-                                    <table class="w-full factors-table text-xs">
+                                    <table class="w-full factors-table ">
                                         <thead class="border-t border-b border-black">
                                             <tr class="align-middle">
-                                                <th id="table4-header-1" rowspan="2" class="align-middle text-xs px-2 py-1"></th>
-                                                <th id="table4-header-2" class="align-middle text-center text-xs px-2 py-1 "></th>
+                                                <th id="table4-header-1" rowspan="2" class="align-middle text-[11px] px-2 py-0.5"></th>
+                                                <th id="table4-header-2" class="align-middle text-center text-[11px] px-2 py-0.5 w-[55%]"></th>
                                             </tr>
                                             <tr>
-                                                <th class="text-xs px-2 py-1 border-t border-black">
-                                                    <div class="flex justify-between px-1">
+                                                <th class="text-[11px] px-2 py-0.5 border-t border-black">
+                                                    <div class="flex justify-between ">
                                                         <span class="text-[8px] font-thin">Underweight</span>
                                                         <span class="text-[9px] font-thin">Neutral</span>
                                                         <span class="text-[8px] font-thin">Overweight</span>
-                    </div>
+                                                    </div>
                                                 </th>
                                             </tr>
                                         </thead>
@@ -1018,7 +762,6 @@ Investment products:</p>
                                 <div class="text-xs text-gray-600 mt-2">
                                     <p class="font-light text-[10px]" id="table4-footnote"></p>
                 </div>
-            </div>
         </section>
                     </div>
                 </div>
@@ -4090,10 +3833,10 @@ Investment products:</p>
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td colspan="2" class="alt-investment-group">
-                    <div class="alt-investment-container">
-                        <div class="alt-investment-labels">
+                    <div class="alt-investment-container px-1 py-2">
+                        <div class="alt-investment-labels text-[9px] space-y-1 font-thin">
                             ${altAssets.map(asset => `
-                                <div class="alt-investment-label">${asset.name || ''}</div>
+                                <div class="text-[9px] font-thin">${asset.name || ''}</div>
                             `).join('')}
                         </div>
                         <div class="alt-investment-indicator">
@@ -4109,15 +3852,7 @@ Investment products:</p>
             tbody.appendChild(row);
         }
 
-        // Helper function to add section header
-        function addSectionHeader(tbody, sectionName) {
-            const row = document.createElement('tr');
-            row.className = 'section-header';
-            row.innerHTML = `
-                <td colspan="2" class="font-bold text-xs py-2 border-t-2 border-b border-gray-800">${sectionName}</td>
-            `;
-            tbody.appendChild(row);
-        }
+        
         
         // Helper function to add asset row
         function addAssetRow(tbody, asset) {
@@ -4127,50 +3862,27 @@ Investment products:</p>
             if (asset.separate === 1) {
                 row.className = 'separated-row';
             }
+
             
             // Handle assets without position (hide dots completely)
             if (!asset.position || asset.position === null || asset.position === undefined) {
                 row.innerHTML = `
-                    <td class="text-xs py-1 pl-2">${asset.name || ''}</td>
-                    <td class="text-center py-1"></td>
+                    <td class="text-[9px] font-thin px-1">${asset.name || ''}</td>
+                    <td class="text-center"></td>
                 `;
             } else {
                 const category = getWeightCategory(asset.position);
                 const weightIndicator = createWeightIndicator(asset.position, category);
                 row.innerHTML = `
-                    <td class="text-xs py-1 pl-2">${asset.name || ''}</td>
-                    <td class="text-center py-1">${weightIndicator}</td>
+                    <td class="text-[9px] font-thin  px-1">${asset.name || ''}</td>
+                    <td class="text-center">${weightIndicator}</td>
                 `;
             }
             
             tbody.appendChild(row);
         }
         
-        // Helper function to add alternative investment row
-        function addAltInvestmentRow(tbody, asset) {
-            const row = document.createElement('tr');
-            
-            // Add top and bottom border if separate is 1
-            if (asset.separate === 1) {
-                row.className = 'separated-row';
-            }
-            
-            // Alternative investments with vertical line indicator
-            row.innerHTML = `
-                <td class="text-xs py-1 pl-2">${asset.name || ''}</td>
-                <td class="text-center py-1">
-                    <div class="alt-investment-indicator">
-                        <div class="alt-line-container">
-                            <div class="alt-dot"></div>
-                            <div class="alt-line"></div>
-                            <div class="alt-dot"></div>
-                        </div>
-                    </div>
-                </td>
-            `;
-            tbody.appendChild(row);
-        }
-        
+    
         // Helper function to add cash row
         function addCashRow(tbody, asset) {
             const row = document.createElement('tr');
@@ -4181,8 +3893,8 @@ Investment products:</p>
             }
             
             row.innerHTML = `
-                <td class="text-xs py-1 pl-2">${asset.name || ''}</td>
-                <td class="text-center py-1"></td>
+                <td class="text-[10px] px-1">${asset.name || ''}</td>
+                <td class="text-center"></td>
             `;
             tbody.appendChild(row);
         }
