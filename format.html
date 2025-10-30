@@ -49,34 +49,95 @@
     #assetClassesContainer {
       overflow: visible;
     }
+    /* Make step indicators look clickable */
+    .progress [id^="step"][id$="Indicator"] {
+      cursor: pointer;
+    }
+    /* Hide scrollbars but keep scrolling */
+    .no-scrollbar {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+    .no-scrollbar::-webkit-scrollbar { /* Chrome, Safari, Opera */
+      display: none;
+    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-white flex items-center justify-center min-h-screen">
+
+ 
 
   <div class="flex bg-white rounded-2xl shadow-xl overflow-hidden w-full max-w-5xl h-[85vh]">
 
     <!-- Sidebar / Step Indicator -->
     <div class="relative bg-blue-600 text-white w-64 p-8 flex flex-col items-center justify-between">
-      <div class="w-full">
+      <div class="w-full overflow-y-scroll no-scrollbar">
         <h1 class="text-2xl font-bold mb-6 text-center">Setup Progress</h1>
         <div class="relative progress flex flex-col gap-10 items-center">
           <!-- Step 1 -->
           <div id="step1Indicator" class="relative z-10 flex flex-col items-center">
             <div class="w-10 h-10 rounded-full bg-white text-blue-600 flex items-center justify-center font-bold shadow-lg ring-4 ring-blue-200">1</div>
-            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Document Details</span>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 1</span>
           </div>
           <!-- Step 2 -->
           <div id="step2Indicator" class="relative z-10 flex flex-col items-center opacity-60">
             <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">2</div>
-            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Section 1</span>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 2</span>
           </div>
           <!-- Step 3 -->
-          <div class="relative z-10 flex flex-col items-center opacity-60">
+          <div id="step3Indicator" class="relative z-10 flex flex-col items-center opacity-60">
             <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">3</div>
-            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Preview</span>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 3</span>
+          </div>
+          <!-- Step 4 -->
+          <div id="step4Indicator" class="relative z-10 flex flex-col items-center opacity-60">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">4</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 4</span>
+          </div>
+          <!-- Step 5 -->
+          <div id="step5Indicator" class="relative z-10 flex flex-col items-center opacity-60">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">5</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 5</span>
+          </div>
+          <!-- Step 6 -->
+          <div id="step6Indicator" class="relative z-10 flex flex-col items-center opacity-60">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">6</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 6</span>
+          </div>
+          <!-- Step 7 -->
+          <div id="step7Indicator" class="relative z-10 flex flex-col items-center opacity-60">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">7</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 7</span>
+          </div>
+          <!-- Step 8 -->
+          <div id="step8Indicator" class="relative z-10 flex flex-col items-center opacity-60">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">8</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 8</span>
+          </div>
+          <!-- Step 9 -->
+          <div id="step9Indicator" class="relative z-10 flex flex-col items-center opacity-60">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">9</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 9</span>
+          </div>
+          <!-- Step 10 -->
+          <div id="step10Indicator" class="relative z-10 flex flex-col items-center opacity-60">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">10</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 10</span>
+          </div>
+          <!-- Step 11 -->
+          <div id="step11Indicator" class="relative z-10 flex flex-col items-center opacity-60">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">11</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 11</span>
+          </div>
+          <!-- Step 12 -->
+          <div id="step12Indicator" class="relative z-10 flex flex-col items-center opacity-60">
+            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">12</div>
+            <span class="mt-2 text-xs font-semibold p-1 bg-blue-600 border-2 border-white rounded-full">Step 12</span>
           </div>
         </div>
       </div>
+
+      
 
       <div class="text-center text-xs opacity-70">
         <p>© 2025 DocFlow</p>
@@ -117,7 +178,7 @@
           </div>
 
           <div class="flex justify-end">
-            <button type="submit" id="nextBtn"
+            <button type="submit"
               class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">
               Next →
             </button>
@@ -128,7 +189,7 @@
       <!-- Step 2 Form -->
       <div id="step2" class="form-container hidden-step fade-in">
         <div class="text-center mb-8">
-          <h2 class="text-2xl font-bold text-blue-700">Section 1</h2>
+          <h2 class="text-2xl font-bold text-blue-700">Step 2: In Brief</h2>
         </div>
 
         <form id="step2Form" class="space-y-6">
@@ -251,11 +312,8 @@
 
             <!-- Asset Classes Section -->
             <div class="mb-4">
-              <div class="flex justify-between items-center mb-3">
+              <div class="mb-3">
                 <h4 class="text-sm font-semibold text-gray-700">Asset Classes</h4>
-                <button type="button" class="addAssetClassBtn bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition text-xs">
-                  Add Asset Class
-                </button>
               </div>
               <div id="assetClassesContainer" class="space-y-3">
                   <!-- Initial asset class row -->
@@ -269,13 +327,14 @@
                         <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Equities">
                       </div>
                       <div>
-                        <label class="block text-xs text-gray-600 mb-1">Position (1-4)</label>
+                        <label class="block text-xs text-gray-600 mb-1">Position (1-5)</label>
                         <select class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
                           <option value="">Select Position</option>
-                          <option value="1">1 - Underweight</option>
-                          <option value="2">2 - Underweight</option>
-                          <option value="3">3 - Neutral</option>
-                          <option value="4">4 - Overweight</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
                         </select>
                       </div>
                     </div>
@@ -299,24 +358,961 @@
                     </div>
                   </div>
                 </div>
+              <button type="button" class="addAssetClassBtn mt-3 w-full bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+                Add Asset Class
+              </button>
               </div>
             </div>
-           </div>
 
-          <div class="flex justify-end">
-            <button type="button" id="backBtn"
+          <div class="flex justify-between">
+            <button type="button" id="step2BackBtn"
               class="bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">
               ← Back
             </button>
+            <button type="button" id="step2NextBtn"
+              class="bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">
+              Next →
+            </button>
+          </div>
+        </form>
+
+      </div>
+
+      <!-- Step 3: CIO Investment Dashboard -->
+      <div id="step3" class="form-container hidden-step fade-in">
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-blue-700">Step 3: CIO Investment Dashboard</h2>
+            <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionTwo/s2.png">View</button>
+          </div>
+        </div>
+        <form id="step3Form" class="space-y-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+            <input id="step3_title" type="text" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Dashboard title...">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Description</label>
+            <textarea id="step3_description" rows="3" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Description..."></textarea>
+          </div>
+          <div class="border border-gray-300 rounded-lg p-4">
+            <h4 class="text-sm font-semibold text-gray-700 mb-3">Table Data</h4>
+            <div class="mb-4 p-3 border border-gray-200 rounded-lg bg-gray-50">
+              <h5 class="text-xs font-semibold text-gray-700 mb-3">Headers</h5>
+              <div class="grid grid-cols-3 gap-4">
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">Factor Header</label>
+                  <input type="text" id="step3_factorHeader" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Factor">
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">Implication Header</label>
+                  <input type="text" id="step3_implicationHeader" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Implication for Equities">
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">CIO View Header</label>
+                  <input type="text" id="step3_cioViewHeader" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="CIO View">
+                </div>
+              </div>
+            </div>
+            <div class="mb-4">
+              <label class="block text-xs text-gray-600 mb-1">Subtitle</label>
+              <input type="text" id="step3_subtitle" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Current readings on the key drivers of Equities...">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Data</label>
+              <div id="step3_dataRows" class="space-y-3">
+                <div class="relative p-3 border border-gray-200 rounded-lg bg-white step3-data-row">
+                  <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition" title="Remove">×</button>
+                  <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div>
+                      <label class="block text-xs text-gray-600 mb-1">Factor</label>
+                      <input type="text" class="w-full rounded-lg border border-gray-300 p-2.5 step3_factor" placeholder="Earnings">
+                    </div>
+                    <div>
+                      <label class="block text-xs text-gray-600 mb-1">Trend</label>
+                      <select class="w-full rounded-lg border border-gray-300 p-2.5 step3_trend">
+                        <option value="">Select</option>
+                        <option value="up">Up</option>
+                        <option value="down">Down</option>
+                        <option value="neutral" selected>Neutral</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-xs text-gray-600 mb-1">Value</label>
+                      <select class="w-full rounded-lg border border-gray-300 p-2.5 step3_value">
+                        <option value="">Select</option>
+                        <option value="0" selected>0</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="75">75</option>
+                        <option value="100">100</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mt-3">
+                    <label class="block text-xs text-gray-600 mb-1">CIO View</label>
+                    <textarea rows="3" class="w-full rounded-lg border border-gray-300 p-2.5 step3_cioView" placeholder="Enter CIO View..."></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-3 flex justify-end">
+                <button type="button" id="step3_addRowBtn" class="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700 transition">Add Row</button>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-between">
+            <button type="button" data-prev="2" class="navBack bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">← Back</button>
+            <button type="button" data-next="4" class="navNext bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">Next →</button>
           </div>
         </form>
       </div>
+
+      <!-- Step 4: EQUITIES -->
+      <div id="step4" class="form-container hidden-step fade-in">
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-blue-700">Step 4: Equities</h2>
+            <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionThree/s3.png">View</button>
+          </div>
+        </div>
+        <form id="step4Form" class="space-y-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+            <input id="step4_title" type="text" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="EQUITIES">
+          </div>
+          <div class="border border-gray-300 rounded-lg p-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-3">Subsections</label>
+            <div id="step4_subsectionsContainer" class="space-y-3">
+              <div class="flex flex-col gap-2 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                <label class="block text-xs text-gray-600 mb-1">Heading</label>
+                <input type="text" class="step4_subsection_heading w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="We are slightly overweight Equities">
+                <label class="block text-xs text-gray-600 mb-1">Content</label>
+                <textarea rows="3" class="step4_subsection_content w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter content..."></textarea>
+              </div>
+            </div>
+            <button type="button" id="step4_addSubsectionBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+              + Add Subsection
+            </button>
+          </div>
+          
+          <!-- Right Container: Equity Watch List -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-3">Equity Watch List</label>
+            <div id="step4_watchListContainer" class="space-y-2">
+              <textarea rows="2" class="step4_watchList_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Trade policy developments and negotiations"></textarea>
+            </div>
+            <button type="button" id="step4_addWatchListBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+              + Add Watch List Item
+            </button>
+          </div>
+
+          <!-- Right Container: Risk Considerations -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-3">Risk Considerations</label>
+            <div id="step4_riskConsiderationsContainer" class="space-y-2">
+              <textarea rows="2" class="step4_riskConsideration_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Geopolitical uncertainty and heightened global protectionist measures"></textarea>
+            </div>
+            <button type="button" id="step4_addRiskConsiderationBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+              + Add Risk Consideration
+            </button>
+          </div>
+
+          <!-- Sector Valuation -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-sm font-semibold text-gray-700">Sector Valuation</label>
+              <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionThree/sectorValuation.png">View</button>
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-xs text-gray-600 mb-1">Sector Data</label>
+              <div id="step4_sectorDataContainer" class="space-y-3">
+                <div class="flex flex-col gap-2 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                  <div class="grid grid-cols-3 gap-2">
+                    <div>
+                      <label class="block text-xs text-gray-600 mb-1">Name</label>
+                      <input type="text" class="step4_sector_name w-full rounded-lg border border-gray-300 p-2" placeholder="S&P 500">
+                    </div>
+                    <div>
+                      <label class="block text-xs text-gray-600 mb-1">Current P/E</label>
+                      <input type="number" step="0.1" class="step4_sector_currentPE w-full rounded-lg border border-gray-300 p-2" placeholder="23.5">
+                    </div>
+                    <div>
+                      <label class="block text-xs text-gray-600 mb-1">Average P/E</label>
+                      <input type="number" step="0.1" class="step4_sector_averagePE w-full rounded-lg border border-gray-300 p-2" placeholder="17.5">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="button" id="step4_addSectorDataBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+                + Add Sector Data
+              </button>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 mb-3">
+              <div>
+                <label class="block text-xs text-gray-600 mb-1">Axis Start</label>
+                <input type="number" id="step4_axisStart" class="w-full rounded-lg border border-gray-300 p-2" placeholder="15">
+              </div>
+              <div>
+                <label class="block text-xs text-gray-600 mb-1">Axis End</label>
+                <input type="number" id="step4_axisEnd" class="w-full rounded-lg border border-gray-300 p-2" placeholder="35">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="block text-xs text-gray-600 mb-1">Axis Interval</label>
+              <input type="number" id="step4_axisInterval" class="w-full rounded-lg border border-gray-300 p-2" placeholder="5">
+            </div>
+
+            <div class="mb-3">
+              <label class="block text-xs text-gray-600 mb-1">Image Source</label>
+              <input type="text" id="step4_imgSrc" class="w-full rounded-lg border border-gray-300 p-2" placeholder="assets/images/sectionThree/sectorValuation.png">
+            </div>
+
+            <div>
+              <label class="block text-xs text-gray-600 mb-1">Subtitle</label>
+              <textarea rows="2" id="step4_subtitle" class="w-full rounded-lg border border-gray-300 p-2" placeholder="Source: Bloomberg as of August 1, 2025..."></textarea>
+            </div>
+          </div>
+          
+          <div class="flex justify-between">
+            <button type="button" data-prev="3" class="navBack bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">← Back</button>
+            <button type="button" data-next="5" class="navNext bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">Next →</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 5: FIXED INCOME -->
+      <div id="step5" class="form-container hidden-step fade-in">
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-blue-700">Step 5: Fixed Income</h2>
+            <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionFour/s4.png">View</button>
+          </div>
+        </div>
+        <form id="step5Form" class="space-y-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+            <input id="step5_title" type="text" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="FIXED INCOME">
+          </div>
+          
+          <!-- Subsections -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-3">Subsections</label>
+            <div id="step5_subsectionsContainer" class="space-y-3">
+              <div class="flex flex-col gap-2 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                <label class="block text-xs text-gray-600 mb-1">Heading</label>
+                <input type="text" class="step5_subsection_heading w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="We are slightly underweight Fixed Income...">
+                <label class="block text-xs text-gray-600 mb-1">Content</label>
+                <textarea rows="3" class="step5_subsection_content w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter content..."></textarea>
+              </div>
+            </div>
+            <button type="button" id="step5_addSubsectionBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+              + Add Subsection
+            </button>
+          </div>
+
+          <!-- Fixed Income Watch List -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-3">Fixed Income Watch List</label>
+            <div id="step5_watchListContainer" class="space-y-2">
+              <textarea rows="2" class="step5_watchList_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Inflation trends and Fed policy decisions"></textarea>
+            </div>
+            <button type="button" id="step5_addWatchListBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+              + Add Watch List Item
+            </button>
+          </div>
+
+          <!-- Risk Considerations -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-3">Risk Considerations</label>
+            <div id="step5_riskConsiderationsContainer" class="space-y-2">
+              <textarea rows="2" class="step5_riskConsideration_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Rising inflation and interest rates"></textarea>
+            </div>
+            <button type="button" id="step5_addRiskConsiderationBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+              + Add Risk Consideration
+            </button>
+          </div>
+
+          <div class="flex justify-between">
+            <button type="button" data-prev="4" class="navBack bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">← Back</button>
+            <button type="button" data-next="6" class="navNext bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">Next →</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 6: Alternative Investments -->
+      <div id="step6" class="form-container hidden-step fade-in">
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-blue-700">Step 6: Alternative Investments</h2>
+            <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionFive/s5.png">View</button>
+          </div>
+        </div>
+        <form id="step6Form" class="space-y-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+            <input id="step6_title" type="text" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Alternative Investments">
+          </div>
+          
+          <!-- Container -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-sm font-semibold text-gray-700">Container</label>
+              <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionFive/graybox.png">View</button>
+            </div>
+            <div class="mb-3">
+              <label class="block text-xs text-gray-600 mb-1">Content</label>
+              <textarea id="step6_container_content" rows="4" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Unlike Traditional asset classes, establishing and exiting allocations..."></textarea>
+            </div>
+            <div>
+              <label class="block text-xs text-gray-600 mb-3">Data Points (4)</label>
+              <div id="step6_containerDataContainer" class="space-y-2">
+                <textarea rows="2" class="step6_macroStrategyData_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Think strategically and long-term"></textarea>
+                <textarea rows="2" class="step6_macroStrategyData_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Invest methodically, including in downturns"></textarea>
+                <textarea rows="2" class="step6_macroStrategyData_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Diversify"></textarea>
+                <textarea rows="2" class="step6_macroStrategyData_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Prioritize high-conviction managers"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Subsections -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <label class="block text-sm font-semibold text-gray-700 mb-3">Subsections</label>
+            <div id="step6_subsectionsContainer" class="space-y-3">
+              <div class="flex flex-col gap-2 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                <label class="block text-xs text-gray-600 mb-1">Heading</label>
+                <input type="text" class="step6_subsection_heading w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Hedge Strategies">
+                <label class="block text-xs text-gray-600 mb-1">Content</label>
+                <textarea rows="3" class="step6_subsection_content w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter content..."></textarea>
+              </div>
+            </div>
+            <button type="button" id="step6_addSubsectionBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+              + Add Subsection
+            </button>
+          </div>
+
+          <!-- Alt Strategies -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-sm font-semibold text-gray-700">Alternative Strategies</label>
+              <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionFive/rightbox.png">View</button>
+            </div>
+            <div id="step6_altStrategiesContainer" class="space-y-4">
+              <!-- Initial Strategy Group -->
+              <div class="p-4 border-2 border-blue-200 rounded-lg bg-blue-50">
+                <div class="mb-3">
+                  <label class="block text-xs text-gray-600 mb-1">Strategy Title</label>
+                  <input type="text" class="step6_strategyGroup_title w-full rounded-lg border border-gray-300 p-2.5" placeholder="Hedge Strategies">
+                </div>
+                <div class="mb-3">
+                  <label class="block text-xs text-gray-600 mb-2">Strategy Items</label>
+                  <div class="step6_strategyGroup_items space-y-3">
+                    <!-- Initial Strategy Item -->
+                    <div class="p-3 border border-gray-200 rounded-lg bg-white">
+                      <div class="grid grid-cols-4 gap-2 mb-2">
+                        <div class="col-span-2">
+                          <label class="block text-xs text-gray-600 mb-1">Heading</label>
+                          <input type="text" class="step6_strategy_heading w-full rounded-lg border border-gray-300 p-2" placeholder="Equity Hedge">
+                        </div>
+                        <div>
+                          <label class="block text-xs text-gray-600 mb-1">Symbol</label>
+                          <select class="step6_strategy_symbol w-full rounded-lg border border-gray-300 p-2">
+                            <option value="">None</option>
+                            <option value="+">+</option>
+                            <option value="-">-</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label class="block text-xs text-gray-600 mb-1">Color</label>
+                          <select class="step6_strategy_color w-full rounded-lg border border-gray-300 p-2">
+                            <option value="">None</option>
+                            <option value="green">Green</option>
+                            <option value="red">Red</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="mb-2">
+                        <label class="block text-xs text-gray-600 mb-1">Bull Case</label>
+                        <textarea rows="2" class="step6_strategy_bullCase w-full rounded-lg border border-gray-300 p-2" placeholder="Potential alpha generation opportunities..."></textarea>
+                      </div>
+                      <div>
+                        <label class="block text-xs text-gray-600 mb-1">Bear Case</label>
+                        <textarea rows="2" class="step6_strategy_bearCase w-full rounded-lg border border-gray-300 p-2" placeholder="Macro-driven market dominated by trade..."></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="step6_addStrategyItemBtn bg-green-600 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-green-700 transition mt-2 text-xs w-full">
+                    + Add Strategy Item
+                  </button>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">Footnote</label>
+                  <textarea rows="2" class="step6_strategyGroup_footnote w-full rounded-lg border border-gray-300 p-2.5" placeholder="Alpha is a measure of how well an investment performs..."></textarea>
+                </div>
+              </div>
+            </div>
+            <button type="button" id="step6_addStrategyGroupBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+              + Add Strategy Group
+            </button>
+          </div>
+
+          <!-- Macro Strategy -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-sm font-semibold text-gray-700">Macro Strategy</label>
+              <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionFive/graybox.png">View</button>
+            </div>
+            <div class="mb-3">
+              <label class="block text-xs text-gray-600 mb-1">Title</label>
+              <input type="text" id="step6_macroStrategy_title" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="macro strategy">
+            </div>
+            <div>
+              <label class="block text-xs text-gray-600 mb-3">Data Points</label>
+              <div id="step6_macroStrategyDataContainer" class="space-y-2">
+                <textarea rows="2" class="step6_macroStrategyData_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Consumer spending growth remains firm..."></textarea>
+              </div>
+              <button type="button" id="step6_addMacroStrategyDataBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+                + Add Data Point
+              </button>
+            </div>
+          </div>
+
+          <div class="flex justify-between">
+            <button type="button" data-prev="5" class="navBack bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">← Back</button>
+            <button type="button" data-next="7" class="navNext bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">Next →</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 7: Economic Forecasts -->
+      <div id="step7" class="form-container hidden-step fade-in">
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-blue-700">Step 7: Economic Forecasts</h2>
+            <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionSix/s6.png">View</button>
+          </div>
+        </div>
+        <form id="step7Form" class="space-y-6">
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+            <input id="step7_title" type="text" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="ECONOMIC FORECASTS (AS OF 8/29/2025)">
+          </div>
+          
+          <!-- Main Table Data -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-sm font-semibold text-gray-700">Economic Forecasts Table</label>
+              <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionSix/t1.png">View</button>
+            </div>
+            
+            <!-- Table Headers -->
+            <div class="mb-3">
+              <label class="block text-xs text-gray-600 mb-2">Table Headers (Quarters/Years)</label>
+              <div id="step7_headersContainer" class="grid grid-cols-3 gap-2">
+                <input type="text" class="step7_header w-full rounded-lg border border-gray-300 p-2" placeholder="Q1 2025A">
+                <input type="text" class="step7_header w-full rounded-lg border border-gray-300 p-2" placeholder="Q2 2025A">
+                <input type="text" class="step7_header w-full rounded-lg border border-gray-300 p-2" placeholder="Q3 2025E">
+                <input type="text" class="step7_header w-full rounded-lg border border-gray-300 p-2" placeholder="Q4 2025E">
+                <input type="text" class="step7_header w-full rounded-lg border border-gray-300 p-2" placeholder="2025E">
+                <input type="text" class="step7_header w-full rounded-lg border border-gray-300 p-2" placeholder="2026E">
+              </div>
+            </div>
+
+            <!-- Table Rows -->
+            <div class="mb-3">
+              <label class="block text-xs text-gray-600 mb-2">Data Rows</label>
+              <div id="step7_dataRowsContainer" class="space-y-3">
+                <div class="p-3 border border-gray-200 rounded-lg bg-gray-50">
+                  <div class="mb-2">
+                    <label class="block text-xs text-gray-600 mb-1">Row Label</label>
+                    <input type="text" class="step7_rowLabel w-full rounded-lg border border-gray-300 p-2" placeholder="Real global GDP (% y/y annualized)">
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                    <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="-">
+                    <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="-">
+                    <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="-">
+                    <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="-">
+                    <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="3.0">
+                    <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="3.1">
+                  </div>
+                </div>
+              </div>
+              <button type="button" id="step7_addDataRowBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+                + Add Data Row
+              </button>
+            </div>
+
+            <!-- Footnote -->
+            <div>
+              <label class="block text-xs text-gray-600 mb-1">Footnote</label>
+              <textarea rows="3" id="step7_mainTableFootnote" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="The forecasts in the table are the baseline view..."></textarea>
+            </div>
+          </div>
+
+          <!-- Right Container: S&P 500 Scenarios -->
+          <div class="border border-gray-300 rounded-lg p-4">
+            <div class="flex items-center justify-between mb-3">
+              <label class="block text-sm font-semibold text-gray-700">S&P 500 Scenarios</label>
+              <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionSix/t2.png">View</button>
+            </div>
+            
+            <div class="mb-3">
+              <label class="block text-xs text-gray-600 mb-1">Title</label>
+              <input type="text" id="step7_rightContainer_title" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="S&P 500 SCENARIOS BASED ON FORWARD P/E AND 2025 EARNINGS PER SHARE (EPS)">
+            </div>
+
+            <div class="mb-3">
+              <label class="block text-xs text-gray-600 mb-1">Content</label>
+              <textarea rows="3" id="step7_rightContainer_content" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="The table below provides a rough indication..."></textarea>
+            </div>
+
+            <!-- S&P Table Headers -->
+            <div class="mb-3">
+              <label class="block text-xs text-gray-600 mb-2">Table Headers</label>
+              <div class="grid grid-cols-2 gap-2">
+                <input type="text" id="step7_sp_header1" class="w-full rounded-lg border border-gray-300 p-2" placeholder="2025 EPS">
+                <input type="text" id="step7_sp_header2" class="w-full rounded-lg border border-gray-300 p-2" placeholder="EPS Forward P/E (Next 12 months)">
+              </div>
+            </div>
+
+            <!-- S&P Subheaders (P/E Multiples) -->
+            <div class="mb-3">
+              <label class="block text-xs text-gray-600 mb-2">P/E Multiples (Subheaders)</label>
+              <div class="grid grid-cols-5 gap-2">
+                <input type="text" class="step7_sp_subheader w-full rounded-lg border border-gray-300 p-2" placeholder="15x">
+                <input type="text" class="step7_sp_subheader w-full rounded-lg border border-gray-300 p-2" placeholder="17x">
+                <input type="text" class="step7_sp_subheader w-full rounded-lg border border-gray-300 p-2" placeholder="19x">
+                <input type="text" class="step7_sp_subheader w-full rounded-lg border border-gray-300 p-2" placeholder="21x">
+                <input type="text" class="step7_sp_subheader w-full rounded-lg border border-gray-300 p-2" placeholder="25x">
+              </div>
+            </div>
+
+            <!-- S&P Table Data Rows -->
+            <div class="mb-3">
+              <label class="block text-xs text-gray-600 mb-2">Scenario Data Rows</label>
+              <div id="step7_spDataRowsContainer" class="space-y-2">
+                <div class="grid grid-cols-6 gap-2 p-2 border border-gray-200 rounded bg-gray-50">
+                  <input type="text" class="step7_sp_eps w-full rounded-lg border border-gray-300 p-2" placeholder="$305">
+                  <input type="number" class="step7_sp_value w-full rounded-lg border border-gray-300 p-2" placeholder="5795">
+                  <input type="number" class="step7_sp_value w-full rounded-lg border border-gray-300 p-2" placeholder="6100">
+                  <input type="number" class="step7_sp_value w-full rounded-lg border border-gray-300 p-2" placeholder="6405">
+                  <input type="number" class="step7_sp_value w-full rounded-lg border border-gray-300 p-2" placeholder="6710">
+                  <input type="number" class="step7_sp_value w-full rounded-lg border border-gray-300 p-2" placeholder="7015">
+                </div>
+              </div>
+              <button type="button" id="step7_addSpDataRowBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-700 transition mt-3 text-sm w-full">
+                + Add Scenario Row
+              </button>
+            </div>
+
+            <!-- S&P Table Footnote -->
+            <div>
+              <label class="block text-xs text-gray-600 mb-1">Footnote</label>
+              <textarea rows="2" id="step7_spTableFootnote" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="For illustrative purposes only. Source: Chief Investment Office..."></textarea>
+            </div>
+          </div>
+
+          <div class="flex justify-between">
+            <button type="button" data-prev="6" class="navBack bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">← Back</button>
+            <button type="button" data-next="8" class="navNext bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">Next →</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 8: Asset Class Views -->
+      <div id="step8" class="form-container hidden-step fade-in">
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-blue-700">Step 8: CIO Asset Class Views</h2>
+            <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionSeven/s7.png">View</button>
+          </div>
+        </div>
+        <form id="step8Form" class="space-y-6">
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+            <input id="step8_title" type="text" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="CIO ASSET CLASS VIEWS AS OF SEPTEMBER 2, 2025">
+          </div>
+
+          <!-- Header -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Header</label>
+            <div class="grid grid-cols-3 gap-2">
+              <input type="text" class="step8_header w-full rounded-lg border border-gray-300 p-2" placeholder="Asset Class" value="Asset Class">
+              <input type="text" class="step8_header w-full rounded-lg border border-gray-300 p-2" placeholder="CIO View" value="CIO View">
+              <input type="text" class="step8_header w-full rounded-lg border border-gray-300 p-2" placeholder="Comments" value="Comments">
+            </div>
+          </div>
+
+          <!-- Subheader -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Subheader</label>
+            <div class="grid grid-cols-3 gap-2">
+              <input type="text" class="step8_subheader w-full rounded-lg border border-gray-300 p-2" placeholder="Underweight" value="Underweight">
+              <input type="text" class="step8_subheader w-full rounded-lg border border-gray-300 p-2" placeholder="Neutral" value="Neutral">
+              <input type="text" class="step8_subheader w-full rounded-lg border border-gray-300 p-2" placeholder="Overweight" value="Overweight">
+            </div>
+          </div>
+
+          <!-- Asset Class Data -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Asset Class Data</label>
+            <div id="step8_dataContainer" class="space-y-3">
+              <!-- Initial data row -->
+              <div class="relative p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                <div class="mb-3">
+                  <label class="block text-xs text-gray-600 mb-1">Asset Class</label>
+                  <input type="text" class="step8_assetClass w-full rounded-lg border border-gray-300 p-2" placeholder="Global Equities">
+                </div>
+                <div class="grid grid-cols-3 gap-3 mb-3">
+                  <div>
+                    <label class="block text-xs text-gray-600 mb-1">Position</label>
+                    <select class="step8_position w-full rounded-lg border border-gray-300 p-2">
+                      <option value="">Select position...</option>
+                      <option value="-1">hide</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-600 mb-1">Separate</label>
+                    <select class="step8_separate w-full rounded-lg border border-gray-300 p-2">
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-600 mb-1">Merge</label>
+                    <select class="step8_merge w-full rounded-lg border border-gray-300 p-2">
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">Comments</label>
+                  <textarea class="step8_comments w-full rounded-lg border border-gray-300 p-2" rows="3" placeholder="Comments about this asset class..."></textarea>
+                </div>
+              </div>
+            </div>
+            <button type="button" id="step8_addDataBtn" class="mt-3 w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition font-semibold">+ Add Asset Class</button>
+          </div>
+
+          <!-- Footnote -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Footnote</label>
+            <textarea id="step8_footnote" rows="3" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Footnote text..."></textarea>
+          </div>
+
+          <div class="flex justify-between">
+            <button type="button" data-prev="7" class="navBack bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">← Back</button>
+            <button type="button" data-next="9" class="navNext bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">Next →</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 9: Equity Sector Views -->
+      <div id="step9" class="form-container hidden-step fade-in">
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-blue-700">Step 9: CIO Equity Sector Views</h2>
+            <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionEight/s8.png">View</button>
+          </div>
+        </div>
+        <form id="step9Form" class="space-y-6">
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+            <input id="step9_title" type="text" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="CIO EQUITY SECTOR VIEWS AS OF SEPTEMBER 2, 2025">
+          </div>
+
+          <!-- Content -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Content</label>
+            <textarea id="step9_content" rows="5" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Description..."></textarea>
+          </div>
+
+          <!-- Header -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Header</label>
+            <div class="grid grid-cols-3 gap-2">
+              <input type="text" class="step9_header w-full rounded-lg border border-gray-300 p-2" placeholder="Sector" value="Sector">
+              <input type="text" class="step9_header w-full rounded-lg border border-gray-300 p-2" placeholder="CIO View" value="CIO View">
+              <input type="text" class="step9_header w-full rounded-lg border border-gray-300 p-2" placeholder="Comments" value="Comments">
+            </div>
+          </div>
+
+          <!-- Subheader -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Subheader</label>
+            <div class="grid grid-cols-3 gap-2">
+              <input type="text" class="step9_subheader w-full rounded-lg border border-gray-300 p-2" placeholder="Underweight" value="Underweight">
+              <input type="text" class="step9_subheader w-full rounded-lg border border-gray-300 p-2" placeholder="Neutral" value="Neutral">
+              <input type="text" class="step9_subheader w-full rounded-lg border border-gray-300 p-2" placeholder="Overweight" value="Overweight">
+            </div>
+          </div>
+
+          <!-- Sector Data -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Sector Data</label>
+            <div id="step9_dataContainer" class="space-y-3">
+              <!-- Initial data row -->
+              <div class="relative p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                <div class="mb-3">
+                  <label class="block text-xs text-gray-600 mb-1">Sector</label>
+                  <input type="text" class="step9_sector w-full rounded-lg border border-gray-300 p-2" placeholder="Real Estate Investment Trusts (REITs)">
+                </div>
+                <div class="grid grid-cols-3 gap-3 mb-3">
+                  <div>
+                    <label class="block text-xs text-gray-600 mb-1">Position</label>
+                    <select class="step9_position w-full rounded-lg border border-gray-300 p-2">
+                      <option value="">Select position...</option>
+                      <option value="-1">hide</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-600 mb-1">Separate</label>
+                    <select class="step9_separate w-full rounded-lg border border-gray-300 p-2">
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-600 mb-1">Trend</label>
+                    <select class="step9_trend w-full rounded-lg border border-gray-300 p-2">
+                      <option value="">Select trend...</option>
+                      <option value="-1">-1</option>
+                      <option value="0">0</option>
+                      <option value="1">1</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">Comments</label>
+                  <textarea class="step9_comments w-full rounded-lg border border-gray-300 p-2" rows="3" placeholder="Comments about this sector..."></textarea>
+                </div>
+              </div>
+            </div>
+            <button type="button" id="step9_addDataBtn" class="mt-3 w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition font-semibold">+ Add Sector</button>
+          </div>
+
+          <!-- Footnote -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Footnote</label>
+            <textarea id="step9_footnote" rows="3" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Footnote text..."></textarea>
+          </div>
+
+          <div class="flex justify-between">
+            <button type="button" data-prev="8" class="navBack bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">← Back</button>
+            <button type="button" data-next="10" class="navNext bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">Next →</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 10: Thematic Investing -->
+      <div id="step10" class="form-container hidden-step fade-in">
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-blue-700">Step 10: Thematic Investing</h2>
+            <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionNine/s9.png">View</button>
+          </div>
+        </div>
+        <form id="step10Form" class="space-y-6">
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+            <input id="step10_title" type="text" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="CIO THEMATIC INVESTING AS OF SEPTEMBER 2, 2025">
+          </div>
+
+          <!-- Content -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Content</label>
+            <textarea id="step10_content" rows="4" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Description..."></textarea>
+          </div>
+
+          <!-- Header -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Header</label>
+            <div class="grid grid-cols-2 gap-2">
+              <input type="text" class="step10_header w-full rounded-lg border border-gray-300 p-2" placeholder="Level 1" value="Level 1">
+              <input type="text" class="step10_header w-full rounded-lg border border-gray-300 p-2" placeholder="Level 2" value="Level 2">
+            </div>
+          </div>
+
+          <!-- Thematic Categories -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Thematic Categories</label>
+            <div id="step10_categoriesContainer" class="space-y-4">
+              <!-- Initial category -->
+              <div class="relative p-4 border-2 border-blue-300 rounded-lg bg-blue-50">
+                <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                
+                <div class="mb-3">
+                  <label class="block text-xs font-semibold text-gray-700 mb-1">Category Name</label>
+                  <input type="text" class="step10_category w-full rounded-lg border border-gray-300 p-2" placeholder="Transformative Innovation">
+                </div>
+
+                <!-- Left Data (Level 1 items) -->
+                <div class="mb-3">
+                  <label class="block text-xs font-semibold text-gray-700 mb-2">Level 1 Items</label>
+                  <div class="step10_leftDataContainer space-y-2">
+                    <div class="relative">
+                      <button type="button" class="removeBtn absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                      <input type="text" class="step10_leftDataItem w-full rounded-lg border border-gray-300 p-2 pr-7" placeholder="Generative AI">
+                    </div>
+                  </div>
+                  <button type="button" class="step10_addLeftDataBtn mt-2 w-full bg-blue-500 text-white px-3 py-1.5 rounded-lg hover:bg-blue-600 transition text-sm">+ Add Level 1 Item</button>
+                </div>
+
+                <!-- Right Data (Level 2 details) -->
+                <div>
+                  <label class="block text-xs font-semibold text-gray-700 mb-2">Level 2 Details</label>
+                  <div class="step10_rightDataContainer space-y-3">
+                    <div class="relative p-3 border border-gray-300 rounded-lg bg-white">
+                      <button type="button" class="removeBtn absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                      <div class="mb-2">
+                        <label class="block text-xs text-gray-600 mb-1">Header</label>
+                        <input type="text" class="step10_rightDataHeader w-full rounded-lg border border-gray-300 p-2" placeholder="Generative AI">
+                      </div>
+                      <div>
+                        <label class="block text-xs text-gray-600 mb-1">Description</label>
+                        <textarea class="step10_rightDataDesc w-full rounded-lg border border-gray-300 p-2" rows="2" placeholder="Power demand/generation, productivity wave"></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="step10_addRightDataBtn mt-2 w-full bg-blue-500 text-white px-3 py-1.5 rounded-lg hover:bg-blue-600 transition text-sm">+ Add Level 2 Detail</button>
+                </div>
+              </div>
+            </div>
+            <button type="button" id="step10_addCategoryBtn" class="mt-3 w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition font-semibold">+ Add Category</button>
+          </div>
+
+          <div class="flex justify-between">
+            <button type="button" data-prev="9" class="navBack bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">← Back</button>
+            <button type="button" data-next="11" class="navNext bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">Next →</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 11: Index Definitions -->
+      <div id="step11" class="form-container hidden-step fade-in">
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-blue-700">Step 11: Index Definitions</h2>
+            <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionTen/s10.png">View</button>
+          </div>
+        </div>
+        <form id="step11Form" class="space-y-6">
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+            <input id="step11_title" type="text" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Index Definitions">
+          </div>
+
+          <!-- Disclaimer -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Disclaimer</label>
+            <textarea id="step11_disclaimer" rows="3" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Securities indexes assume reinvestment..."></textarea>
+          </div>
+
+          <!-- Index Definitions Data -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Index Definitions</label>
+            <div id="step11_dataContainer" class="space-y-3">
+              <!-- Initial definition -->
+              <div class="relative p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                <div class="mb-3">
+                  <label class="block text-xs text-gray-600 mb-1">Header</label>
+                  <input type="text" class="step11_header w-full rounded-lg border border-gray-300 p-2" placeholder="S&P 500 Index">
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">Content</label>
+                  <textarea class="step11_content w-full rounded-lg border border-gray-300 p-2" rows="3" placeholder="includes a representative sample of 500 leading companies..."></textarea>
+                </div>
+              </div>
+            </div>
+            <button type="button" id="step11_addDataBtn" class="mt-3 w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition font-semibold">+ Add Index Definition</button>
+          </div>
+
+          <div class="flex justify-between">
+            <button type="button" data-prev="10" class="navBack bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">← Back</button>
+            <button type="button" data-next="12" class="navNext bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition">Next →</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 12: Important Disclosures -->
+      <div id="step12" class="form-container hidden-step fade-in">
+        <div class="mb-8">
+          <div class="flex items-center justify-between">
+            <h2 class="text-2xl font-bold text-blue-700">Step 12: Important Disclosures</h2>
+            <button type="button" class="viewBtn px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition" data-image="assets/images/sectionEleven/s11.png">View</button>
+          </div>
+        </div>
+        <form id="step12Form" class="space-y-6">
+          <!-- Title -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Title</label>
+            <input id="step12_title" type="text" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="Important Disclosures">
+          </div>
+
+          <!-- Disclosure Items -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Disclosure Items</label>
+            <div id="step12_dataContainer" class="space-y-3">
+              <!-- Initial disclosure item -->
+              <div class="relative p-4 border border-gray-200 rounded-lg bg-gray-50">
+                <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                <div class="mb-3">
+                  <label class="block text-xs text-gray-600 mb-1">Header</label>
+                  <textarea class="step12_header w-full rounded-lg border border-gray-300 p-2" rows="2" placeholder="Investing involves risk, including the possible loss of principal..."></textarea>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">Content</label>
+                  <textarea class="step12_content w-full rounded-lg border border-gray-300 p-2" rows="6" placeholder="This material does not take into account..."></textarea>
+                </div>
+              </div>
+            </div>
+            <button type="button" id="step12_addDataBtn" class="mt-3 w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition font-semibold">+ Add Disclosure Item</button>
+          </div>
+
+          <!-- Copyright -->
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-1">Copyright</label>
+            <input id="step12_copyright" type="text" class="w-full rounded-lg border border-gray-300 p-2.5" placeholder="© 2025 Bank of America Corporation. All rights reserved.">
+          </div>
+
+          <div class="flex justify-between">
+            <button type="button" data-prev="11" class="navBack bg-gray-200 text-gray-700 px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-300 transition">← Back</button>
+            <button type="button" id="finishBtn" class="bg-green-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-green-700 transition">Finish</button>
+          </div>
+        </form>
+      </div>
+      
     </div>
-  </div>
+    </div>
 
   <!-- JSON Data Viewer Button -->
   <button id="jsonViewerBtn" class="fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition shadow-lg z-50">
     View JSON Data
+  </button>
+
+   <!-- Load JSON Button (Top Right Corner) -->
+  <button id="loadJsonBtn" class="fixed top-4 right-48 bg-blue-600 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition shadow-lg z-50">
+    Load JSON
   </button>
 
   <!-- JSON Modal -->
@@ -362,6 +1358,35 @@
     </div>
   </div>
 
+  <!-- Load JSON Modal -->
+  <div id="loadJsonModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
+    <div class="flex items-center justify-center min-h-screen p-4">
+      <div class="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-hidden">
+        <div class="flex justify-between items-center p-4 border-b">
+          <h3 class="text-lg font-semibold">Load JSON Data</h3>
+          <button id="closeLoadJsonModal" class="text-gray-500 hover:text-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="p-4">
+          <p class="text-sm text-gray-600 mb-3">Paste your JSON data below to populate the form:</p>
+          <textarea id="loadJsonInput" class="w-full h-96 p-3 border rounded-lg font-mono text-sm" placeholder='Paste JSON here...'></textarea>
+          <div id="loadJsonError" class="text-red-600 text-sm mt-2 hidden"></div>
+        </div>
+        <div class="flex justify-end gap-2 p-4 border-t">
+          <button id="cancelLoadJsonBtn" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">
+            Cancel
+          </button>
+          <button id="confirmLoadJsonBtn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            Load Data
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
@@ -370,6 +1395,65 @@
     const step1Form = document.getElementById('step1Form');
     const step2Form = document.getElementById('step2Form');
     const backBtn = document.getElementById('backBtn');
+
+    const indicators = {
+      1: document.getElementById('step1Indicator'),
+      2: document.getElementById('step2Indicator'),
+      3: document.getElementById('step3Indicator'),
+      4: document.getElementById('step4Indicator'),
+      5: document.getElementById('step5Indicator'),
+      6: document.getElementById('step6Indicator'),
+      7: document.getElementById('step7Indicator'),
+      8: document.getElementById('step8Indicator'),
+      9: document.getElementById('step9Indicator'),
+      10: document.getElementById('step10Indicator'),
+      11: document.getElementById('step11Indicator'),
+      12: document.getElementById('step12Indicator')
+    };
+
+    // Make step indicators clickable to jump directly
+    const progressContainer = document.querySelector('.progress');
+    if (progressContainer) {
+      progressContainer.addEventListener('click', (e) => {
+        const target = e.target.closest('[id^="step"][id$="Indicator"]');
+        if (!target) return;
+        const match = target.id.match(/^step(\d+)Indicator$/);
+        if (match) {
+          const stepNum = parseInt(match[1]);
+          if (!Number.isNaN(stepNum)) {
+            showStep(stepNum);
+          }
+        }
+      });
+    }
+
+    function showStep(n) {
+      for (let i = 1; i <= 12; i++) {
+        const el = document.getElementById('step' + i);
+        if (el) el.classList.add('hidden-step');
+        const ind = indicators[i];
+        if (ind) {
+          ind.classList.add('opacity-60');
+          const dot = ind.querySelector('div');
+          if (dot) {
+            dot.classList.remove('text-blue-600', 'ring-4', 'ring-blue-200');
+            dot.classList.add('bg-blue-100', 'text-blue-700');
+            dot.classList.remove('bg-white');
+          }
+        }
+      }
+      const target = document.getElementById('step' + n);
+      if (target) target.classList.remove('hidden-step');
+      const activeInd = indicators[n];
+      if (activeInd) {
+        activeInd.classList.remove('opacity-60');
+        const dot = activeInd.querySelector('div');
+        if (dot) {
+          dot.classList.replace('bg-blue-100', 'bg-white');
+          dot.classList.add('text-blue-600', 'ring-4', 'ring-blue-200');
+        }
+      }
+    }
 
     // Step 1 Submit → Show Step 2
     step1Form.addEventListener('submit', (e) => {
@@ -387,15 +1471,41 @@
 
       localStorage.setItem('step1Data', JSON.stringify(data));
 
-      step1.classList.add('hidden-step');
-      step2.classList.remove('hidden-step');
-
-      // Update sidebar progress
-      step1Indicator.classList.add('opacity-60');
-      step2Indicator.classList.remove('opacity-60');
-      step2Indicator.querySelector('div').classList.replace('bg-blue-100', 'bg-white');
-      step2Indicator.querySelector('div').classList.add('text-blue-600', 'ring-4', 'ring-blue-200');
+      showStep(2);
     });
+
+    // Step 2 Back Button
+    const step2BackBtn = document.getElementById('step2BackBtn');
+    if (step2BackBtn) {
+      step2BackBtn.addEventListener('click', () => {
+        showStep(1);
+      });
+    }
+
+    // Step 2 Next Button
+    const step2NextBtn = document.getElementById('step2NextBtn');
+    if (step2NextBtn) {
+      step2NextBtn.addEventListener('click', () => {
+        // Save Step 2 data and proceed to Step 3
+        const summaryComponents = document.querySelectorAll('#summaryComponents > div');
+        const componentsData = [];
+        
+        summaryComponents.forEach(component => {
+          const componentData = collectComponentData(component);
+          if (componentData && componentData.type !== 'table-data') {
+            componentsData.push(componentData);
+          }
+        });
+        
+        // Save to localStorage
+        localStorage.setItem('step2Data', JSON.stringify({ 
+          components: componentsData
+        }));
+        
+        // Proceed to Step 3
+        showStep(3);
+      });
+    }
 
      // Add more In Brief textareas
      function addInBriefPoint() {
@@ -735,7 +1845,933 @@
        }
      });
 
-     // JSON Data Collection and Display
+    // Generic nav handlers for steps 3–12
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('navNext')) {
+        const n = parseInt(e.target.getAttribute('data-next'));
+        if (!Number.isNaN(n)) showStep(n);
+      } else if (e.target.classList.contains('navBack')) {
+        const p = parseInt(e.target.getAttribute('data-prev'));
+        if (!Number.isNaN(p)) showStep(p);
+      }
+    });
+
+    const finishBtn = document.getElementById('finishBtn');
+    if (finishBtn) {
+      finishBtn.addEventListener('click', () => {
+        alert('All steps completed. Use "View JSON Data" to review and copy.');
+      });
+    }
+
+    // Load JSON Button Handler
+    const loadJsonBtn = document.getElementById('loadJsonBtn');
+    const loadJsonModal = document.getElementById('loadJsonModal');
+    const closeLoadJsonModal = document.getElementById('closeLoadJsonModal');
+    const cancelLoadJsonBtn = document.getElementById('cancelLoadJsonBtn');
+    const confirmLoadJsonBtn = document.getElementById('confirmLoadJsonBtn');
+    const loadJsonInput = document.getElementById('loadJsonInput');
+    const loadJsonError = document.getElementById('loadJsonError');
+    
+    if (loadJsonBtn && loadJsonModal) {
+      // Open modal
+      loadJsonBtn.addEventListener('click', () => {
+        loadJsonModal.classList.remove('hidden');
+        loadJsonInput.value = '';
+        loadJsonError.classList.add('hidden');
+        loadJsonError.textContent = '';
+      });
+      
+      // Close modal handlers
+      const closeModal = () => {
+        loadJsonModal.classList.add('hidden');
+        loadJsonInput.value = '';
+        loadJsonError.classList.add('hidden');
+        loadJsonError.textContent = '';
+      };
+      
+      closeLoadJsonModal?.addEventListener('click', closeModal);
+      cancelLoadJsonBtn?.addEventListener('click', closeModal);
+      
+      // Close on overlay click
+      loadJsonModal.addEventListener('click', (e) => {
+        if (e.target === loadJsonModal) closeModal();
+      });
+      
+      // Load data on confirm
+      confirmLoadJsonBtn?.addEventListener('click', () => {
+        const jsonInput = loadJsonInput.value.trim();
+        if (!jsonInput) {
+          loadJsonError.textContent = 'Please paste JSON data before loading.';
+          loadJsonError.classList.remove('hidden');
+          return;
+        }
+        
+        try {
+          const jsonData = JSON.parse(jsonInput);
+          loadJsonDataToForm(jsonData);
+          closeModal();
+          alert('JSON data loaded successfully!');
+        } catch (error) {
+          loadJsonError.textContent = 'Invalid JSON format: ' + error.message;
+          loadJsonError.classList.remove('hidden');
+        }
+      });
+    }
+
+    // Function to load JSON data into the form
+    function loadJsonDataToForm(data) {
+      // Load Step 1 data
+      if (data.step1) {
+        document.getElementById('documentTitle').value = data.step1.documentTitle || '';
+        document.getElementById('documentMonth').value = data.step1.documentMonth || '';
+        document.getElementById('disclaimer').value = data.step1.disclaimer || '';
+      }
+      
+      // Load Step 2 data
+      if (data.step2) {
+        document.getElementById('cioAssetClassViews').value = data.step2.cioAssetClassViews || '';
+        
+        // Load In Brief points
+        const firstInBriefTextarea = document.getElementById('inBrief');
+        const addPointBtn = document.getElementById('addPointBtn');
+        if (firstInBriefTextarea && addPointBtn && data.step2.inBrief) {
+          // Remove existing additional textareas
+          const container = addPointBtn.parentElement;
+          const existingAdditional = container.querySelectorAll('.relative.mt-4');
+          existingAdditional.forEach(el => el.remove());
+          
+          // Set first textarea
+          if (data.step2.inBrief.length > 0) {
+            firstInBriefTextarea.value = data.step2.inBrief[0];
+          }
+          
+          // Add additional In Brief points
+          for (let i = 1; i < data.step2.inBrief.length; i++) {
+            const textareaContainer = document.createElement('div');
+            textareaContainer.className = 'relative mt-4';
+            textareaContainer.innerHTML = `
+              <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+              <textarea rows="2" name="inBrief" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Another point...">${data.step2.inBrief[i]}</textarea>
+            `;
+            container.insertBefore(textareaContainer, addPointBtn);
+          }
+        }
+        
+        // Load Hyperlinks
+        if (data.step2.hyperlinks) {
+          if (data.step2.hyperlinks.length > 0) {
+            document.getElementById('hyperlinks1Name').value = data.step2.hyperlinks[0].name || '';
+            document.getElementById('hyperlinks1').value = data.step2.hyperlinks[0].url || '';
+          }
+          if (data.step2.hyperlinks.length > 1) {
+            document.getElementById('hyperlinks2Name').value = data.step2.hyperlinks[1].name || '';
+            document.getElementById('hyperlinks2').value = data.step2.hyperlinks[1].url || '';
+          }
+        }
+        
+        // Load Summary Components
+        const summaryComponents = document.getElementById('summaryComponents');
+        if (summaryComponents && data.step2.summary && data.step2.summary.components) {
+          summaryComponents.innerHTML = '';
+          let componentCounter = 0;
+          
+          data.step2.summary.components.forEach(comp => {
+            componentCounter++;
+            const compId = 'component_' + componentCounter;
+            const compDiv = document.createElement('div');
+            compDiv.id = compId;
+            compDiv.className = 'relative p-4 border border-gray-300 rounded-lg bg-gray-50';
+            
+            // Add component based on type
+            if (comp.type === 'paragraph') {
+              compDiv.innerHTML = `
+                <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">×</button>
+                <h4 class="text-sm font-semibold mb-2 text-gray-700">Paragraph</h4>
+                <textarea rows="4" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter paragraph content...">${comp.content || ''}</textarea>
+              `;
+            } else if (comp.type === 'header') {
+              compDiv.innerHTML = `
+                <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">×</button>
+                <h4 class="text-sm font-semibold mb-2 text-gray-700">Header</h4>
+                <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter heading text..." value="${comp.heading || ''}">
+              `;
+            } else if (comp.type === 'bullet-points') {
+              let leftHTML = '';
+              (comp.leftPoints || []).forEach(point => {
+                leftHTML += `<textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5 mb-2" placeholder="Bullet point...">${point}</textarea>`;
+              });
+              let rightHTML = '';
+              (comp.rightPoints || []).forEach(point => {
+                rightHTML += `<textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5 mb-2" placeholder="Bullet point...">${point}</textarea>`;
+              });
+              
+              compDiv.innerHTML = `
+                <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">×</button>
+                <h4 class="text-sm font-semibold mb-2 text-gray-700">2 Sided Bullet Points</h4>
+                <textarea rows="1" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5 mb-3" placeholder="Main heading...">${comp.heading || ''}</textarea>
+                <div class="grid grid-cols-2 gap-4">
+                  <div id="${compId}_left">${leftHTML}</div>
+                  <div id="${compId}_right">${rightHTML}</div>
+                </div>
+                <div class="mt-3 flex gap-2">
+                  <button type="button" class="addLeftBulletBtn bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition" data-component-id="${compId}">Add Left</button>
+                  <button type="button" class="addRightBulletBtn bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition" data-component-id="${compId}">Add Right</button>
+                </div>
+              `;
+            } else if (comp.type === 'subsections') {
+              let subsectionsHTML = '';
+              (comp.subsections || []).forEach(sub => {
+                subsectionsHTML += `
+                  <div class="flex flex-col gap-2 p-3 border border-gray-200 rounded-lg bg-white mb-2 relative">
+                    <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                    <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Subsection heading..." value="${sub.heading || ''}">
+                    <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Subsection content...">${sub.content || ''}</textarea>
+                  </div>
+                `;
+              });
+              
+              compDiv.innerHTML = `
+                <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">×</button>
+                <h4 class="text-sm font-semibold mb-2 text-gray-700">Subsections Paragraphs</h4>
+                <div id="${compId}_subsections">${subsectionsHTML}</div>
+                <button type="button" class="addSubsectionBtn bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition mt-2" data-component-id="${compId}">Add Subsection</button>
+              `;
+            } else if (comp.type === 'numbered-bottom-line') {
+              let bulletsHTML = '';
+              (comp.bulletPoints || []).forEach(bp => {
+                bulletsHTML += `
+                  <div class="relative flex flex-col gap-2 mt-4 p-3 border border-gray-200 rounded-lg bg-gray-50">
+                    <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                    <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Subheading..." value="${bp.subheading || ''}">
+                    <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Content...">${bp.content || ''}</textarea>
+                  </div>
+                `;
+              });
+              
+              compDiv.innerHTML = `
+                <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">×</button>
+                <h4 class="text-sm font-semibold mb-2 text-gray-700">Number Bullet with Bottom Line</h4>
+                <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5 mb-3" placeholder="Main heading..." value="${comp.mainHeading || ''}">
+                <div id="${compId}_points" class="space-y-2">${bulletsHTML}</div>
+                <button type="button" class="addNumberedBulletBtn bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition mt-3" data-component-id="${compId}">Add Bullet</button>
+                <div class="mt-4 p-3 border-t border-gray-300">
+                  <h5 class="text-sm font-semibold mb-2">Bottom Line</h5>
+                  <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5 mb-2" placeholder="Bottom line heading..." value="${comp.bottomLine?.heading || ''}">
+                  <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Bottom line content...">${comp.bottomLine?.content || ''}</textarea>
+                </div>
+              `;
+            } else if (comp.type === 'compare-table') {
+              let leftPointsHTML = '';
+              (comp.leftPoints || []).forEach(point => {
+                leftPointsHTML += `
+                  <div class="relative p-3 border border-gray-200 rounded-lg bg-gray-50 mb-2">
+                    <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                    <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">${point}</textarea>
+                  </div>
+                `;
+              });
+              let rightPointsHTML = '';
+              (comp.rightPoints || []).forEach(point => {
+                rightPointsHTML += `
+                  <div class="relative p-3 border border-gray-200 rounded-lg bg-gray-50 mb-2">
+                    <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                    <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">${point}</textarea>
+                  </div>
+                `;
+              });
+              
+              compDiv.innerHTML = `
+                <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">×</button>
+                <h4 class="text-sm font-semibold mb-2 text-gray-700">Compare Table</h4>
+                <div class="grid grid-cols-2 gap-4 mb-3">
+                  <div>
+                    <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5 mb-2" placeholder="Main Heading 1" value="${comp.mainHeading1 || ''}">
+                    <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Subheading (optional)" value="${comp.subHeading1 || ''}">
+                  </div>
+                  <div>
+                    <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5 mb-2" placeholder="Main Heading 2" value="${comp.mainHeading2 || ''}">
+                    <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Subheading (optional)" value="${comp.subHeading2 || ''}">
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                  <div id="${compId}_leftPoints">${leftPointsHTML}</div>
+                  <div id="${compId}_rightPoints">${rightPointsHTML}</div>
+                </div>
+                <div class="mt-3 flex gap-2">
+                  <button type="button" class="addLeftDiffBtn bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition" data-component-id="${compId}">Add Left Point</button>
+                  <button type="button" class="addRightDiffBtn bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition" data-component-id="${compId}">Add Right Point</button>
+                </div>
+              `;
+            } else if (comp.type === 'bottom-line') {
+              let subsectionsHTML = '';
+              (comp.subsections || []).forEach(sub => {
+                subsectionsHTML += `
+                  <div class="relative p-3 border border-gray-200 rounded-lg bg-gray-50 mb-2">
+                    <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                    <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5 mb-2" placeholder="Sub heading" value="${sub.subheading || ''}">
+                    <textarea rows="3" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Content">${sub.content || ''}</textarea>
+                  </div>
+                `;
+              });
+              
+              compDiv.innerHTML = `
+                <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Component">×</button>
+                <h4 class="text-sm font-semibold mb-2 text-gray-700">Bottom Line Paragraph</h4>
+                <div class="space-y-2">${subsectionsHTML}</div>
+                <button type="button" class="addBottomLineSubBtn bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-700 transition mt-3" data-component-id="${compId}">Add Subsection</button>
+                <div class="mt-4 p-3 border-t border-gray-300">
+                  <h5 class="text-sm font-semibold mb-2">Bottom Line</h5>
+                  <textarea rows="2" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Bottom line text...">${comp.bottomLine || ''}</textarea>
+                </div>
+              `;
+            }
+            
+            summaryComponents.appendChild(compDiv);
+          });
+        }
+        
+        // Load Table Data
+        if (data.step2.tableData) {
+          if (data.step2.tableData.headers) {
+            document.getElementById('assetClassHeader').value = data.step2.tableData.headers.assetClassHeader || '';
+            document.getElementById('cioViewHeader').value = data.step2.tableData.headers.cioViewHeader || '';
+          }
+          document.getElementById('tableFootnote').value = data.step2.tableData.footnote || '';
+          
+          // Load Asset Classes
+          const assetClassesContainer = document.getElementById('assetClassesContainer');
+          if (assetClassesContainer && data.step2.tableData.data) {
+            assetClassesContainer.innerHTML = '';
+            data.step2.tableData.data.forEach((assetClass, index) => {
+              const div = document.createElement('div');
+              div.className = 'relative bg-gray-50 p-3 rounded';
+              div.innerHTML = `
+                <input type="text" class="w-full p-2 border rounded mb-2" placeholder="Asset Class Name (e.g., Global Equities)" value="${assetClass.name || ''}">
+                <div class="grid grid-cols-2 gap-2 mb-2">
+                  <div>
+                    <label class="block text-sm mb-1">Position (1-5)</label>
+                    <select class="w-full p-2 border rounded">
+                      <option value="">None</option>
+                      <option value="1" ${assetClass.position === 1 ? 'selected' : ''}>1</option>
+                      <option value="2" ${assetClass.position === 2 ? 'selected' : ''}>2</option>
+                      <option value="3" ${assetClass.position === 3 ? 'selected' : ''}>3</option>
+                      <option value="4" ${assetClass.position === 4 ? 'selected' : ''}>4</option>
+                      <option value="5" ${assetClass.position === 5 ? 'selected' : ''}>5</option>
+                    </select>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label class="flex items-center text-sm">
+                      <input type="checkbox" class="mr-2" ${assetClass.separate ? 'checked' : ''}> Separate Line
+                    </label>
+                    <label class="flex items-center text-sm">
+                      <input type="checkbox" class="mr-2" ${assetClass.isHeader ? 'checked' : ''}> Is Header
+                    </label>
+                    <label class="flex items-center text-sm">
+                      <input type="checkbox" class="mr-2" ${assetClass.isAlternativeInvestment || assetClass.isAltInvestment ? 'checked' : ''}> Alternative Investment
+                    </label>
+                    <label class="flex items-center text-sm">
+                      <input type="checkbox" class="mr-2" ${assetClass.isCash ? 'checked' : ''}> Is Cash
+                    </label>
+                  </div>
+                </div>
+                <button type="button" class="removeBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+              `;
+              assetClassesContainer.appendChild(div);
+            });
+          }
+        }
+      }
+      
+      // Load Step 3 data
+      if (data.step3) {
+        document.getElementById('step3_title').value = data.step3.title || '';
+        document.getElementById('step3_description').value = data.step3.description || '';
+        
+        if (data.step3.tableData) {
+          if (data.step3.tableData.headers) {
+            document.getElementById('step3_factorHeader').value = data.step3.tableData.headers.factorHeader || '';
+            document.getElementById('step3_implicationHeader').value = data.step3.tableData.headers.implicationHeader || '';
+            document.getElementById('step3_cioViewHeader').value = data.step3.tableData.headers.cioViewHeader || '';
+          }
+          document.getElementById('step3_subtitle').value = data.step3.tableData.subtitle || '';
+          
+          // Load data rows
+          const dataRows = document.getElementById('step3_dataRows');
+          if (dataRows && data.step3.tableData.data) {
+            dataRows.innerHTML = '';
+            data.step3.tableData.data.forEach((row, index) => {
+              const div = document.createElement('div');
+              div.className = 'step3-data-row relative bg-gray-50 p-3 rounded mb-2';
+              div.innerHTML = `
+                <input type="text" class="step3_factor w-full p-2 border rounded mb-2" placeholder="Factor" value="${row.factor || ''}">
+                <div class="grid grid-cols-2 gap-2 mb-2">
+                  <select class="step3_trend w-full p-2 border rounded">
+                    <option value="up" ${row.trend === 'up' ? 'selected' : ''}>Up</option>
+                    <option value="down" ${row.trend === 'down' ? 'selected' : ''}>Down</option>
+                    <option value="neutral" ${row.trend === 'neutral' ? 'selected' : ''}>Neutral</option>
+                  </select>
+                  <input type="number" class="step3_value w-full p-2 border rounded" placeholder="Value (0-100)" value="${row.value !== undefined ? row.value : ''}">
+                </div>
+                <textarea class="step3_cioView w-full p-2 border rounded" rows="3" placeholder="CIO View">${row.cioView || ''}</textarea>
+                <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+              `;
+              dataRows.appendChild(div);
+            });
+          }
+        }
+      }
+      
+      // Load Step 4 data
+      if (data.step4) {
+        document.getElementById('step4_title').value = data.step4.title || '';
+        
+        // Load subsections
+        const subsectionsContainer = document.getElementById('step4_subsectionsContainer');
+        if (subsectionsContainer && data.step4.subsections) {
+          subsectionsContainer.innerHTML = '';
+          data.step4.subsections.forEach((subsection, index) => {
+            const div = document.createElement('div');
+            div.className = 'relative bg-gray-50 p-3 rounded mb-2';
+            div.innerHTML = `
+              <input type="text" class="step4_subsection_heading w-full p-2 border rounded mb-2" placeholder="Heading" value="${subsection.heading || ''}">
+              <textarea class="step4_subsection_content w-full p-2 border rounded" rows="4" placeholder="Content">${subsection.content || ''}</textarea>
+              <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+            `;
+            subsectionsContainer.appendChild(div);
+          });
+        }
+        
+        // Load Right Container
+        if (data.step4.rightContainer) {
+          // Equity Watch List
+          const watchListContainer = document.getElementById('step4_watchListContainer');
+          if (watchListContainer && data.step4.rightContainer.equityWatchList) {
+            watchListContainer.innerHTML = '';
+            data.step4.rightContainer.equityWatchList.forEach((item, index) => {
+              const div = document.createElement('div');
+              div.className = 'relative mb-2';
+              div.innerHTML = `
+                <input type="text" class="step4_watchList_item w-full p-2 border rounded" placeholder="Watch list item" value="${item}">
+                <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+              `;
+              watchListContainer.appendChild(div);
+            });
+          }
+          
+          // Risk Considerations
+          const riskContainer = document.getElementById('step4_riskConsiderationsContainer');
+          if (riskContainer && data.step4.rightContainer.riskConsiderations) {
+            riskContainer.innerHTML = '';
+            data.step4.rightContainer.riskConsiderations.forEach((item, index) => {
+              const div = document.createElement('div');
+              div.className = 'relative mb-2';
+              div.innerHTML = `
+                <input type="text" class="step4_riskConsideration_item w-full p-2 border rounded" placeholder="Risk consideration" value="${item}">
+                <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+              `;
+              riskContainer.appendChild(div);
+            });
+          }
+        }
+        
+        // Load Sector Valuation
+        if (data.step4.sectorValuation) {
+          if (data.step4.sectorValuation.axisConfig) {
+            document.getElementById('step4_axisStart').value = data.step4.sectorValuation.axisConfig.start || 15;
+            document.getElementById('step4_axisEnd').value = data.step4.sectorValuation.axisConfig.end || 35;
+            document.getElementById('step4_axisInterval').value = data.step4.sectorValuation.axisConfig.interval || 5;
+          }
+          document.getElementById('step4_imgSrc').value = data.step4.sectorValuation.imgSrc || '';
+          document.getElementById('step4_subtitle').value = data.step4.sectorValuation.subtitle || '';
+          
+          const sectorDataContainer = document.getElementById('step4_sectorDataContainer');
+          if (sectorDataContainer && data.step4.sectorValuation.data) {
+            sectorDataContainer.innerHTML = '';
+            data.step4.sectorValuation.data.forEach((sector, index) => {
+              const div = document.createElement('div');
+              div.className = 'relative grid grid-cols-3 gap-2 bg-gray-50 p-2 rounded mb-2';
+              div.innerHTML = `
+                <input type="text" class="step4_sector_name w-full p-2 border rounded" placeholder="Sector Name" value="${sector.name || ''}">
+                <input type="number" class="step4_sector_currentPE w-full p-2 border rounded" placeholder="Current P/E" value="${sector.currentPE || ''}">
+                <input type="number" class="step4_sector_averagePE w-full p-2 border rounded" placeholder="Average P/E" value="${sector.averagePE || ''}">
+                <button type="button" class="removeComponentBtn absolute -top-2 -right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+              `;
+              sectorDataContainer.appendChild(div);
+            });
+          }
+        }
+      }
+      
+      // Load Step 5 data
+      if (data.step5) {
+        document.getElementById('step5_title').value = data.step5.title || '';
+        
+        // Load subsections
+        const subsectionsContainer = document.getElementById('step5_subsectionsContainer');
+        if (subsectionsContainer && data.step5.subsections) {
+          subsectionsContainer.innerHTML = '';
+          data.step5.subsections.forEach((subsection, index) => {
+            const div = document.createElement('div');
+            div.className = 'relative bg-gray-50 p-3 rounded mb-2';
+            div.innerHTML = `
+              <input type="text" class="step5_subsection_heading w-full p-2 border rounded mb-2" placeholder="Heading" value="${subsection.heading || ''}">
+              <textarea class="step5_subsection_content w-full p-2 border rounded" rows="4" placeholder="Content">${subsection.content || ''}</textarea>
+              <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+            `;
+            subsectionsContainer.appendChild(div);
+          });
+        }
+        
+        // Load Right Container
+        if (data.step5.rightContainer) {
+          // Fixed Income Watch List
+          const watchListContainer = document.getElementById('step5_watchListContainer');
+          if (watchListContainer && data.step5.rightContainer.fixedIncomeWatchList) {
+            watchListContainer.innerHTML = '';
+            data.step5.rightContainer.fixedIncomeWatchList.forEach((item, index) => {
+              const div = document.createElement('div');
+              div.className = 'relative mb-2';
+              div.innerHTML = `
+                <input type="text" class="step5_watchList_item w-full p-2 border rounded" placeholder="Watch list item" value="${item}">
+                <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+              `;
+              watchListContainer.appendChild(div);
+            });
+          }
+          
+          // Risk Considerations
+          const riskContainer = document.getElementById('step5_riskConsiderationsContainer');
+          if (riskContainer && data.step5.rightContainer.riskConsiderations) {
+            riskContainer.innerHTML = '';
+            data.step5.rightContainer.riskConsiderations.forEach((item, index) => {
+              const div = document.createElement('div');
+              div.className = 'relative mb-2';
+              div.innerHTML = `
+                <input type="text" class="step5_riskConsideration_item w-full p-2 border rounded" placeholder="Risk consideration" value="${item}">
+                <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+              `;
+              riskContainer.appendChild(div);
+            });
+          }
+        }
+      }
+      
+      // Load Step 6 data
+      if (data.step6) {
+        document.getElementById('step6_title').value = data.step6.title || '';
+        
+        // Load Container
+        if (data.step6.container) {
+          document.getElementById('step6_container_content').value = data.step6.container.content || '';
+          
+          const containerDataContainer = document.getElementById('step6_containerDataContainer');
+          if (containerDataContainer && data.step6.container.data) {
+            containerDataContainer.innerHTML = '';
+            data.step6.container.data.forEach((item, index) => {
+              const div = document.createElement('div');
+              div.className = 'relative mb-2';
+              div.innerHTML = `
+                <input type="text" class="step6_containerData_item w-full p-2 border rounded" placeholder="Data item" value="${item}">
+                <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+              `;
+              containerDataContainer.appendChild(div);
+            });
+          }
+        }
+        
+        // Load Subsections
+        const subsectionsContainer = document.getElementById('step6_subsectionsContainer');
+        if (subsectionsContainer && data.step6.subsection) {
+          subsectionsContainer.innerHTML = '';
+          data.step6.subsection.forEach((subsection, index) => {
+            const div = document.createElement('div');
+            div.className = 'relative bg-gray-50 p-3 rounded mb-2';
+            div.innerHTML = `
+              <input type="text" class="step6_subsection_heading w-full p-2 border rounded mb-2" placeholder="Heading" value="${subsection.heading || ''}">
+              <textarea class="step6_subsection_content w-full p-2 border rounded" rows="4" placeholder="Content">${subsection.content || ''}</textarea>
+              <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+            `;
+            subsectionsContainer.appendChild(div);
+          });
+        }
+        
+        // Load Alternative Strategies
+        const altStrategiesContainer = document.getElementById('step6_altStrategiesContainer');
+        if (altStrategiesContainer && data.step6.altStrategies) {
+          altStrategiesContainer.innerHTML = '';
+          data.step6.altStrategies.forEach((strategyGroup, groupIndex) => {
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'p-4 border-2 border-gray-300 rounded-lg bg-white relative';
+            
+            let strategiesHTML = '';
+            (strategyGroup.data || []).forEach((strategy, stratIndex) => {
+              strategiesHTML += `
+                <div class="relative bg-gray-50 p-3 rounded mb-3">
+                  <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+                  <div class="grid grid-cols-4 gap-2 mb-2">
+                    <input type="text" class="step6_strategy_heading w-full p-2 border rounded" placeholder="Strategy" value="${strategy.heading || ''}">
+                    <select class="step6_strategy_symbol w-full p-2 border rounded">
+                      <option value="">None</option>
+                      <option value="+" ${strategy.symbol === '+' ? 'selected' : ''}>+</option>
+                      <option value="-" ${strategy.symbol === '-' ? 'selected' : ''}>-</option>
+                      <option value="=" ${strategy.symbol === '=' ? 'selected' : ''}>=</option>
+                    </select>
+                    <select class="step6_strategy_color w-full p-2 border rounded">
+                      <option value="">None</option>
+                      <option value="green" ${strategy.color === 'green' ? 'selected' : ''}>Green</option>
+                      <option value="red" ${strategy.color === 'red' ? 'selected' : ''}>Red</option>
+                      <option value="yellow" ${strategy.color === 'yellow' ? 'selected' : ''}>Yellow</option>
+                    </select>
+                  </div>
+                  <div class="mb-2">
+                    <label class="block text-xs text-gray-600 mb-1">Bull Case</label>
+                    <textarea class="step6_strategy_bullCase w-full p-2 border rounded" rows="2" placeholder="Bull case...">${strategy.bullCase || ''}</textarea>
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-600 mb-1">Bear Case</label>
+                    <textarea class="step6_strategy_bearCase w-full p-2 border rounded" rows="2" placeholder="Bear case...">${strategy.bearCase || ''}</textarea>
+                  </div>
+                </div>
+              `;
+            });
+            
+            groupDiv.innerHTML = `
+              <button type="button" class="removeComponentBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove Group">×</button>
+              <div class="mb-3">
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Group Title</label>
+                <input type="text" class="step6_strategyGroup_title w-full p-2 border rounded font-semibold" placeholder="Group title" value="${strategyGroup.title || ''}">
+              </div>
+              <div class="step6_strategyGroup_items space-y-2">
+                ${strategiesHTML}
+              </div>
+              <button type="button" class="step6_addStrategyBtn bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 mt-2">Add Strategy</button>
+              <div class="mt-3">
+                <label class="block text-xs text-gray-600 mb-1">Footnote</label>
+                <textarea class="step6_strategyGroup_footnote w-full p-2 border rounded" rows="2" placeholder="Group footnote...">${strategyGroup.footnote || ''}</textarea>
+              </div>
+            `;
+            
+            altStrategiesContainer.appendChild(groupDiv);
+          });
+        }
+        
+        // Load Macro Strategy
+        if (data.step6.strategy) {
+          document.getElementById('step6_macroStrategy_title').value = data.step6.strategy.title || '';
+          
+          const macroStrategyDataContainer = document.getElementById('step6_macroStrategyDataContainer');
+          if (macroStrategyDataContainer && data.step6.strategy.data) {
+            macroStrategyDataContainer.innerHTML = '';
+            data.step6.strategy.data.forEach((item, index) => {
+              const div = document.createElement('div');
+              div.className = 'relative mb-2';
+              div.innerHTML = `
+                <input type="text" class="step6_macroStrategyData_item w-full p-2 border rounded" placeholder="Strategy item" value="${item}">
+                <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+              `;
+              macroStrategyDataContainer.appendChild(div);
+            });
+          }
+        }
+      }
+      
+      // Load Step 7 data
+      if (data.step7) {
+        document.getElementById('step7_title').value = data.step7.title || '';
+        
+        // Load Main Table
+        if (data.step7.tableData) {
+          // Load headers
+          const headerInputs = document.querySelectorAll('.step7_header');
+          if (data.step7.tableData.header) {
+            data.step7.tableData.header.forEach((header, index) => {
+              if (headerInputs[index]) headerInputs[index].value = header || '';
+            });
+          }
+          
+          // Load data rows
+          const dataRowsContainer = document.getElementById('step7_dataRowsContainer');
+          if (dataRowsContainer && data.step7.tableData.data) {
+            dataRowsContainer.innerHTML = '';
+            data.step7.tableData.data.forEach((row, index) => {
+              const div = document.createElement('div');
+              div.className = 'relative grid grid-cols-5 gap-2 bg-gray-50 p-2 rounded mb-2';
+              const rowHTML = row.map((value, i) => {
+                if (i === 0) {
+                  return `<input type="text" class="step7_rowLabel w-full p-2 border rounded" placeholder="Row Label" value="${value || ''}">`;
+                } else {
+                  return `<input type="text" class="step7_rowValue w-full p-2 border rounded" placeholder="Value" value="${value || ''}">`;
+                }
+              }).join('');
+              div.innerHTML = rowHTML + `<button type="button" class="removeComponentBtn absolute -top-2 -right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>`;
+              dataRowsContainer.appendChild(div);
+            });
+          }
+          
+          document.getElementById('step7_mainTableFootnote').value = data.step7.tableData.footnote || '';
+        }
+        
+        // Load Right Container
+        if (data.step7.rightContainer) {
+          document.getElementById('step7_rightContainer_title').value = data.step7.rightContainer.title || '';
+          document.getElementById('step7_rightContainer_content').value = data.step7.rightContainer.content || '';
+          
+          if (data.step7.rightContainer.tableData) {
+            // Load headers
+            if (data.step7.rightContainer.tableData.header) {
+              document.getElementById('step7_sp_header1').value = data.step7.rightContainer.tableData.header[0] || '';
+              document.getElementById('step7_sp_header2').value = data.step7.rightContainer.tableData.header[1] || '';
+            }
+            
+            // Load subheaders
+            const subheaderInputs = document.querySelectorAll('.step7_sp_subheader');
+            if (data.step7.rightContainer.tableData.subheader) {
+              data.step7.rightContainer.tableData.subheader.forEach((subheader, index) => {
+                if (subheaderInputs[index]) subheaderInputs[index].value = subheader || '';
+              });
+            }
+            
+            // Load S&P data rows
+            const spDataRowsContainer = document.getElementById('step7_spDataRowsContainer');
+            if (spDataRowsContainer && data.step7.rightContainer.tableData.data) {
+              spDataRowsContainer.innerHTML = '';
+              data.step7.rightContainer.tableData.data.forEach((row, index) => {
+                const div = document.createElement('div');
+                div.className = 'relative grid grid-cols-4 gap-2 bg-gray-50 p-2 rounded mb-2';
+                const rowHTML = row.map((value, i) => {
+                  if (i === 0) {
+                    return `<input type="text" class="step7_sp_eps w-full p-2 border rounded" placeholder="EPS" value="${value || ''}">`;
+                  } else {
+                    return `<input type="number" class="step7_sp_value w-full p-2 border rounded" placeholder="Value" value="${value !== '' ? value : ''}">`;
+                  }
+                }).join('');
+                div.innerHTML = rowHTML + `<button type="button" class="removeComponentBtn absolute -top-2 -right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>`;
+                spDataRowsContainer.appendChild(div);
+              });
+            }
+            
+            document.getElementById('step7_spTableFootnote').value = data.step7.rightContainer.tableData.footnote || '';
+          }
+        }
+      }
+      
+      // Load Step 8 data
+      if (data.step8) {
+        document.getElementById('step8_title').value = data.step8.title || '';
+        document.getElementById('step8_footnote').value = data.step8.footnote || '';
+        
+        // Load headers
+        const headerInputs = document.querySelectorAll('.step8_header');
+        if (data.step8.header) {
+          data.step8.header.forEach((header, index) => {
+            if (headerInputs[index]) headerInputs[index].value = header || '';
+          });
+        }
+        
+        // Load subheaders
+        const subheaderInputs = document.querySelectorAll('.step8_subheader');
+        if (data.step8.subheader) {
+          data.step8.subheader.forEach((subheader, index) => {
+            if (subheaderInputs[index]) subheaderInputs[index].value = subheader || '';
+          });
+        }
+        
+        // Load data rows
+        const dataContainer = document.getElementById('step8_dataContainer');
+        if (dataContainer && data.step8.data) {
+          dataContainer.innerHTML = '';
+          data.step8.data.forEach((row, index) => {
+            const div = document.createElement('div');
+            div.className = 'relative grid grid-cols-5 gap-2 bg-gray-50 p-2 rounded mb-2';
+            div.innerHTML = `
+              <input type="text" class="step8_assetClass w-full p-2 border rounded" placeholder="Asset Class" value="${row.assetClass || ''}">
+              <select class="step8_position w-full p-2 border rounded">
+                <option value="0">None</option>
+                <option value="1" ${row.position === 1 ? 'selected' : ''}>1</option>
+                <option value="2" ${row.position === 2 ? 'selected' : ''}>2</option>
+                <option value="3" ${row.position === 3 ? 'selected' : ''}>3</option>
+                <option value="4" ${row.position === 4 ? 'selected' : ''}>4</option>
+                <option value="5" ${row.position === 5 ? 'selected' : ''}>5</option>
+              </select>
+              <input type="number" class="step8_separate w-full p-2 border rounded" placeholder="Separate" value="${row.separate !== undefined ? row.separate : ''}">
+              <input type="number" class="step8_merge w-full p-2 border rounded" placeholder="Merge" value="${row.merge !== undefined ? row.merge : ''}">
+              <textarea class="step8_comments w-full p-2 border rounded" rows="2" placeholder="Comments">${row.comments || ''}</textarea>
+              <button type="button" class="removeComponentBtn absolute -top-2 -right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+            `;
+            dataContainer.appendChild(div);
+          });
+        }
+      }
+      
+      // Load Step 9 data
+      if (data.step9) {
+        document.getElementById('step9_title').value = data.step9.title || '';
+        document.getElementById('step9_content').value = data.step9.content || '';
+        document.getElementById('step9_footnote').value = data.step9.footnote || '';
+        
+        if (data.step9.tableData) {
+          // Load headers
+          const headerInputs = document.querySelectorAll('.step9_header');
+          if (data.step9.tableData.header) {
+            data.step9.tableData.header.forEach((header, index) => {
+              if (headerInputs[index]) headerInputs[index].value = header || '';
+            });
+          }
+          
+          // Load subheaders
+          const subheaderInputs = document.querySelectorAll('.step9_subheader');
+          if (data.step9.tableData.subheader) {
+            data.step9.tableData.subheader.forEach((subheader, index) => {
+              if (subheaderInputs[index]) subheaderInputs[index].value = subheader || '';
+            });
+          }
+          
+          // Load data rows
+          const dataContainer = document.getElementById('step9_dataContainer');
+          if (dataContainer && data.step9.tableData.data) {
+            dataContainer.innerHTML = '';
+            data.step9.tableData.data.forEach((row, index) => {
+              const div = document.createElement('div');
+              div.className = 'relative grid grid-cols-5 gap-2 bg-gray-50 p-2 rounded mb-2';
+              div.innerHTML = `
+                <input type="text" class="step9_sector w-full p-2 border rounded" placeholder="Sector" value="${row.sector || ''}">
+                <select class="step9_position w-full p-2 border rounded">
+                  <option value="0">None</option>
+                  <option value="1" ${row.position === 1 ? 'selected' : ''}>1</option>
+                  <option value="2" ${row.position === 2 ? 'selected' : ''}>2</option>
+                  <option value="3" ${row.position === 3 ? 'selected' : ''}>3</option>
+                  <option value="4" ${row.position === 4 ? 'selected' : ''}>4</option>
+                  <option value="5" ${row.position === 5 ? 'selected' : ''}>5</option>
+                </select>
+                <input type="number" class="step9_separate w-full p-2 border rounded" placeholder="Separate" value="${row.separate !== undefined ? row.separate : ''}">
+                <input type="number" class="step9_trend w-full p-2 border rounded" placeholder="Trend" value="${row.trend !== undefined ? row.trend : ''}">
+                <textarea class="step9_comments w-full p-2 border rounded" rows="2" placeholder="Comments">${row.comments || ''}</textarea>
+                <button type="button" class="removeComponentBtn absolute -top-2 -right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+              `;
+              dataContainer.appendChild(div);
+            });
+          }
+        }
+      }
+      
+      // Load Step 10 data
+      if (data.step10) {
+        document.getElementById('step10_title').value = data.step10.title || '';
+        document.getElementById('step10_content').value = data.step10.content || '';
+        
+        if (data.step10.tableData) {
+          // Load headers
+          const headerInputs = document.querySelectorAll('.step10_header');
+          if (data.step10.tableData.header) {
+            data.step10.tableData.header.forEach((header, index) => {
+              if (headerInputs[index]) headerInputs[index].value = header || '';
+            });
+          }
+          
+          // Load categories
+          const categoriesContainer = document.getElementById('step10_categoriesContainer');
+          if (categoriesContainer && data.step10.tableData.data) {
+            categoriesContainer.innerHTML = '';
+            data.step10.tableData.data.forEach((category, index) => {
+              const div = document.createElement('div');
+              div.className = 'relative bg-gray-50 p-4 rounded mb-4';
+              
+              let leftDataHTML = '';
+              if (category.leftData) {
+                category.leftData.forEach(item => {
+                  leftDataHTML += `
+                    <div class="relative mb-2">
+                      <input type="text" class="step10_leftDataItem w-full p-2 border rounded" placeholder="Left data item" value="${item}">
+                      <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+                    </div>
+                  `;
+                });
+              }
+              
+              let rightDataHTML = '';
+              if (category.rightData) {
+                category.rightData.forEach(detail => {
+                  rightDataHTML += `
+                    <div class="relative bg-white p-3 rounded mb-2">
+                      <input type="text" class="step10_rightDataHeader w-full p-2 border rounded mb-2" placeholder="Header" value="${detail.header || ''}">
+                      <textarea class="step10_rightDataDesc w-full p-2 border rounded" rows="2" placeholder="Description">${detail.description || ''}</textarea>
+                      <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+                    </div>
+                  `;
+                });
+              }
+              
+              div.innerHTML = `
+                <input type="text" class="step10_category w-full p-2 border rounded mb-3 font-semibold" placeholder="Category Name" value="${category.category || ''}">
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <h4 class="font-medium mb-2">Left Data</h4>
+                    <div class="step10_leftDataContainer">${leftDataHTML}</div>
+                    <button type="button" class="step10_addLeftDataBtn bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 mt-2">Add Left Data</button>
+                  </div>
+                  <div>
+                    <h4 class="font-medium mb-2">Right Data</h4>
+                    <div class="step10_rightDataContainer">${rightDataHTML}</div>
+                    <button type="button" class="step10_addRightDataBtn bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 mt-2">Add Right Data</button>
+                  </div>
+                </div>
+                <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove Category</button>
+              `;
+              categoriesContainer.appendChild(div);
+            });
+          }
+        }
+      }
+      
+      // Load Step 11 data
+      if (data.step11) {
+        document.getElementById('step11_title').value = data.step11.title || '';
+        document.getElementById('step11_disclaimer').value = data.step11.disclaimer || '';
+        
+        const dataContainer = document.getElementById('step11_dataContainer');
+        if (dataContainer && data.step11.data) {
+          dataContainer.innerHTML = '';
+          data.step11.data.forEach((definition, index) => {
+            const div = document.createElement('div');
+            div.className = 'relative bg-gray-50 p-3 rounded mb-2';
+            div.innerHTML = `
+              <input type="text" class="step11_header w-full p-2 border rounded mb-2 font-semibold" placeholder="Term" value="${definition.header || ''}">
+              <textarea class="step11_content w-full p-2 border rounded" rows="3" placeholder="Definition">${definition.content || ''}</textarea>
+              <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+            `;
+            dataContainer.appendChild(div);
+          });
+        }
+      }
+      
+      // Load Step 12 data
+      if (data.step12) {
+        document.getElementById('step12_title').value = data.step12.title || '';
+        document.getElementById('step12_copyright').value = data.step12.copyright || '';
+        
+        const dataContainer = document.getElementById('step12_dataContainer');
+        if (dataContainer && data.step12.data) {
+          dataContainer.innerHTML = '';
+          data.step12.data.forEach((disclosure, index) => {
+            const div = document.createElement('div');
+            div.className = 'relative bg-gray-50 p-3 rounded mb-2';
+            div.innerHTML = `
+              <input type="text" class="step12_header w-full p-2 border rounded mb-2 font-semibold" placeholder="Disclosure Header" value="${disclosure.header || ''}">
+              <textarea class="step12_content w-full p-2 border rounded" rows="4" placeholder="Disclosure Content">${disclosure.content || ''}</textarea>
+              <button type="button" class="removeComponentBtn absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Remove</button>
+            `;
+            dataContainer.appendChild(div);
+          });
+        }
+      }
+      
+      console.log('JSON data loaded successfully for all steps:', data);
+      
+      // Navigate to Step 1 after loading
+      showStep(1);
+    }
+
+    // JSON Data Collection and Display
      function collectAllFormData() {
        const data = {
          step1: {
@@ -755,7 +2791,405 @@
              footnote: "",
              data: []
            }
-         }
+        },
+        step3: (function(){
+          const hasStructured = !!document.getElementById('step3_factorHeader');
+          const base = {
+            title: document.getElementById('step3_title')?.value || '',
+            description: document.getElementById('step3_description')?.value || ''
+          };
+          if (!hasStructured) {
+            // Fallback to textarea JSON if present
+            return {
+              ...base,
+              tableData: (function(){try{return JSON.parse(document.getElementById('step3_tableData')?.value||'');}catch(e){return { headers:{}, subtitle:'', data:[] };}})()
+            };
+          }
+          const rows = Array.from(document.querySelectorAll('#step3_dataRows .step3-data-row')).map(row => ({
+            factor: row.querySelector('.step3_factor')?.value?.trim() || '',
+            trend: row.querySelector('.step3_trend')?.value || '',
+            value: (function(){const v=row.querySelector('.step3_value')?.value; const n=parseFloat(v); return isNaN(n)?undefined:n;})(),
+            cioView: row.querySelector('.step3_cioView')?.value?.trim() || ''
+          })).filter(r => r.factor || r.cioView);
+          return {
+            ...base,
+            tableData: {
+              headers: {
+                factorHeader: document.getElementById('step3_factorHeader')?.value || '',
+                implicationHeader: document.getElementById('step3_implicationHeader')?.value || '',
+                cioViewHeader: document.getElementById('step3_cioViewHeader')?.value || ''
+              },
+              subtitle: document.getElementById('step3_subtitle')?.value || '',
+              data: rows
+            }
+          };
+        })(),
+        step4: {
+          title: document.getElementById('step4_title')?.value || '',
+          subsections: (function(){
+            const container = document.getElementById('step4_subsectionsContainer');
+            if (!container) return [];
+            const subsections = [];
+            const headings = container.querySelectorAll('.step4_subsection_heading');
+            const contents = container.querySelectorAll('.step4_subsection_content');
+            headings.forEach((heading, index) => {
+              const headingText = heading.value?.trim() || '';
+              const contentText = contents[index]?.value?.trim() || '';
+              if (headingText || contentText) {
+                subsections.push({
+                  heading: headingText,
+                  content: contentText
+                });
+              }
+            });
+            return subsections;
+          })(),
+          rightContainer: (function(){
+            const watchListContainer = document.getElementById('step4_watchListContainer');
+            const riskContainer = document.getElementById('step4_riskConsiderationsContainer');
+            const equityWatchList = [];
+            const riskConsiderations = [];
+            
+            if (watchListContainer) {
+              const items = watchListContainer.querySelectorAll('.step4_watchList_item');
+              items.forEach(item => {
+                const text = item.value?.trim();
+                if (text) equityWatchList.push(text);
+              });
+            }
+            
+            if (riskContainer) {
+              const items = riskContainer.querySelectorAll('.step4_riskConsideration_item');
+              items.forEach(item => {
+                const text = item.value?.trim();
+                if (text) riskConsiderations.push(text);
+              });
+            }
+            
+            return { equityWatchList, riskConsiderations };
+          })(),
+          sectorValuation: (function(){
+            const dataContainer = document.getElementById('step4_sectorDataContainer');
+            const data = [];
+            
+            if (dataContainer) {
+              const names = dataContainer.querySelectorAll('.step4_sector_name');
+              const currentPEs = dataContainer.querySelectorAll('.step4_sector_currentPE');
+              const averagePEs = dataContainer.querySelectorAll('.step4_sector_averagePE');
+              
+              names.forEach((nameInput, index) => {
+                const name = nameInput.value?.trim() || '';
+                const currentPE = parseFloat(currentPEs[index]?.value) || 0;
+                const averagePE = parseFloat(averagePEs[index]?.value) || 0;
+                
+                if (name) {
+                  data.push({ name, currentPE, averagePE });
+                }
+              });
+            }
+            
+            return {
+              data,
+              axisConfig: {
+                start: parseInt(document.getElementById('step4_axisStart')?.value) || 15,
+                end: parseInt(document.getElementById('step4_axisEnd')?.value) || 35,
+                interval: parseInt(document.getElementById('step4_axisInterval')?.value) || 5
+              },
+              imgSrc: document.getElementById('step4_imgSrc')?.value || '',
+              subtitle: document.getElementById('step4_subtitle')?.value || ''
+            };
+          })()
+        },
+        step5: {
+          title: document.getElementById('step5_title')?.value || '',
+          subsections: (function(){
+            const container = document.getElementById('step5_subsectionsContainer');
+            if (!container) return [];
+            const subsections = [];
+            const headings = container.querySelectorAll('.step5_subsection_heading');
+            const contents = container.querySelectorAll('.step5_subsection_content');
+            headings.forEach((heading, index) => {
+              const headingText = heading.value?.trim() || '';
+              const contentText = contents[index]?.value?.trim() || '';
+              if (headingText || contentText) {
+                subsections.push({
+                  heading: headingText,
+                  content: contentText
+                });
+              }
+            });
+            return subsections;
+          })(),
+          rightContainer: (function(){
+            const watchListContainer = document.getElementById('step5_watchListContainer');
+            const riskContainer = document.getElementById('step5_riskConsiderationsContainer');
+            const fixedIncomeWatchList = [];
+            const riskConsiderations = [];
+            
+            if (watchListContainer) {
+              const items = watchListContainer.querySelectorAll('.step5_watchList_item');
+              items.forEach(item => {
+                const text = item.value?.trim();
+                if (text) fixedIncomeWatchList.push(text);
+              });
+            }
+            
+            if (riskContainer) {
+              const items = riskContainer.querySelectorAll('.step5_riskConsideration_item');
+              items.forEach(item => {
+                const text = item.value?.trim();
+                if (text) riskConsiderations.push(text);
+              });
+            }
+            
+            return { fixedIncomeWatchList, riskConsiderations };
+          })()
+        },
+        step6: {
+          title: document.getElementById('step6_title')?.value || '',
+          container: (function(){
+            const content = document.getElementById('step6_container_content')?.value?.trim() || '';
+            const dataContainer = document.getElementById('step6_containerDataContainer');
+            const data = [];
+            
+            if (dataContainer) {
+              const items = dataContainer.querySelectorAll('.step6_containerData_item');
+              items.forEach(item => {
+                const text = item.value?.trim();
+                if (text) data.push(text);
+              });
+            }
+            
+            return { content, data };
+          })(),
+          subsection: (function(){
+            const container = document.getElementById('step6_subsectionsContainer');
+            if (!container) return [];
+            const subsections = [];
+            const headings = container.querySelectorAll('.step6_subsection_heading');
+            const contents = container.querySelectorAll('.step6_subsection_content');
+            headings.forEach((heading, index) => {
+              const headingText = heading.value?.trim() || '';
+              const contentText = contents[index]?.value?.trim() || '';
+              if (headingText || contentText) {
+                subsections.push({ heading: headingText, content: contentText });
+              }
+            });
+            return subsections;
+          })(),
+          altStrategies: (function(){
+            const container = document.getElementById('step6_altStrategiesContainer');
+            if (!container) return [];
+            const strategies = [];
+            
+            const groups = container.querySelectorAll('.p-4.border-2');
+            groups.forEach(group => {
+              const title = group.querySelector('.step6_strategyGroup_title')?.value?.trim() || '';
+              const footnote = group.querySelector('.step6_strategyGroup_footnote')?.value?.trim() || '';
+              const data = [];
+              
+              const items = group.querySelectorAll('.step6_strategyGroup_items > div');
+              items.forEach(item => {
+                const heading = item.querySelector('.step6_strategy_heading')?.value?.trim() || '';
+                const symbol = item.querySelector('.step6_strategy_symbol')?.value || '';
+                const color = item.querySelector('.step6_strategy_color')?.value || '';
+                const bullCase = item.querySelector('.step6_strategy_bullCase')?.value?.trim() || '';
+                const bearCase = item.querySelector('.step6_strategy_bearCase')?.value?.trim() || '';
+                
+                if (heading) {
+                  const itemData = { heading, bullCase, bearCase };
+                  if (symbol) itemData.symbol = symbol;
+                  if (color) itemData.color = color;
+                  data.push(itemData);
+                }
+              });
+              
+              if (title || data.length > 0) {
+                strategies.push({ title, data, footnote });
+              }
+            });
+            
+            return strategies;
+          })(),
+          strategy: (function(){
+            const title = document.getElementById('step6_macroStrategy_title')?.value?.trim() || '';
+            const dataContainer = document.getElementById('step6_macroStrategyDataContainer');
+            const data = [];
+            
+            if (dataContainer) {
+              const items = dataContainer.querySelectorAll('.step6_macroStrategyData_item');
+              items.forEach(item => {
+                const text = item.value?.trim();
+                if (text) data.push(text);
+              });
+            }
+            
+            return { title, data };
+          })()
+        },
+        step7: {
+          title: document.getElementById('step7_title')?.value || '',
+          tableData: (function(){
+            const headers = Array.from(document.querySelectorAll('.step7_header')).map(h => h.value.trim());
+            const dataRows = [];
+            document.querySelectorAll('#step7_dataRowsContainer > div').forEach(row => {
+              const label = row.querySelector('.step7_rowLabel')?.value.trim() || '';
+              const values = Array.from(row.querySelectorAll('.step7_rowValue')).map(v => v.value.trim());
+              dataRows.push([label, ...values]);
+            });
+            const footnote = document.getElementById('step7_mainTableFootnote')?.value || '';
+            return { header: headers, data: dataRows, footnote: footnote };
+          })(),
+          rightContainer: (function(){
+            const title = document.getElementById('step7_rightContainer_title')?.value || '';
+            const content = document.getElementById('step7_rightContainer_content')?.value || '';
+            const header1 = document.getElementById('step7_sp_header1')?.value.trim() || '';
+            const header2 = document.getElementById('step7_sp_header2')?.value.trim() || '';
+            const subheaders = Array.from(document.querySelectorAll('.step7_sp_subheader')).map(h => h.value.trim());
+            const spDataRows = [];
+            document.querySelectorAll('#step7_spDataRowsContainer > div').forEach(row => {
+              const eps = row.querySelector('.step7_sp_eps')?.value.trim() || '';
+              const values = Array.from(row.querySelectorAll('.step7_sp_value')).map(v => {
+                const val = v.value.trim();
+                return val === '' ? '' : Number(val);
+              });
+              spDataRows.push([eps, ...values]);
+            });
+            const footnote = document.getElementById('step7_spTableFootnote')?.value || '';
+            return {
+              title: title,
+              content: content,
+              tableData: {
+                header: [header1, header2],
+                subheader: subheaders,
+                data: spDataRows,
+                footnote: footnote
+              }
+            };
+          })()
+        },
+        step8: {
+          title: document.getElementById('step8_title')?.value || '',
+          header: Array.from(document.querySelectorAll('.step8_header')).map(h => h.value.trim()),
+          subheader: Array.from(document.querySelectorAll('.step8_subheader')).map(h => h.value.trim()),
+          footnote: document.getElementById('step8_footnote')?.value || '',
+          data: (function(){
+            const dataArray = [];
+            document.querySelectorAll('#step8_dataContainer > div').forEach(row => {
+              const assetClass = row.querySelector('.step8_assetClass')?.value.trim() || '';
+              const position = parseInt(row.querySelector('.step8_position')?.value) || 0;
+              const separate = parseInt(row.querySelector('.step8_separate')?.value) || 0;
+              const merge = parseInt(row.querySelector('.step8_merge')?.value) || 0;
+              const comments = row.querySelector('.step8_comments')?.value.trim() || '';
+              
+              dataArray.push({
+                assetClass: assetClass,
+                position: position,
+                separate: separate,
+                merge: merge,
+                comments: comments
+              });
+            });
+            return dataArray;
+          })()
+        },
+        step9: {
+          title: document.getElementById('step9_title')?.value || '',
+          content: document.getElementById('step9_content')?.value || '',
+          tableData: {
+            header: Array.from(document.querySelectorAll('.step9_header')).map(h => h.value.trim()),
+            subheader: Array.from(document.querySelectorAll('.step9_subheader')).map(h => h.value.trim()),
+            data: (function(){
+              const dataArray = [];
+              document.querySelectorAll('#step9_dataContainer > div').forEach(row => {
+                const sector = row.querySelector('.step9_sector')?.value.trim() || '';
+                const position = parseInt(row.querySelector('.step9_position')?.value) || 0;
+                const separate = parseInt(row.querySelector('.step9_separate')?.value) || 0;
+                const trend = parseInt(row.querySelector('.step9_trend')?.value) || 0;
+                const comments = row.querySelector('.step9_comments')?.value.trim() || '';
+                
+                dataArray.push({
+                  sector: sector,
+                  position: position,
+                  separate: separate,
+                  trend: trend,
+                  comments: comments
+                });
+              });
+              return dataArray;
+            })()
+          },
+          footnote: document.getElementById('step9_footnote')?.value || ''
+        },
+        step10: {
+          title: document.getElementById('step10_title')?.value || '',
+          content: document.getElementById('step10_content')?.value || '',
+          tableData: {
+            header: Array.from(document.querySelectorAll('.step10_header')).map(h => h.value.trim()),
+            data: (function(){
+              const dataArray = [];
+              document.querySelectorAll('#step10_categoriesContainer > div').forEach(categoryDiv => {
+                const category = categoryDiv.querySelector('.step10_category')?.value.trim() || '';
+                
+                // Collect left data items
+                const leftData = [];
+                categoryDiv.querySelectorAll('.step10_leftDataItem').forEach(item => {
+                  const value = item.value.trim();
+                  if (value) leftData.push(value);
+                });
+                
+                // Collect right data details
+                const rightData = [];
+                categoryDiv.querySelectorAll('.step10_rightDataContainer > div').forEach(detailDiv => {
+                  const header = detailDiv.querySelector('.step10_rightDataHeader')?.value.trim() || '';
+                  const description = detailDiv.querySelector('.step10_rightDataDesc')?.value.trim() || '';
+                  rightData.push({ header: header, description: description });
+                });
+                
+                dataArray.push({
+                  category: category,
+                  leftData: leftData,
+                  rightData: rightData
+                });
+              });
+              return dataArray;
+            })()
+          }
+        },
+        step11: {
+          title: document.getElementById('step11_title')?.value || '',
+          disclaimer: document.getElementById('step11_disclaimer')?.value || '',
+          data: (function(){
+            const dataArray = [];
+            document.querySelectorAll('#step11_dataContainer > div').forEach(definition => {
+              const header = definition.querySelector('.step11_header')?.value.trim() || '';
+              const content = definition.querySelector('.step11_content')?.value.trim() || '';
+              
+              dataArray.push({
+                header: header,
+                content: content
+              });
+            });
+            return dataArray;
+          })()
+        },
+        step12: {
+          title: document.getElementById('step12_title')?.value || '',
+          data: (function(){
+            const dataArray = [];
+            document.querySelectorAll('#step12_dataContainer > div').forEach(disclosure => {
+              const header = disclosure.querySelector('.step12_header')?.value.trim() || '';
+              const content = disclosure.querySelector('.step12_content')?.value.trim() || '';
+              
+              dataArray.push({
+                header: header,
+                content: content
+              });
+            });
+            return dataArray;
+          })(),
+          copyright: document.getElementById('step12_copyright')?.value || ''
+        }
        };
 
        // Collect In Brief points
@@ -845,14 +3279,25 @@
              rightPoints: Array.from(component.querySelectorAll('[id$="_right"] textarea')).map(ta => ta.value.trim()).filter(v => v)
            };
            
-         case 'subsections':
+         case 'subsections': {
+           const subsectionsContainer = component.querySelector('[id$="_subsections"]');
+           const subsectionsArray = [];
+           if (subsectionsContainer) {
+             // Get all subsection divs (both initial and added ones)
+             const subsectionDivs = subsectionsContainer.querySelectorAll('div.flex.flex-col, div.relative.flex.flex-col');
+             subsectionDivs.forEach(sub => {
+               const heading = sub.querySelector('input[type="text"]')?.value?.trim() || '';
+               const content = sub.querySelector('textarea')?.value?.trim() || '';
+               if (heading || content) {
+                 subsectionsArray.push({ heading, content });
+               }
+             });
+           }
            return {
              type: 'subsections',
-             subsections: Array.from(component.querySelectorAll('.space-y-3 > div')).map(sub => ({
-               heading: sub.querySelector('input[type="text"]')?.value || '',
-               content: sub.querySelector('textarea')?.value || ''
-             }))
+             subsections: subsectionsArray
            };
+         }
            
          case 'numbered-bottom-line': {
             const pointsContainer = component.querySelector(`#${component.id}_points`) || component.querySelector('[id$="_points"]');
@@ -1058,6 +3503,683 @@
          if (!addComponentBtn.contains(e.target) && !componentDropdown.contains(e.target)) {
            componentDropdown.classList.add('hidden');
          }
+
+    // Step 3: Add data row handler
+    function addStep3DataRow() {
+      const rowsContainer = document.getElementById('step3_dataRows');
+      if (!rowsContainer) return;
+      const row = document.createElement('div');
+      row.className = 'relative p-3 border border-gray-200 rounded-lg bg-white step3-data-row';
+      row.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition" title="Remove">×</button>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Factor</label>
+            <input type="text" class="w-full rounded-lg border border-gray-300 p-2.5 step3_factor" placeholder="Earnings">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Trend</label>
+            <select class="w-full rounded-lg border border-gray-300 p-2.5 step3_trend">
+              <option value="">Select</option>
+              <option value="up">Up</option>
+              <option value="down">Down</option>
+              <option value="neutral" selected>Neutral</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Value</label>
+            <select class="w-full rounded-lg border border-gray-300 p-2.5 step3_value">
+              <option value="">Select</option>
+              <option value="0" selected>0</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="75">75</option>
+              <option value="100">100</option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-3">
+          <label class="block text-xs text-gray-600 mb-1">CIO View</label>
+          <textarea rows="3" class="w-full rounded-lg border border-gray-300 p-2.5 step3_cioView" placeholder="Enter CIO View..."></textarea>
+        </div>
+      `;
+      rowsContainer.appendChild(row);
+    }
+
+    const step3AddRowBtn = document.getElementById('step3_addRowBtn');
+    if (step3AddRowBtn) {
+      step3AddRowBtn.addEventListener('click', addStep3DataRow);
+    }
+
+    // Step 4: Add subsection handler
+    function addStep4Subsection() {
+      const container = document.getElementById('step4_subsectionsContainer');
+      if (!container) return;
+      
+      const subsection = document.createElement('div');
+      subsection.className = 'relative flex flex-col gap-2 p-3 border border-gray-200 rounded-lg bg-gray-50';
+      subsection.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <label class="block text-xs text-gray-600 mb-1">Heading</label>
+        <input type="text" class="step4_subsection_heading w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Subsection heading...">
+        <label class="block text-xs text-gray-600 mb-1">Content</label>
+        <textarea rows="3" class="step4_subsection_content w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter content..."></textarea>
+      `;
+      container.appendChild(subsection);
+    }
+
+    const step4AddSubsectionBtn = document.getElementById('step4_addSubsectionBtn');
+    if (step4AddSubsectionBtn) {
+      step4AddSubsectionBtn.addEventListener('click', addStep4Subsection);
+    }
+
+    // Step 4: Add watch list item handler
+    function addStep4WatchListItem() {
+      const container = document.getElementById('step4_watchListContainer');
+      if (!container) return;
+      
+      const item = document.createElement('div');
+      item.className = 'relative';
+      item.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <textarea rows="2" class="step4_watchList_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Watch list item..."></textarea>
+      `;
+      container.appendChild(item);
+    }
+
+    const step4AddWatchListBtn = document.getElementById('step4_addWatchListBtn');
+    if (step4AddWatchListBtn) {
+      step4AddWatchListBtn.addEventListener('click', addStep4WatchListItem);
+    }
+
+    // Step 4: Add risk consideration handler
+    function addStep4RiskConsideration() {
+      const container = document.getElementById('step4_riskConsiderationsContainer');
+      if (!container) return;
+      
+      const item = document.createElement('div');
+      item.className = 'relative';
+      item.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <textarea rows="2" class="step4_riskConsideration_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Risk consideration..."></textarea>
+      `;
+      container.appendChild(item);
+    }
+
+    const step4AddRiskConsiderationBtn = document.getElementById('step4_addRiskConsiderationBtn');
+    if (step4AddRiskConsiderationBtn) {
+      step4AddRiskConsiderationBtn.addEventListener('click', addStep4RiskConsideration);
+    }
+
+    // Step 4: Add sector data handler
+    function addStep4SectorData() {
+      const container = document.getElementById('step4_sectorDataContainer');
+      if (!container) return;
+      
+      const sector = document.createElement('div');
+      sector.className = 'relative flex flex-col gap-2 p-3 border border-gray-200 rounded-lg bg-gray-50';
+      sector.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Name</label>
+            <input type="text" class="step4_sector_name w-full rounded-lg border border-gray-300 p-2" placeholder="Information Technology">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Current P/E</label>
+            <input type="number" step="0.1" class="step4_sector_currentPE w-full rounded-lg border border-gray-300 p-2" placeholder="29.5">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Average P/E</label>
+            <input type="number" step="0.1" class="step4_sector_averagePE w-full rounded-lg border border-gray-300 p-2" placeholder="18.5">
+          </div>
+        </div>
+      `;
+      container.appendChild(sector);
+    }
+
+    const step4AddSectorDataBtn = document.getElementById('step4_addSectorDataBtn');
+    if (step4AddSectorDataBtn) {
+      step4AddSectorDataBtn.addEventListener('click', addStep4SectorData);
+    }
+
+    // Step 5: Add subsection handler
+    function addStep5Subsection() {
+      const container = document.getElementById('step5_subsectionsContainer');
+      if (!container) return;
+      
+      const subsection = document.createElement('div');
+      subsection.className = 'relative flex flex-col gap-2 p-3 border border-gray-200 rounded-lg bg-gray-50';
+      subsection.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <label class="block text-xs text-gray-600 mb-1">Heading</label>
+        <input type="text" class="step5_subsection_heading w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Subsection heading...">
+        <label class="block text-xs text-gray-600 mb-1">Content</label>
+        <textarea rows="3" class="step5_subsection_content w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter content..."></textarea>
+      `;
+      container.appendChild(subsection);
+    }
+
+    const step5AddSubsectionBtn = document.getElementById('step5_addSubsectionBtn');
+    if (step5AddSubsectionBtn) {
+      step5AddSubsectionBtn.addEventListener('click', addStep5Subsection);
+    }
+
+    // Step 5: Add watch list item handler
+    function addStep5WatchListItem() {
+      const container = document.getElementById('step5_watchListContainer');
+      if (!container) return;
+      
+      const item = document.createElement('div');
+      item.className = 'relative';
+      item.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <textarea rows="2" class="step5_watchList_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Watch list item..."></textarea>
+      `;
+      container.appendChild(item);
+    }
+
+    const step5AddWatchListBtn = document.getElementById('step5_addWatchListBtn');
+    if (step5AddWatchListBtn) {
+      step5AddWatchListBtn.addEventListener('click', addStep5WatchListItem);
+    }
+
+    // Step 5: Add risk consideration handler
+    function addStep5RiskConsideration() {
+      const container = document.getElementById('step5_riskConsiderationsContainer');
+      if (!container) return;
+      
+      const item = document.createElement('div');
+      item.className = 'relative';
+      item.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <textarea rows="2" class="step5_riskConsideration_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Risk consideration..."></textarea>
+      `;
+      container.appendChild(item);
+    }
+
+    const step5AddRiskConsiderationBtn = document.getElementById('step5_addRiskConsiderationBtn');
+    if (step5AddRiskConsiderationBtn) {
+      step5AddRiskConsiderationBtn.addEventListener('click', addStep5RiskConsideration);
+    }
+
+    // Step 6: Add container data point handler
+    function addStep6ContainerData() {
+      const container = document.getElementById('step6_containerDataContainer');
+      if (!container) return;
+      
+      const item = document.createElement('div');
+      item.className = 'relative';
+      item.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <textarea rows="2" class="step6_containerData_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Data point..."></textarea>
+      `;
+      container.appendChild(item);
+    }
+
+    const step6_addContainerDataBtn = document.getElementById('step6_addContainerDataBtn');
+    if (step6_addContainerDataBtn) {
+      step6_addContainerDataBtn.addEventListener('click', addStep6ContainerData);
+    }
+
+    // Step 6: Add subsection handler
+    function addStep6Subsection() {
+      const container = document.getElementById('step6_subsectionsContainer');
+      if (!container) return;
+      
+      const subsection = document.createElement('div');
+      subsection.className = 'relative flex flex-col gap-2 p-3 border border-gray-200 rounded-lg bg-gray-50';
+      subsection.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <label class="block text-xs text-gray-600 mb-1">Heading</label>
+        <input type="text" class="step6_subsection_heading w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Subsection heading...">
+        <label class="block text-xs text-gray-600 mb-1">Content</label>
+        <textarea rows="3" class="step6_subsection_content w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Enter content..."></textarea>
+      `;
+      container.appendChild(subsection);
+    }
+
+    const step6_addSubsectionBtn = document.getElementById('step6_addSubsectionBtn');
+    if (step6_addSubsectionBtn) {
+      step6_addSubsectionBtn.addEventListener('click', addStep6Subsection);
+    }
+
+    // Step 6: Add strategy group handler
+    function addStep6StrategyGroup() {
+      const container = document.getElementById('step6_altStrategiesContainer');
+      if (!container) return;
+      
+      const group = document.createElement('div');
+      group.className = 'relative p-4 border-2 border-blue-200 rounded-lg bg-blue-50';
+      group.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <div class="mb-3">
+          <label class="block text-xs text-gray-600 mb-1">Strategy Title</label>
+          <input type="text" class="step6_strategyGroup_title w-full rounded-lg border border-gray-300 p-2.5" placeholder="Strategy Title">
+        </div>
+        <div class="mb-3">
+          <label class="block text-xs text-gray-600 mb-2">Strategy Items</label>
+          <div class="step6_strategyGroup_items space-y-3">
+            <div class="p-3 border border-gray-200 rounded-lg bg-white">
+              <div class="grid grid-cols-4 gap-2 mb-2">
+                <div class="col-span-2">
+                  <label class="block text-xs text-gray-600 mb-1">Heading</label>
+                  <input type="text" class="step6_strategy_heading w-full rounded-lg border border-gray-300 p-2" placeholder="Strategy Name">
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">Symbol</label>
+                  <select class="step6_strategy_symbol w-full rounded-lg border border-gray-300 p-2">
+                    <option value="">None</option>
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs text-gray-600 mb-1">Color</label>
+                  <select class="step6_strategy_color w-full rounded-lg border border-gray-300 p-2">
+                    <option value="">None</option>
+                    <option value="green">Green</option>
+                    <option value="red">Red</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mb-2">
+                <label class="block text-xs text-gray-600 mb-1">Bull Case</label>
+                <textarea rows="2" class="step6_strategy_bullCase w-full rounded-lg border border-gray-300 p-2" placeholder="Potential alpha generation opportunities..."></textarea>
+              </div>
+              <div>
+                <label class="block text-xs text-gray-600 mb-1">Bear Case</label>
+                <textarea rows="2" class="step6_strategy_bearCase w-full rounded-lg border border-gray-300 p-2" placeholder="Macro-driven market dominated by trade..."></textarea>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="step6_addStrategyItemBtn bg-green-600 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-green-700 transition mt-2 text-xs w-full">
+            + Add Strategy Item
+          </button>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-600 mb-1">Footnote</label>
+          <textarea rows="2" class="step6_strategyGroup_footnote w-full rounded-lg border border-gray-300 p-2.5" placeholder="Footnote..."></textarea>
+        </div>
+      `;
+      container.appendChild(group);
+    }
+
+    const step6_addStrategyGroupBtn = document.getElementById('step6_addStrategyGroupBtn');
+    if (step6_addStrategyGroupBtn) {
+      step6_addStrategyGroupBtn.addEventListener('click', addStep6StrategyGroup);
+    }
+
+    // Step 6: Add strategy item handler (using event delegation)
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('step6_addStrategyItemBtn')) {
+        e.preventDefault();
+        const groupItems = e.target.closest('.p-4').querySelector('.step6_strategyGroup_items');
+        if (!groupItems) return;
+        
+        const item = document.createElement('div');
+        item.className = 'relative p-3 border border-gray-200 rounded-lg bg-white';
+        item.innerHTML = `
+          <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+          <div class="grid grid-cols-4 gap-2 mb-2">
+            <div class="col-span-2">
+              <label class="block text-xs text-gray-600 mb-1">Heading</label>
+              <input type="text" class="step6_strategy_heading w-full rounded-lg border border-gray-300 p-2" placeholder="Strategy Name">
+            </div>
+            <div>
+              <label class="block text-xs text-gray-600 mb-1">Symbol</label>
+              <select class="step6_strategy_symbol w-full rounded-lg border border-gray-300 p-2">
+                <option value="">None</option>
+                <option value="+">+</option>
+                <option value="-">-</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-gray-600 mb-1">Color</label>
+              <select class="step6_strategy_color w-full rounded-lg border border-gray-300 p-2">
+                <option value="">None</option>
+                <option value="green">Green</option>
+                <option value="red">Red</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-2">
+            <label class="block text-xs text-gray-600 mb-1">Bull Case</label>
+            <textarea rows="2" class="step6_strategy_bullCase w-full rounded-lg border border-gray-300 p-2" placeholder="Potential alpha generation opportunities..."></textarea>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Bear Case</label>
+            <textarea rows="2" class="step6_strategy_bearCase w-full rounded-lg border border-gray-300 p-2" placeholder="Macro-driven market dominated by trade..."></textarea>
+          </div>
+        `;
+        groupItems.appendChild(item);
+      }
+    });
+
+    // Step 6: Add macro strategy data point handler
+    function addStep6MacroStrategyData() {
+      const container = document.getElementById('step6_macroStrategyDataContainer');
+      if (!container) return;
+      
+      const item = document.createElement('div');
+      item.className = 'relative';
+      item.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <textarea rows="2" class="step6_macroStrategyData_item w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="Data point..."></textarea>
+      `;
+      container.appendChild(item);
+    }
+
+    const step6_addMacroStrategyDataBtn = document.getElementById('step6_addMacroStrategyDataBtn');
+    if (step6_addMacroStrategyDataBtn) {
+      step6_addMacroStrategyDataBtn.addEventListener('click', addStep6MacroStrategyData);
+    }
+
+    // Step 7: Add data row handler (Economic Forecasts)
+    function addStep7DataRow() {
+      const container = document.getElementById('step7_dataRowsContainer');
+      if (!container) return;
+      
+      const row = document.createElement('div');
+      row.className = 'relative p-3 border border-gray-200 rounded-lg bg-gray-50';
+      row.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <div class="mb-2">
+          <label class="block text-xs text-gray-600 mb-1">Row Label</label>
+          <input type="text" class="step7_rowLabel w-full rounded-lg border border-gray-300 p-2" placeholder="Economic indicator...">
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="Value 1">
+          <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="Value 2">
+          <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="Value 3">
+          <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="Value 4">
+          <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="Value 5">
+          <input type="text" class="step7_rowValue w-full rounded-lg border border-gray-300 p-2" placeholder="Value 6">
+        </div>
+      `;
+      container.appendChild(row);
+    }
+
+    const step7_addDataRowBtn = document.getElementById('step7_addDataRowBtn');
+    if (step7_addDataRowBtn) {
+      step7_addDataRowBtn.addEventListener('click', addStep7DataRow);
+    }
+
+    // Step 7: Add S&P data row handler
+    function addStep7SpDataRow() {
+      const container = document.getElementById('step7_spDataRowsContainer');
+      if (!container) return;
+      
+      const row = document.createElement('div');
+      row.className = 'relative grid grid-cols-6 gap-2 p-2 border border-gray-200 rounded bg-gray-50';
+      row.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <input type="text" class="step7_sp_eps w-full rounded-lg border border-gray-300 p-2" placeholder="$315">
+        <input type="number" class="step7_sp_value w-full rounded-lg border border-gray-300 p-2" placeholder="Value">
+        <input type="number" class="step7_sp_value w-full rounded-lg border border-gray-300 p-2" placeholder="Value">
+        <input type="number" class="step7_sp_value w-full rounded-lg border border-gray-300 p-2" placeholder="Value">
+        <input type="number" class="step7_sp_value w-full rounded-lg border border-gray-300 p-2" placeholder="Value">
+        <input type="number" class="step7_sp_value w-full rounded-lg border border-gray-300 p-2" placeholder="Value">
+      `;
+      container.appendChild(row);
+    }
+
+    const step7_addSpDataRowBtn = document.getElementById('step7_addSpDataRowBtn');
+    if (step7_addSpDataRowBtn) {
+      step7_addSpDataRowBtn.addEventListener('click', addStep7SpDataRow);
+    }
+
+    // Step 8: Add asset class data handler
+    function addStep8Data() {
+      const container = document.getElementById('step8_dataContainer');
+      if (!container) return;
+      
+      const row = document.createElement('div');
+      row.className = 'relative p-4 border border-gray-200 rounded-lg bg-gray-50';
+      row.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <div class="mb-3">
+          <label class="block text-xs text-gray-600 mb-1">Asset Class</label>
+          <input type="text" class="step8_assetClass w-full rounded-lg border border-gray-300 p-2" placeholder="Asset class name...">
+        </div>
+        <div class="grid grid-cols-3 gap-3 mb-3">
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Position</label>
+            <select class="step8_position w-full rounded-lg border border-gray-300 p-2">
+              <option value="">Select position...</option>
+              <option value="-1">hide</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Separate</label>
+            <select class="step8_separate w-full rounded-lg border border-gray-300 p-2">
+              <option value="0">0</option>
+              <option value="1">1</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Merge</label>
+            <select class="step8_merge w-full rounded-lg border border-gray-300 p-2">
+              <option value="0">0</option>
+              <option value="1">1</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-600 mb-1">Comments</label>
+          <textarea class="step8_comments w-full rounded-lg border border-gray-300 p-2" rows="3" placeholder="Comments about this asset class..."></textarea>
+        </div>
+      `;
+      container.appendChild(row);
+    }
+
+    const step8_addDataBtn = document.getElementById('step8_addDataBtn');
+    if (step8_addDataBtn) {
+      step8_addDataBtn.addEventListener('click', addStep8Data);
+    }
+
+    // Step 9: Add sector data handler
+    function addStep9Data() {
+      const container = document.getElementById('step9_dataContainer');
+      if (!container) return;
+      
+      const row = document.createElement('div');
+      row.className = 'relative p-4 border border-gray-200 rounded-lg bg-gray-50';
+      row.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <div class="mb-3">
+          <label class="block text-xs text-gray-600 mb-1">Sector</label>
+          <input type="text" class="step9_sector w-full rounded-lg border border-gray-300 p-2" placeholder="Sector name...">
+        </div>
+        <div class="grid grid-cols-3 gap-3 mb-3">
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Position</label>
+            <select class="step9_position w-full rounded-lg border border-gray-300 p-2">
+              <option value="">Select position...</option>
+              <option value="-1">hide</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Separate</label>
+            <select class="step9_separate w-full rounded-lg border border-gray-300 p-2">
+              <option value="0">0</option>
+              <option value="1">1</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Trend</label>
+            <select class="step9_trend w-full rounded-lg border border-gray-300 p-2">
+              <option value="">Select trend...</option>
+              <option value="-1">-1</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-600 mb-1">Comments</label>
+          <textarea class="step9_comments w-full rounded-lg border border-gray-300 p-2" rows="3" placeholder="Comments about this sector..."></textarea>
+        </div>
+      `;
+      container.appendChild(row);
+    }
+
+    const step9_addDataBtn = document.getElementById('step9_addDataBtn');
+    if (step9_addDataBtn) {
+      step9_addDataBtn.addEventListener('click', addStep9Data);
+    }
+
+    // Step 10: Add category handler
+    function addStep10Category() {
+      const container = document.getElementById('step10_categoriesContainer');
+      if (!container) return;
+      
+      const category = document.createElement('div');
+      category.className = 'relative p-4 border-2 border-blue-300 rounded-lg bg-blue-50';
+      category.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        
+        <div class="mb-3">
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Category Name</label>
+          <input type="text" class="step10_category w-full rounded-lg border border-gray-300 p-2" placeholder="Category name...">
+        </div>
+
+        <div class="mb-3">
+          <label class="block text-xs font-semibold text-gray-700 mb-2">Level 1 Items</label>
+          <div class="step10_leftDataContainer space-y-2">
+            <div class="relative">
+              <button type="button" class="removeBtn absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+              <input type="text" class="step10_leftDataItem w-full rounded-lg border border-gray-300 p-2 pr-7" placeholder="Item name...">
+            </div>
+          </div>
+          <button type="button" class="step10_addLeftDataBtn mt-2 w-full bg-blue-500 text-white px-3 py-1.5 rounded-lg hover:bg-blue-600 transition text-sm">+ Add Level 1 Item</button>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-2">Level 2 Details</label>
+          <div class="step10_rightDataContainer space-y-3">
+            <div class="relative p-3 border border-gray-300 rounded-lg bg-white">
+              <button type="button" class="removeBtn absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+              <div class="mb-2">
+                <label class="block text-xs text-gray-600 mb-1">Header</label>
+                <input type="text" class="step10_rightDataHeader w-full rounded-lg border border-gray-300 p-2" placeholder="Header...">
+              </div>
+              <div>
+                <label class="block text-xs text-gray-600 mb-1">Description</label>
+                <textarea class="step10_rightDataDesc w-full rounded-lg border border-gray-300 p-2" rows="2" placeholder="Description..."></textarea>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="step10_addRightDataBtn mt-2 w-full bg-blue-500 text-white px-3 py-1.5 rounded-lg hover:bg-blue-600 transition text-sm">+ Add Level 2 Detail</button>
+        </div>
+      `;
+      container.appendChild(category);
+    }
+
+    const step10_addCategoryBtn = document.getElementById('step10_addCategoryBtn');
+    if (step10_addCategoryBtn) {
+      step10_addCategoryBtn.addEventListener('click', addStep10Category);
+    }
+
+    // Step 10: Event delegation for nested add buttons
+    document.addEventListener('click', function(e) {
+      // Add left data item
+      if (e.target.classList.contains('step10_addLeftDataBtn')) {
+        const container = e.target.previousElementSibling;
+        if (!container) return;
+        
+        const item = document.createElement('div');
+        item.className = 'relative';
+        item.innerHTML = `
+          <button type="button" class="removeBtn absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+          <input type="text" class="step10_leftDataItem w-full rounded-lg border border-gray-300 p-2 pr-7" placeholder="Item name...">
+        `;
+        container.appendChild(item);
+      }
+
+      // Add right data detail
+      if (e.target.classList.contains('step10_addRightDataBtn')) {
+        const container = e.target.previousElementSibling;
+        if (!container) return;
+        
+        const detail = document.createElement('div');
+        detail.className = 'relative p-3 border border-gray-300 rounded-lg bg-white';
+        detail.innerHTML = `
+          <button type="button" class="removeBtn absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+          <div class="mb-2">
+            <label class="block text-xs text-gray-600 mb-1">Header</label>
+            <input type="text" class="step10_rightDataHeader w-full rounded-lg border border-gray-300 p-2" placeholder="Header...">
+          </div>
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Description</label>
+            <textarea class="step10_rightDataDesc w-full rounded-lg border border-gray-300 p-2" rows="2" placeholder="Description..."></textarea>
+          </div>
+        `;
+        container.appendChild(detail);
+      }
+    });
+
+    // Step 11: Add index definition handler
+    function addStep11Data() {
+      const container = document.getElementById('step11_dataContainer');
+      if (!container) return;
+      
+      const definition = document.createElement('div');
+      definition.className = 'relative p-4 border border-gray-200 rounded-lg bg-gray-50';
+      definition.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <div class="mb-3">
+          <label class="block text-xs text-gray-600 mb-1">Header</label>
+          <input type="text" class="step11_header w-full rounded-lg border border-gray-300 p-2" placeholder="Index name...">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-600 mb-1">Content</label>
+          <textarea class="step11_content w-full rounded-lg border border-gray-300 p-2" rows="3" placeholder="Index definition..."></textarea>
+        </div>
+      `;
+      container.appendChild(definition);
+    }
+
+    const step11_addDataBtn = document.getElementById('step11_addDataBtn');
+    if (step11_addDataBtn) {
+      step11_addDataBtn.addEventListener('click', addStep11Data);
+    }
+
+    // Step 12: Add disclosure item handler
+    function addStep12Data() {
+      const container = document.getElementById('step12_dataContainer');
+      if (!container) return;
+      
+      const disclosure = document.createElement('div');
+      disclosure.className = 'relative p-4 border border-gray-200 rounded-lg bg-gray-50';
+      disclosure.innerHTML = `
+        <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">×</button>
+        <div class="mb-3">
+          <label class="block text-xs text-gray-600 mb-1">Header</label>
+          <textarea class="step12_header w-full rounded-lg border border-gray-300 p-2" rows="2" placeholder="Disclosure header..."></textarea>
+        </div>
+        <div>
+          <label class="block text-xs text-gray-600 mb-1">Content</label>
+          <textarea class="step12_content w-full rounded-lg border border-gray-300 p-2" rows="6" placeholder="Disclosure content..."></textarea>
+        </div>
+      `;
+      container.appendChild(disclosure);
+    }
+
+    const step12_addDataBtn = document.getElementById('step12_addDataBtn');
+    if (step12_addDataBtn) {
+      step12_addDataBtn.addEventListener('click', addStep12Data);
+    }
        });
 
        // Handle component selection
@@ -1277,15 +4399,10 @@
        }
      }
 
-    // Step 2 Back Button
-    backBtn.addEventListener('click', () => {
-      step2.classList.add('hidden-step');
-      step1.classList.remove('hidden-step');
-      step2Indicator.classList.add('opacity-60');
-      step1Indicator.classList.remove('opacity-60');
-      step2Indicator.querySelector('div').classList.replace('bg-white', 'bg-blue-100');
-      step2Indicator.querySelector('div').classList.remove('ring-4', 'ring-blue-200');
-    });
+   // Step 2 Back Button
+   backBtn.addEventListener('click', () => {
+     showStep(1);
+   });
 
     // Step 2 Submit → Proceed (simulate)
     step2Form.addEventListener('submit', (e) => {
@@ -1375,7 +4492,7 @@
       }
       
       alert('Step 2 data saved! Proceeding to Step 3...');
-      // window.location.href = 'step3.html';
+      showStep(3);
     });
   </script>
 </body>

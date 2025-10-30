@@ -209,21 +209,18 @@
       "data": [
         {
           "factor": "Earnings",
-          "implication": "Positive",
           "trend": "up",
           "value": 100,
           "cioView": "According to FactSet, S&P 500 revenue and earnings grew by 5.2% and 10.6%, respectively, on a year-over-year (YoY) basis in 2024. Subsequently, they grew by 4.5% and 13.3% in Q1 2025. In Q2, growth is expected at 5.1% and 8.4%, respectively. Analysts are now forecasting Q3 growth at 4.8% and 9.5%, respectively, and expect a slight deceleration in profit growth to 10.0% in July, the Global Earnings Revision Ratio improved for a third straight month. The advance was led by the U.S. vs the ratio in Q1 of month high, with upgrades now surpassing downgrades, while globally the reverse remains in place. Ratios improved, according to BofA Global Research."
         },
         {
           "factor": "Valuations",
-          "implication": "Neutral",
           "trend": "neutral",
           "value": 50,
           "cioView": "The S&P 500 price-to-earnings (P/E) ratio next 12 months is at around 22.5x, nears its late-2021 high of 23.4x, and stands above its long-term average of 16.5x. While this headline measure suggests that U.S. Large-cap Equities are richly valued, the Global Barometer (Equity Risk Premium) is above the long-term average."
         },
         {
           "factor": "U.S. Macro",
-          "implication": "Neutral",
           "trend": "down",
           "value": 40,
           "cioView": "A first estimate for Q2 real gross domestic product (GDP) indicated the economy rebounded by a seasonally adjusted annualized rate of 3.0% from Q1 growth of -0.3%. Compared to Q1, stronger growth in consumption and a swing in net exports drove the expansion. Private-sector inventories dragged on investment that retail sales to private domestic purchases, while restocking activity largely in property measures, grew by 1.2% in Q2 after expanding by 1.3% in Q1. For 2025, BofA Global Research expects real GDP growth to decelerate in Q3 to 1.7% before rebounding to 2.1% in Q4 for an annual expansion of 1.7%."

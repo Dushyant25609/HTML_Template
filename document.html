@@ -939,10 +939,10 @@ Investment products:</p>
 
                     return `
                     <tr${classAttr}>
-                        <td class="text-center px-2">${item.factor}</td>
+                        <td class="text-xs font-bold px-1">${item.factor}</td>
                         <td>${rangeSlider}</td>
-                        <td>${item.cioView}</td>
-                        <td class="${commentStyle} paragraph">${commentContent}</td>
+                        <td class="text-xs font-thin">${item.cioView}</td>
+                        <td ${commentStyle} class="text-xs font-thin">${commentContent}</td>
                     </tr>
                     `;
                 };
@@ -2471,15 +2471,14 @@ Investment products:</p>
                 if (item.position === -1) {
                 const weightIndicator = `
                     <div class="weight-indicator hidden" title="Double-click to set weight position">
-                    <span style="color: #999; font-size: 12px; font-style: italic;"></span>
                     </div>
                 `;
 
                 return `
                     <tr${classAttr}>
-                    <td>${item.assetClass}</td>
+                    <td class="text-xs font-bold">${item.assetClass}</td>
                     <td>${weightIndicator}</td>
-                    <td>${item.comments}</td>
+                    <td class="text-xs font-thin">${item.comments}</td>
                     </tr>
                 `;
                 }
@@ -2519,9 +2518,9 @@ Investment products:</p>
 
                 return `
                 <tr${classAttr}>
-                    <td class="font-bold">${item.assetClass}</td>
+                    <td class="text-xs font-bold">${item.assetClass}</td>
                     <td>${weightIndicator}</td>
-                    <td${commentStyle}>${commentContent}</td>
+                    <td${commentStyle} class="text-xs font-thin">${commentContent}</td>
                 </tr>
                 `;
             };
@@ -2795,33 +2794,29 @@ Investment products:</p>
                     transform: translateX(-50%);
                 }
 
-                /* Table 3 trend row highlights */
+                /* Table 3 trend row highlights - Fixed height red border */
                 .trend-row-up td:first-child,
-                .trend-row-up td:nth-child(2) {
-                    border-top: 2px solid #ef2121 !important;
-                    border-bottom: 2px solid #ef2121 !important;
-                }
-                
-                .trend-row-up td:first-child {
-                    border-left: 2px solid #ef2121 !important;
-                }
-                
-                .trend-row-up td:nth-child(2) {
-                    border-right: 2px solid #ef2121 !important;
+                .trend-row-down td:first-child {
+                    position: relative;
                 }
 
-                .trend-row-down td:first-child,
-                .trend-row-down td:nth-child(2) {
-                    border-top: 2px solid #ef2121 !important;
-                    border-bottom: 2px solid #ef2121 !important;
+                .trend-row-up td:first-child::before,
+                .trend-row-down td:first-child::before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    height: 40px; /* Fixed height */
+                    border: 2px solid #ef2121;
+                    pointer-events: none;
+                    z-index: 1;
                 }
-                
-                .trend-row-down td:first-child {
-                    border-left: 2px solid #ef2121 !important;
-                }
-                
-                .trend-row-down td:nth-child(2) {
-                    border-right: 2px solid #ef2121 !important;
+
+                .trend-row-up td:first-child::before,
+                .trend-row-down td:first-child::before {
+                    width: calc(250% + 8px); /* Covers first two columns */
+                    border-right: 2px solid #ef2121;
                 }
 
                 
@@ -2866,9 +2861,9 @@ Investment products:</p>
 
                     return `
                         <tr${classAttr}>
-                        <td>${item.sector}</td>
+                        <td class="text-xs font-bold>${item.sector}</td>
                         <td>${weightIndicator}</td>
-                        <td>${item.comments}</td>
+                        <td class="text-xs font-thin>${item.comments}</td>
                         </tr>
                     `;
                     }
@@ -2920,9 +2915,9 @@ Investment products:</p>
 
                     return `
                     <tr${classAttr}>
-                        <td>${item.sector}</td>
+                        <td class="text-xs font-bold">${item.sector}</td>
                         <td>${weightIndicator}</td>
-                        <td${commentStyle}>${commentContent}</td>
+                        <td${commentStyle} class="text-xs font-thin">${commentContent}</td>
                     </tr>
                     `;
                 };
