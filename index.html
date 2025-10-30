@@ -517,9 +517,10 @@
             break;
         }
 
-        // Determine handle color class based on implication
+        // Determine handle color class based on implication (safe: handle missing/undefined)
         let handleColorClass = '';
-        switch(item.implication.toLowerCase()) {
+        const implication = (item && item.implication) ? String(item.implication).toLowerCase() : 'neutral';
+        switch(implication) {
           case 'positive': handleColorClass = 'positive'; break;
           case 'neutral': handleColorClass = 'neutral'; break;
           case 'negative': handleColorClass = 'negative'; break;
@@ -4770,9 +4771,10 @@ Certain security types, like hedged strategies and private equity investments, a
           break;
       }
 
-      // Determine handle color class based on implication
+      // Determine handle color class based on implication (safe: handle missing/undefined)
       let handleColorClass = '';
-      switch(item.implication.toLowerCase()) {
+      const implication = (item && item.implication) ? String(item.implication).toLowerCase() : 'neutral';
+      switch(implication) {
         case 'positive':
           handleColorClass = 'positive';
           break;

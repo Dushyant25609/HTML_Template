@@ -223,27 +223,48 @@
         }
 
         .alt-investment-labels {
-            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            padding-right: 20px;
         }
         .alt-investment-indicator {
-            flex: 0 0 40px;
+            flex: 0 0 100px;
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             position: relative;
+            cursor: pointer;
         }
 
         .alt-line-container {
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: space-between;
             height: 100%;
-            position: relative;
+            position: absolute;
+            transition: left 0.3s ease;
+        }
+        
+        /* Position classes for alternative investments */
+        .alt-line-container.position-1 {
+            left: 25%;
+        }
+        
+        .alt-line-container.position-2 {
+            left: 40%;
+        }
+        
+        .alt-line-container.position-3 {
+            left: 56%;
+        }
+        
+        .alt-line-container.position-4 {
+            left: 72%;
+        }
+        
+        .alt-line-container.position-5 {
+            left: 85%;
         }
 
         .alt-dot {
@@ -260,8 +281,8 @@
             width: 2px;
             background-color: #999;
             position: absolute;
-            top: 4px;
-            bottom: 4px;
+            top: 8px;
+            bottom: 8px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 1;
@@ -271,6 +292,19 @@
         .separated-row {
             border-top: 1px solid #333;
             border-bottom: 1px solid #333;
+        }
+        
+        /* Fade out animation for dialog */
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        /* Hover effect for editable elements */
+        [data-has-edit-handler="true"]:hover {
+            outline: 1px dashed #4CAF50;
+            cursor: pointer;
+            transition: outline 0.2s ease;
         }
     </style>
     <script>
@@ -907,9 +941,10 @@ Investment products:</p>
                         break;
                     }
 
-                    // Determine handle color class based on implication
+                    // Determine handle color class based on implication (safe: handle missing/undefined)
                     let handleColorClass = '';
-                    switch(item.implication.toLowerCase()) {
+                    const implication = (item && item.implication) ? String(item.implication).toLowerCase() : 'neutral';
+                    switch(implication) {
                     case 'positive': handleColorClass = 'positive'; break;
                     case 'neutral': handleColorClass = 'neutral'; break;
                     case 'negative': handleColorClass = 'negative'; break;
@@ -3462,53 +3497,948 @@ Investment products:</p>
             return path.split('.').reduce((o, k) => (o || {})[k], obj);
         }
         function makeEditable(element, dataPath, isTextArea = false) {
+            // Mark this element as having an edit handler to prevent duplicates
+            element.dataset.hasEditHandler = 'true';
+            
             element.addEventListener('dblclick', function() {
-                const currentText = this.textContent;
-                const input = isTextArea ? document.createElement('textarea') : document.createElement('input');
-                if (!isTextArea) input.type = 'text'; else input.rows = 4;
-                input.value = currentText;
-                input.style.cssText = window.getComputedStyle(this).cssText;
-                input.style.width = '100%';
-                input.style.border = '2px solid #4CAF50';
-                input.style.padding = '5px';
-                input.style.fontFamily = 'inherit';
-                input.style.fontSize = 'inherit';
-                this.textContent = '';
-                this.appendChild(input);
-                input.focus();
-                input.select();
-                const saveEdit = () => {
-                    const newValue = input.value || currentText;
-                    if (dataPath.includes('[')) {
-                        const match = dataPath.match(/(.+)\[(\d+)\]/);
-                        if (match) {
-                            const arrayPath = match[1];
-                            const index = parseInt(match[2]);
-                            const array = getNestedValue(documentData, arrayPath);
-                            if (array && Array.isArray(array)) array[index] = newValue;
-                        }
-                    } else {
-                        setNestedValue(documentData, dataPath, newValue);
-                    }
-                    this.textContent = newValue;
-                    localStorage.setItem('documentData', JSON.stringify(documentData));
-                };
-                input.addEventListener('blur', saveEdit);
-                if (!isTextArea) {
-                    input.addEventListener('keypress', function(e) {
-                        if (e.key === 'Enter') input.blur();
-                    });
-                }
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        this.textContent = currentText;
-                        input.remove();
-                    }
-                }.bind(this));
+                // Get innerHTML to preserve <br> tags, then convert to plain text with newlines
+                const currentHTML = this.innerHTML;
+                const currentText = currentHTML.replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '');
+                
+                // Show edit dialog
+                showEditDialog(this, currentText, dataPath, isTextArea);
             });
+            
             element.style.cursor = 'pointer';
             element.title = 'Double-click to edit';
         }
+
+        // Make Section 1 components editable via event delegation
+        function makeSectionOneEditable() {
+            const section = document.querySelector('.sectionOne');
+            if (!section) return;
+
+            // Track custom keys for elements without IDs
+            let customKeyCounter = 0;
+            
+            section.addEventListener('dblclick', function(e) {
+                // Ignore clicks on links, buttons, inputs, or already editing
+                if (e.target.closest('a, button, input, textarea')) return;
+                if (e.target.querySelector('input, textarea')) return;
+
+                // Find the text element to edit
+                let el = e.target;
+                
+                // Check if this element already has editing enabled via makeEditable()
+                // If so, don't handle it here (let the original handler work)
+                if (el.dataset.hasEditHandler === 'true') return;
+                
+                // Only allow editing certain element types
+                const editableTags = ['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'LI', 'TD', 'TH', 'SPAN', 'DIV'];
+                if (!editableTags.includes(el.tagName)) return;
+                
+                // Skip structural containers without meaningful text
+                if (!el.textContent || !el.textContent.trim()) return;
+                
+                // Skip if element has child elements (complex structure), BUT allow H4, SPAN, and P with data-path
+                if (el.children.length > 0 && el.tagName !== 'LI' && el.tagName !== 'H4' && el.tagName !== 'SPAN' && el.tagName !== 'P' && !el.dataset.path) return;
+                
+                // For H4 elements, only edit if they have a data-path or if no children have data-path
+                if (el.tagName === 'H4' && el.children.length > 0 && !el.dataset.path) {
+                    // Don't edit the H4 itself if it contains a SPAN with data-path
+                    if (el.querySelector('[data-path]')) return;
+                }
+                
+                // For P elements, allow editing if they have a data-path (even with child <br> tags)
+                if (el.tagName === 'P' && el.dataset.path) {
+                    // This is an editable paragraph, proceed
+                }
+
+                // Determine dataPath based on element
+                let dataPath = null;
+                
+                // First check if element has a data-path attribute (for summary components)
+                if (el.dataset.path) {
+                    dataPath = el.dataset.path;
+                }
+                // Check if element has an ID
+                else if (el.id) {
+                    dataPath = `step1.${el.id}`;
+                } 
+                // Check if it's a brief list item
+                else if (el.tagName === 'LI' && el.closest('#briefList')) {
+                    const briefList = document.getElementById('briefList');
+                    const idx = Array.from(briefList.children).indexOf(el);
+                    if (idx >= 0) dataPath = `step2.inBrief[${idx}]`;
+                }
+                // Check if it's the CIO heading
+                else if (el.id === 'CIOHeading' || el.closest('#CIOHeading')) {
+                    dataPath = 'step2.cioAssetClassViews.heading';
+                }
+                // Check if it's the CIO views paragraph
+                else if (el.id === 'cioViews' || el.closest('#cioViews')) {
+                    dataPath = 'step2.cioAssetClassViews';
+                }
+                // Check if it's the IN BRIEF heading
+                else if (el.id === 'inBriefHeading' || el.closest('.brief h5')) {
+                    dataPath = 'step2.inBriefHeading';
+                }
+                // Generate custom key for unmapped elements
+                else {
+                    if (!el.dataset.editKey) {
+                        el.dataset.editKey = `custom${++customKeyCounter}`;
+                    }
+                    dataPath = `step1.custom.${el.dataset.editKey}`;
+                }
+
+                if (!dataPath) return;
+
+                // Determine if textarea is needed (multi-line content)
+                const isTextArea = ['P', 'DIV'].includes(el.tagName) || el.textContent.length > 80;
+
+                // Get innerHTML to preserve <br> tags, then convert to plain text with newlines
+                const currentHTML = el.innerHTML;
+                const currentText = currentHTML.replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '');
+                
+                // Show edit dialog
+                showEditDialog(el, currentText, dataPath, isTextArea);
+
+                e.stopPropagation();
+            });
+
+            // Add hover effect to show editability
+            const style = document.createElement('style');
+            style.textContent = `
+                .sectionOne p:hover,
+                .sectionOne h1:hover,
+                .sectionOne h2:hover,
+                .sectionOne h3:hover,
+                .sectionOne h4:hover,
+                .sectionOne h5:hover,
+                .sectionOne li:hover,
+                .sectionOne td:hover,
+                .sectionOne th:hover,
+                .sectionOne span:hover {
+                    outline: 1px dashed #4CAF50;
+                    cursor: pointer;
+                }
+                .sectionOne a:hover,
+                .sectionOne button:hover {
+                    outline: none !important;
+                }
+                
+                /* Edit Dialog Styles */
+                .edit-dialog-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.5);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 10000;
+                    animation: fadeIn 0.2s ease;
+                }
+                
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                
+                .edit-dialog {
+                    background: white;
+                    border-radius: 12px;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    width: 90%;
+                    max-width: 600px;
+                    max-height: 80vh;
+                    display: flex;
+                    flex-direction: column;
+                    animation: slideUp 0.3s ease;
+                }
+                
+                @keyframes slideUp {
+                    from { 
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to { 
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                
+                .edit-dialog-header {
+                    padding: 20px 24px;
+                    border-bottom: 1px solid #e5e7eb;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                
+                .edit-dialog-title {
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #1f2937;
+                    margin: 0;
+                }
+                
+                .edit-dialog-close {
+                    background: none;
+                    border: none;
+                    font-size: 24px;
+                    color: #6b7280;
+                    cursor: pointer;
+                    padding: 0;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 6px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.2s;
+                }
+                
+                .edit-dialog-close:hover {
+                    background: #f3f4f6;
+                    color: #1f2937;
+                }
+                
+                .edit-dialog-body {
+                    padding: 24px;
+                    overflow-y: auto;
+                    flex: 1;
+                }
+                
+                .edit-dialog-label {
+                    display: block;
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: #374151;
+                    margin-bottom: 8px;
+                }
+                
+                .edit-dialog-input,
+                .edit-dialog-textarea {
+                    width: 100%;
+                    padding: 12px;
+                    border: 2px solid #e5e7eb;
+                    border-radius: 8px;
+                    font-family: 'Connections', 'Arial', sans-serif;
+                    font-size: 14px;
+                    color: #1f2937;
+                    transition: all 0.2s;
+                    outline: none;
+                }
+                
+                .edit-dialog-input:focus,
+                .edit-dialog-textarea:focus {
+                    border-color: #4CAF50;
+                    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+                }
+                
+                .edit-dialog-textarea {
+                    min-height: 150px;
+                    resize: vertical;
+                    line-height: 1.6;
+                }
+                
+                .edit-dialog-footer {
+                    padding: 16px 24px;
+                    border-top: 1px solid #e5e7eb;
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 12px;
+                }
+                
+                .edit-dialog-btn {
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 8px;
+                    font-family: 'Connections', 'Arial', sans-serif;
+                    font-size: 14px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    outline: none;
+                }
+                
+                .edit-dialog-btn-cancel {
+                    background: #f3f4f6;
+                    color: #374151;
+                }
+                
+                .edit-dialog-btn-cancel:hover {
+                    background: #e5e7eb;
+                }
+                
+                .edit-dialog-btn-save {
+                    background: linear-gradient(135deg, #4CAF50, #45a049);
+                    color: white;
+                }
+                
+                .edit-dialog-btn-save:hover {
+                    background: linear-gradient(135deg, #45a049, #3d8b40);
+                    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+                }
+                
+                .edit-dialog-hint {
+                    font-size: 12px;
+                    color: #6b7280;
+                    margin-top: 8px;
+                    font-style: italic;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Show edit dialog for Section 1 components
+        function showEditDialog(element, currentText, dataPath, isTextArea) {
+            // Remove existing dialog if any
+            const existingDialog = document.querySelector('.edit-dialog-overlay');
+            if (existingDialog) {
+                existingDialog.remove();
+            }
+
+            // Check if this is a bottom-line component (editing subsection or bottomLine)
+            const isBottomLineComponent = dataPath.includes('components[') && 
+                (dataPath.includes('.subsections[') || dataPath.includes('.bottomLine'));
+            
+            // Check if this is a numbered-bottom-line bullet point
+            const isNumberedBottomLineBullet = dataPath.includes('components[') && dataPath.includes('.bulletPoints[');
+            
+            // Check if this is a regular subsection (has both heading and content)
+            const isSubsection = dataPath.includes('subsections[') && (dataPath.includes('.heading') || dataPath.includes('.content') || dataPath.includes('.subheading'));
+            
+            // Check if this is a bottom-line subsection
+            const isBottomLineSubsection = dataPath.includes('subsections[') && dataPath.includes('.subheading');
+            
+            // If editing any part of a numbered-bottom-line bullet point, show 3 fields
+            let numberedBulletData = null;
+            if (isNumberedBottomLineBullet) {
+                // Extract component and bullet point indices
+                const componentMatch = dataPath.match(/components\[(\d+)\]/);
+                const bulletMatch = dataPath.match(/bulletPoints\[(\d+)\]/);
+                
+                if (componentMatch && bulletMatch) {
+                    const componentIdx = parseInt(componentMatch[1]);
+                    const bulletIdx = parseInt(bulletMatch[1]);
+                    const component = DocumentData.step2?.summary?.components?.[componentIdx];
+                    
+                    if (component && component.bulletPoints && component.bulletPoints[bulletIdx]) {
+                        const bulletPoint = component.bulletPoints[bulletIdx];
+                        const bottomLine = component.bottomLine || {};
+                        
+                        numberedBulletData = {
+                            componentIdx: componentIdx,
+                            bulletIdx: bulletIdx,
+                            subheading: (bulletPoint.subheading || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ''),
+                            content: (bulletPoint.content || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ''),
+                            bottomLineHeading: typeof bottomLine === 'object' ? ((bottomLine.heading || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')) : '',
+                            bottomLineContent: typeof bottomLine === 'object' ? ((bottomLine.content || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')) : (bottomLine || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')
+                        };
+                    }
+                }
+            }
+            
+            // If editing any part of a bottom-line component, we need to edit all 3 fields
+            let bottomLineComponentData = null;
+            if (isBottomLineComponent && !numberedBulletData) {
+                // Extract the component index
+                const componentMatch = dataPath.match(/components\[(\d+)\]/);
+                if (componentMatch) {
+                    const componentIdx = parseInt(componentMatch[1]);
+                    const component = DocumentData.step2?.summary?.components?.[componentIdx];
+                    
+                    if (component && component.subsections && component.subsections.length > 0 && component.subsections[0].subheading !== undefined) {
+                        // This is a bottom-line component
+                        const subsection = component.subsections[0] || {};
+                        bottomLineComponentData = {
+                            componentIdx: componentIdx,
+                            subheading: (subsection.subheading || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ''),
+                            content: (subsection.content || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ''),
+                            bottomLine: (component.bottomLine || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')
+                        };
+                    }
+                }
+            }
+            
+            // If editing heading or content of subsection (non-bottom-line), we need to edit both
+            let subsectionData = null;
+            if (isSubsection && !bottomLineComponentData) {
+                // Extract the base path to the subsection
+                const basePath = dataPath.replace(/\.(heading|content|subheading)$/, '');
+                
+                // Get the subsection object
+                const parts = [];
+                let current = '';
+                let inBracket = false;
+                
+                for (let i = 0; i < basePath.length; i++) {
+                    const char = basePath[i];
+                    if (char === '[') {
+                        inBracket = true;
+                        current += char;
+                    } else if (char === ']') {
+                        inBracket = false;
+                        current += char;
+                    } else if (char === '.' && !inBracket) {
+                        if (current) parts.push(current);
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                if (current) parts.push(current);
+                
+                // Navigate to the subsection object
+                let target = DocumentData;
+                for (let i = 0; i < parts.length; i++) {
+                    const part = parts[i];
+                    const match = part.match(/(.+)\[(\d+)\]/);
+                    if (match) {
+                        const prop = match[1];
+                        const idx = parseInt(match[2]);
+                        target = target[prop][idx];
+                    } else {
+                        target = target[part];
+                    }
+                }
+                
+                // Build subsection data based on type
+                if (isBottomLineSubsection) {
+                    subsectionData = {
+                        basePath: basePath,
+                        type: 'bottom-line',
+                        subheading: (target.subheading || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ''),
+                        content: (target.content || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')
+                    };
+                } else {
+                    subsectionData = {
+                        basePath: basePath,
+                        type: 'regular',
+                        heading: (target.heading || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, ''),
+                        content: (target.content || '').replace(/<br\s*\/?>\s*<br\s*\/?>/gi, '\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')
+                    };
+                }
+            }
+
+            // Create dialog overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'edit-dialog-overlay';
+            
+            // Create dialog
+            const dialog = document.createElement('div');
+            dialog.className = 'edit-dialog';
+            
+            // Get element type for title
+            const elementType = element.tagName.toLowerCase();
+            const elementLabel = {
+                'h1': 'Heading',
+                'h2': 'Heading',
+                'h3': 'Heading',
+                'h4': (isSubsection || bottomLineComponentData || numberedBulletData) ? 'Bottom Line Component' : 'Heading',
+                'h5': 'Heading',
+                'p': (bottomLineComponentData || numberedBulletData) ? 'Bottom Line Component' : 'Paragraph',
+                'li': numberedBulletData ? 'Numbered Bullet Point' : 'List Item',
+                'span': (isSubsection || bottomLineComponentData || numberedBulletData) ? 'Bottom Line Component' : 'Text',
+                'div': 'Content'
+            }[elementType] || 'Content';
+            
+            // Build dialog content based on type
+            let dialogBody = '';
+            if (numberedBulletData) {
+                // Three-field layout for numbered-bottom-line bullet points (subheading + content + bottomLine)
+                dialogBody = `
+                    <div class="edit-dialog-body">
+                        <div style="margin-bottom: 20px;">
+                            <label class="edit-dialog-label">Bullet Point Subheading</label>
+                            <input type="text" class="edit-dialog-input" id="editDialogSubheading" value="${numberedBulletData.subheading.replace(/"/g, '&quot;')}" />
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label class="edit-dialog-label">Bullet Point Content</label>
+                            <textarea class="edit-dialog-textarea" id="editDialogContent" style="min-height: 80px;">${numberedBulletData.content}</textarea>
+                            <div class="edit-dialog-hint">Press Enter for new lines</div>
+                        </div>
+                        <div>
+                            <label class="edit-dialog-label">Bottom Line Content</label>
+                            <textarea class="edit-dialog-textarea" id="editDialogBottomLine" style="min-height: 80px;">${numberedBulletData.bottomLineContent}</textarea>
+                            <div class="edit-dialog-hint">Press Enter for new lines</div>
+                        </div>
+                    </div>
+                `;
+            } else if (bottomLineComponentData) {
+                // Three-field layout for bottom-line components (subheading + content + bottomLine)
+                dialogBody = `
+                    <div class="edit-dialog-body">
+                        <div style="margin-bottom: 20px;">
+                            <label class="edit-dialog-label">Subheading</label>
+                            <input type="text" class="edit-dialog-input" id="editDialogSubheading" value="${bottomLineComponentData.subheading.replace(/"/g, '&quot;')}" />
+                        </div>
+                        <div style="margin-bottom: 20px;">
+                            <label class="edit-dialog-label">Content</label>
+                            <textarea class="edit-dialog-textarea" id="editDialogContent" style="min-height: 80px;">${bottomLineComponentData.content}</textarea>
+                            <div class="edit-dialog-hint">Press Enter for new lines</div>
+                        </div>
+                        <div>
+                            <label class="edit-dialog-label">Bottom Line</label>
+                            <textarea class="edit-dialog-textarea" id="editDialogBottomLine" style="min-height: 80px;">${bottomLineComponentData.bottomLine}</textarea>
+                            <div class="edit-dialog-hint">Press Enter for new lines</div>
+                        </div>
+                    </div>
+                `;
+            } else if (isSubsection && subsectionData) {
+                if (subsectionData.type === 'bottom-line') {
+                    // Two-field layout for bottom-line subsections (subheading + content)
+                    dialogBody = `
+                        <div class="edit-dialog-body">
+                            <div style="margin-bottom: 20px;">
+                                <label class="edit-dialog-label">Subheading</label>
+                                <input type="text" class="edit-dialog-input" id="editDialogSubheading" value="${subsectionData.subheading.replace(/"/g, '&quot;')}" />
+                            </div>
+                            <div>
+                                <label class="edit-dialog-label">Content</label>
+                                <textarea class="edit-dialog-textarea" id="editDialogContent">${subsectionData.content}</textarea>
+                                <div class="edit-dialog-hint">Press Enter for new lines</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Two-field layout for regular subsections (heading + content)
+                    dialogBody = `
+                        <div class="edit-dialog-body">
+                            <div style="margin-bottom: 20px;">
+                                <label class="edit-dialog-label">Heading</label>
+                                <input type="text" class="edit-dialog-input" id="editDialogHeading" value="${subsectionData.heading.replace(/"/g, '&quot;')}" />
+                            </div>
+                            <div>
+                                <label class="edit-dialog-label">Content</label>
+                                <textarea class="edit-dialog-textarea" id="editDialogContent">${subsectionData.content}</textarea>
+                                <div class="edit-dialog-hint">Press Enter for new lines</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                // Single-field layout for other elements
+                dialogBody = `
+                    <div class="edit-dialog-body">
+                        <label class="edit-dialog-label">Content</label>
+                        ${isTextArea 
+                            ? `<textarea class="edit-dialog-textarea" id="editDialogInput">${currentText}</textarea>
+                               <div class="edit-dialog-hint">Press Enter for new lines</div>`
+                            : `<input type="text" class="edit-dialog-input" id="editDialogInput" value="${currentText.replace(/"/g, '&quot;')}" />`
+                        }
+                    </div>
+                `;
+            }
+            
+            dialog.innerHTML = `
+                <div class="edit-dialog-header">
+                    <h3 class="edit-dialog-title">Edit ${elementLabel}</h3>
+                    <button class="edit-dialog-close" onclick="closeEditDialog()">&times;</button>
+                </div>
+                ${dialogBody}
+                <div class="edit-dialog-footer">
+                    <button class="edit-dialog-btn edit-dialog-btn-cancel" onclick="closeEditDialog()">Cancel</button>
+                    <button class="edit-dialog-btn edit-dialog-btn-save" id="saveDialogBtn">Save Changes</button>
+                </div>
+            `;
+            
+            overlay.appendChild(dialog);
+            document.body.appendChild(overlay);
+            
+            // Focus input
+            if (numberedBulletData || bottomLineComponentData) {
+                const subheadingInput = document.getElementById('editDialogSubheading');
+                setTimeout(() => {
+                    subheadingInput.focus();
+                    subheadingInput.select();
+                }, 100);
+            } else if (isSubsection && subsectionData) {
+                if (subsectionData.type === 'bottom-line') {
+                    const subheadingInput = document.getElementById('editDialogSubheading');
+                    setTimeout(() => {
+                        subheadingInput.focus();
+                        subheadingInput.select();
+                    }, 100);
+                } else {
+                    const headingInput = document.getElementById('editDialogHeading');
+                    setTimeout(() => {
+                        headingInput.focus();
+                        headingInput.select();
+                    }, 100);
+                }
+            } else {
+                const input = document.getElementById('editDialogInput');
+                setTimeout(() => {
+                    input.focus();
+                    if (!isTextArea) input.select();
+                }, 100);
+            }
+            
+            // Save handler
+            const saveBtn = document.getElementById('saveDialogBtn');
+            saveBtn.onclick = () => {
+                if (numberedBulletData) {
+                    // Three-field save for numbered-bottom-line bullet point
+                    const newSubheading = document.getElementById('editDialogSubheading').value || numberedBulletData.subheading;
+                    const newContent = document.getElementById('editDialogContent').value || numberedBulletData.content;
+                    const newBottomLineContent = document.getElementById('editDialogBottomLine').value || numberedBulletData.bottomLineContent;
+                    
+                    // Update DocumentData
+                    const componentIdx = numberedBulletData.componentIdx;
+                    const bulletIdx = numberedBulletData.bulletIdx;
+                    const component = DocumentData.step2.summary.components[componentIdx];
+                    
+                    if (component.bulletPoints && component.bulletPoints[bulletIdx]) {
+                        component.bulletPoints[bulletIdx].subheading = newSubheading;
+                        component.bulletPoints[bulletIdx].content = newContent;
+                    }
+                    
+                    // Update bottom line content
+                    if (typeof component.bottomLine === 'object') {
+                        component.bottomLine.content = newBottomLineContent;
+                    } else {
+                        component.bottomLine = { heading: '', content: newBottomLineContent };
+                    }
+                    
+                    // Update DOM - find the component container
+                    const componentDiv = document.querySelector(`[data-component-id="${componentIdx}"]`);
+                    if (componentDiv) {
+                        // Update bullet point subheading and content
+                        const liElement = componentDiv.querySelector(`li[data-path*=".bulletPoints[${bulletIdx}]"]`);
+                        if (liElement) {
+                            // Clear and rebuild the li content
+                            liElement.innerHTML = '';
+                            
+                            // Add subheading span
+                            const subheadingSpan = document.createElement('span');
+                            subheadingSpan.className = 'font-semibold';
+                            subheadingSpan.setAttribute('data-path', `step2.summary.components[${componentIdx}].bulletPoints[${bulletIdx}].subheading`);
+                            subheadingSpan.textContent = newSubheading;
+                            liElement.appendChild(subheadingSpan);
+                            
+                            // Add content span
+                            const contentSpan = document.createElement('span');
+                            contentSpan.className = 'paragraph';
+                            contentSpan.setAttribute('data-path', `step2.summary.components[${componentIdx}].bulletPoints[${bulletIdx}].content`);
+                            contentSpan.innerHTML = '—' + newContent.replace(/\n/g, '<br><br>');
+                            liElement.appendChild(contentSpan);
+                            
+                            // Re-apply data-path to li
+                            liElement.setAttribute('data-path', `step2.summary.components[${componentIdx}].bulletPoints[${bulletIdx}]`);
+                        }
+                        
+                        // Update bottom line content
+                        const bottomLineP = componentDiv.querySelector(`p[data-path*=".bottomLine.content"]`);
+                        if (bottomLineP) {
+                            bottomLineP.innerHTML = newBottomLineContent.replace(/\n/g, '<br><br>');
+                        }
+                    }
+                    
+                    localStorage.setItem('documentData', JSON.stringify(DocumentData));
+                    showToast('✓ Numbered bullet point updated', 'success');
+                } else if (bottomLineComponentData) {
+                    // Three-field save for bottom-line component
+                    const newSubheading = document.getElementById('editDialogSubheading').value || bottomLineComponentData.subheading;
+                    const newContent = document.getElementById('editDialogContent').value || bottomLineComponentData.content;
+                    const newBottomLine = document.getElementById('editDialogBottomLine').value || bottomLineComponentData.bottomLine;
+                    
+                    // Update DocumentData
+                    const componentIdx = bottomLineComponentData.componentIdx;
+                    const component = DocumentData.step2.summary.components[componentIdx];
+                    
+                    if (component.subsections && component.subsections[0]) {
+                        component.subsections[0].subheading = newSubheading;
+                        component.subsections[0].content = newContent;
+                    }
+                    component.bottomLine = newBottomLine;
+                    
+                    // Update DOM - find the component container
+                    const componentDiv = document.querySelector(`[data-component-id="${componentIdx}"]`);
+                    if (componentDiv) {
+                        // Update subheading and content (they are in the same h4 structure)
+                        const h4Element = componentDiv.querySelector(`h4[data-path*=".subsections[0].subheading"]`);
+                        if (h4Element) {
+                            // Clear and rebuild the h4 content with subheading + colon + content span
+                            h4Element.innerHTML = '';
+                            
+                            // Add subheading text
+                            const subheadingText = document.createTextNode(newSubheading);
+                            h4Element.appendChild(subheadingText);
+                            
+                            // Add colon and space
+                            const colonText = document.createTextNode(': ');
+                            h4Element.appendChild(colonText);
+                            
+                            // Add content span
+                            const contentSpan = document.createElement('span');
+                            contentSpan.className = 'paragraph leading-relaxed';
+                            contentSpan.setAttribute('data-path', `step2.summary.components[${componentIdx}].subsections[0].content`);
+                            contentSpan.innerHTML = newContent.replace(/\n/g, '<br><br>');
+                            h4Element.appendChild(contentSpan);
+                            
+                            // Re-apply data-path to h4
+                            h4Element.setAttribute('data-path', `step2.summary.components[${componentIdx}].subsections[0].subheading`);
+                        }
+                        
+                        // Update bottom line
+                        const bottomLineEl = componentDiv.querySelector(`[data-path*=".bottomLine"]`);
+                        if (bottomLineEl) {
+                            bottomLineEl.innerHTML = newBottomLine.replace(/\n/g, '<br><br>');
+                        }
+                    }
+                    
+                    localStorage.setItem('documentData', JSON.stringify(DocumentData));
+                    showToast('✓ Bottom Line component updated', 'success');
+                } else if (isSubsection && subsectionData) {
+                    let newHeading, newSubheading, newContent;
+                    
+                    if (subsectionData.type === 'bottom-line') {
+                        // Bottom-line subsection (subheading + content)
+                        newSubheading = document.getElementById('editDialogSubheading').value || subsectionData.subheading;
+                        newContent = document.getElementById('editDialogContent').value || subsectionData.content;
+                    } else {
+                        // Regular subsection (heading + content)
+                        newHeading = document.getElementById('editDialogHeading').value || subsectionData.heading;
+                        newContent = document.getElementById('editDialogContent').value || subsectionData.content;
+                    }
+                    
+                    // Parse the base path to navigate to subsection
+                    const parts = [];
+                    let current = '';
+                    let inBracket = false;
+                    
+                    for (let i = 0; i < subsectionData.basePath.length; i++) {
+                        const char = subsectionData.basePath[i];
+                        if (char === '[') {
+                            inBracket = true;
+                            current += char;
+                        } else if (char === ']') {
+                            inBracket = false;
+                            current += char;
+                        } else if (char === '.' && !inBracket) {
+                            if (current) parts.push(current);
+                            current = '';
+                        } else {
+                            current += char;
+                        }
+                    }
+                    if (current) parts.push(current);
+                    
+                    // Navigate to the target subsection
+                    let target = DocumentData;
+                    for (let i = 0; i < parts.length; i++) {
+                        const part = parts[i];
+                        const match = part.match(/(.+)\[(\d+)\]/);
+                        if (match) {
+                            const prop = match[1];
+                            const idx = parseInt(match[2]);
+                            target = target[prop][idx];
+                        } else {
+                            target = target[part];
+                        }
+                    }
+                    
+                    // Update based on subsection type
+                    if (subsectionData.type === 'bottom-line') {
+                        target.subheading = newSubheading;
+                        target.content = newContent;
+                    } else {
+                        target.heading = newHeading;
+                        target.content = newContent;
+                    }
+                    
+                    // Update the DOM
+                    if (subsectionData.type === 'bottom-line') {
+                        // Bottom-line subsection: Update subheading and content separately
+                        const parentDiv = element.closest('.flex.items-start.gap-2.mb-2');
+                        if (parentDiv) {
+                            const subheadingSpan = parentDiv.querySelector('span[data-path*=".subheading"]');
+                            const contentSpan = parentDiv.querySelector('span[data-path*=".content"]');
+                            if (subheadingSpan) {
+                                subheadingSpan.innerHTML = newSubheading.replace(/\n/g, '<br><br>');
+                            }
+                            if (contentSpan) {
+                                contentSpan.innerHTML = newContent.replace(/\n/g, '<br><br>');
+                            }
+                        }
+                    } else {
+                        // Regular subsection: Update h4 element with heading and content
+                        const h4Element = element.closest('h4') || (element.tagName === 'H4' ? element : null);
+                        if (h4Element) {
+                            // Update heading (text node before the colon)
+                            const headingText = document.createTextNode(newHeading);
+                            const colonText = document.createTextNode(': ');
+                            
+                            // Clear and rebuild the h4 content
+                            h4Element.innerHTML = '';
+                            h4Element.appendChild(headingText);
+                            h4Element.appendChild(colonText);
+                            
+                            // Re-create the content span
+                            const newSpan = document.createElement('span');
+                            newSpan.className = 'paragraph leading-relaxed';
+                            newSpan.setAttribute('data-path', subsectionData.basePath + '.content');
+                            newSpan.innerHTML = newContent.replace(/\n/g, '<br><br>');
+                            h4Element.appendChild(newSpan);
+                            
+                            // Re-apply data-path to h4
+                            h4Element.setAttribute('data-path', subsectionData.basePath + '.heading');
+                        }
+                    }
+                    
+                    localStorage.setItem('documentData', JSON.stringify(DocumentData));
+                    showToast('✓ Subsection updated', 'success');
+                } else {
+                    // Single field save
+                    const input = document.getElementById('editDialogInput');
+                    const newValue = input.value || currentText;
+                    
+                    // Handle complex nested array paths
+                    if (dataPath.includes('[')) {
+                        const parts = [];
+                        let current = '';
+                        let inBracket = false;
+                        
+                        for (let i = 0; i < dataPath.length; i++) {
+                            const char = dataPath[i];
+                            if (char === '[') {
+                                inBracket = true;
+                                current += char;
+                            } else if (char === ']') {
+                                inBracket = false;
+                                current += char;
+                            } else if (char === '.' && !inBracket) {
+                                if (current) parts.push(current);
+                                current = '';
+                            } else {
+                                current += char;
+                            }
+                        }
+                        if (current) parts.push(current);
+                        
+                        // Navigate to the target
+                        let target = DocumentData;
+                        for (let i = 0; i < parts.length - 1; i++) {
+                            const part = parts[i];
+                            const match = part.match(/(.+)\[(\d+)\]/);
+                            if (match) {
+                                const prop = match[1];
+                                const idx = parseInt(match[2]);
+                                target = target[prop][idx];
+                            } else {
+                                target = target[part];
+                            }
+                        }
+                        
+                        // Set the final value
+                        const lastPart = parts[parts.length - 1];
+                        const lastMatch = lastPart.match(/(.+)\[(\d+)\]/);
+                        if (lastMatch) {
+                            const prop = lastMatch[1];
+                            const idx = parseInt(lastMatch[2]);
+                            target[prop][idx] = newValue;
+                        } else {
+                            target[lastPart] = newValue;
+                        }
+                    } else {
+                        setNestedValue(DocumentData, dataPath, newValue);
+                    }
+                    
+                    // Display with <br><br> tags for line breaks
+                    element.innerHTML = newValue.replace(/\n/g, '<br><br>');
+                    localStorage.setItem('documentData', JSON.stringify(DocumentData));
+                    showToast('✓ Section 1 content updated', 'success');
+                }
+                
+                closeEditDialog();
+            };
+            
+            // Close on Escape key
+            const handleEscape = (e) => {
+                if (e.key === 'Escape') {
+                    closeEditDialog();
+                }
+            };
+            overlay.addEventListener('keydown', handleEscape);
+            
+            // Close on overlay click
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    closeEditDialog();
+                }
+            });
+            
+            // Save on Ctrl+Enter
+            if (numberedBulletData || bottomLineComponentData) {
+                const subheadingInput = document.getElementById('editDialogSubheading');
+                const contentInput = document.getElementById('editDialogContent');
+                const bottomLineInput = document.getElementById('editDialogBottomLine');
+                
+                if (subheadingInput) {
+                    subheadingInput.addEventListener('keydown', (e) => {
+                        if (e.ctrlKey && e.key === 'Enter') {
+                            saveBtn.click();
+                        }
+                    });
+                }
+                
+                if (contentInput) {
+                    contentInput.addEventListener('keydown', (e) => {
+                        if (e.ctrlKey && e.key === 'Enter') {
+                            saveBtn.click();
+                        }
+                    });
+                }
+                
+                if (bottomLineInput) {
+                    bottomLineInput.addEventListener('keydown', (e) => {
+                        if (e.ctrlKey && e.key === 'Enter') {
+                            saveBtn.click();
+                        }
+                    });
+                }
+            } else if (isSubsection && subsectionData) {
+                const headingInput = document.getElementById('editDialogHeading') || document.getElementById('editDialogSubheading');
+                const contentInput = document.getElementById('editDialogContent');
+                
+                if (headingInput) {
+                    headingInput.addEventListener('keydown', (e) => {
+                        if (e.ctrlKey && e.key === 'Enter') {
+                            saveBtn.click();
+                        }
+                    });
+                }
+                
+                if (contentInput) {
+                    contentInput.addEventListener('keydown', (e) => {
+                        if (e.ctrlKey && e.key === 'Enter') {
+                            saveBtn.click();
+                        }
+                    });
+                }
+            } else {
+                const input = document.getElementById('editDialogInput');
+                input.addEventListener('keydown', (e) => {
+                    if (e.ctrlKey && e.key === 'Enter') {
+                        saveBtn.click();
+                    }
+                });
+            }
+        }
+
+        // Close edit dialog
+        window.closeEditDialog = function() {
+            const overlay = document.querySelector('.edit-dialog-overlay');
+            if (overlay) {
+                overlay.style.animation = 'fadeOut 0.2s ease';
+                setTimeout(() => overlay.remove(), 200);
+            }
+        };
 
         // Load initial data from data.json and populate Section 1
         let DocumentData = {};
@@ -3570,13 +4500,17 @@ Investment products:</p>
             if (disclaimerEl) makeEditable(disclaimerEl, 'step1.disclaimer');
             const briefHeadingEl = document.querySelector('.brief h5');
             if (briefHeadingEl) makeEditable(briefHeadingEl, 'step2.inBrief');
-            document.querySelectorAll('.brief ul li').forEach((item, idx) => {
-                if (item) makeEditable(item, `step2.inBrief[${idx}]`);
-            });
+            // NOTE: List items already have makeEditable attached during creation above
+            // document.querySelectorAll('.brief ul li').forEach((item, idx) => {
+            //     if (item) makeEditable(item, `step2.inBrief[${idx}]`);
+            // });
             const cioHeadingEl2 = document.querySelector('.flex-wrap.gray-box h5');
             if (cioHeadingEl2) makeEditable(cioHeadingEl2, 'step2.cioAssetClassViews');
             const cioViewsEl = document.getElementById('cioViews');
             if (cioViewsEl) makeEditable(cioViewsEl, 'step2.cioAssetClassViews', true);
+
+            // Enable comprehensive double-click editing for all Section 1 components
+            makeSectionOneEditable();
 
             // Populate Summary Components
             populateSummaryComponents(DocumentData.step2?.summary?.components || []);
@@ -3623,28 +4557,29 @@ Investment products:</p>
             components.forEach((component, idx) => {
                 const div = document.createElement('div');
                 div.setAttribute('data-component-id', idx);
+                div.setAttribute('data-component-type', component.type);
                 let html = ``;
                 
                 switch(component.type) {
                     case 'paragraph':
                         html += `
-                                    <p class="paragraph mt-4">${(component.content || '').replace(/\n/g, '<br><br>')}</p>
+                                    <p class="paragraph mt-4" data-path="step2.summary.components[${idx}].content">${(component.content || '').replace(/\n/g, '<br><br>')}</p>
                         `;
                         break;
                         
                     case 'header':
                         html += `
-                            <h1 class="heading" >${(component.heading || '').replace(/\n/g, '<br><br>')}</h1>
+                            <h1 class="heading" data-path="step2.summary.components[${idx}].heading">${(component.heading || '').replace(/\n/g, '<br><br>')}</h1>
                         `
                         break;
                     
                     case 'subsections':
                         html += '<div class="space-y-3 mt-2">';
-                        (component.subsections || []).forEach(subsection => {
+                        (component.subsections || []).forEach((subsection, subIdx) => {
                             html += `
                                 <div class="flex">
-                                    <h4 class="text-sm font-semibold text-gray-800">${subsection.heading || ''}: 
-                                        <span class="paragraph leading-relaxed">${(subsection.content || '').replace(/\n/g, '<br><br>')}</span>
+                                    <h4 class="text-sm font-semibold text-gray-800" data-path="step2.summary.components[${idx}].subsections[${subIdx}].heading">${subsection.heading || ''}: 
+                                        <span class="paragraph leading-relaxed" data-path="step2.summary.components[${idx}].subsections[${subIdx}].content">${(subsection.content || '').replace(/\n/g, '<br><br>')}</span>
                                     </h4>
                                 </div>
                             `;
@@ -3675,11 +4610,11 @@ Investment products:</p>
                         
                     case 'bottom-line':
                         html += '<div class="space-y-3 flex justify-between w-[196mm] mt-4">';
-                        (component.subsections || []).forEach(subsection => {
+                        (component.subsections || []).forEach((subsection, subIdx) => {
                             html += `
                                 <div class="flex w-[65%]">
-                                    <h4 class="text-sm font-semibold text-gray-800">${subsection.subheading || ''}: 
-                                        <span class="paragraph leading-relaxed">${(subsection.content || '').replace(/\n/g, '<br><br>')}</span>
+                                    <h4 class="text-sm font-semibold text-gray-800" data-path="step2.summary.components[${idx}].subsections[${subIdx}].subheading">${subsection.subheading || ''}: 
+                                        <span class="paragraph leading-relaxed" data-path="step2.summary.components[${idx}].subsections[${subIdx}].content">${(subsection.content || '').replace(/\n/g, '<br><br>')}</span>
                                     </h4>
                                 </div>
                             `;
@@ -3687,7 +4622,7 @@ Investment products:</p>
                         html += `
                             <div class=" px-4 py-6 w-[30%] bg-[--bg-gray] h-fit pt-3">
                                 <h4 class="text-sm font-semibold text-gray-800 mb-1">Bottom Line</h4>
-                                <p class="paragraph">${(component.bottomLine || '').replace(/\n/g, '<br><br>')}</p>
+                                <p class="paragraph" data-path="step2.summary.components[${idx}].bottomLine">${(component.bottomLine || '').replace(/\n/g, '<br><br>')}</p>
                             </div>
                         `;
                         html += '</div>';
@@ -3701,20 +4636,20 @@ Investment products:</p>
                         html += `
                             <div class="flex justify-between w-[196mm] mt-2 gap-4">
                                 <div class="w-[65%]">
-                                    <h4 class="heading mb-3 ">${component.mainHeading || ''}</h4>
+                                    <h4 class="heading mb-3" data-path="step2.summary.components[${idx}].mainHeading">${component.mainHeading || ''}</h4>
                                     <ol class="list-decimal list-outside ml-5 space-y-2">
-                                        ${(component.bulletPoints || []).map(point => {
+                                        ${(component.bulletPoints || []).map((point, pointIdx) => {
                                             if (point.subheading) {
-                                                return `<li class="text-[12px]"><span class="font-semibold">${point.subheading}</span class="paragraph">—${point.content || ''}</li>`;
+                                                return `<li class="text-[12px]" data-path="step2.summary.components[${idx}].bulletPoints[${pointIdx}]"><span class="font-semibold" data-path="step2.summary.components[${idx}].bulletPoints[${pointIdx}].subheading">${point.subheading}</span><span class="paragraph" data-path="step2.summary.components[${idx}].bulletPoints[${pointIdx}].content">—${point.content || ''}</span></li>`;
                                             } else {
-                                                return `<li class="paragraph">${point.content || ''}</li>`;
+                                                return `<li class="paragraph" data-path="step2.summary.components[${idx}].bulletPoints[${pointIdx}].content">${point.content || ''}</li>`;
                                             }
                                         }).join('')}
                                     </ol>
                                 </div>
-                                <div class="w-[30%] gray-box px-4 py-3 ">
-                                    <h4 class="text-sm font-semibold text-gray-800 mb-2">Bottom Line${bottomLineHeading ? ': ' + bottomLineHeading : ''}</h4>
-                                    <p class="paragraph text-[--box-gray]">${bottomLineContent}</p>
+                                <div class="w-[30%] gray-box px-4 py-3">
+                                    <h4 class="text-sm font-semibold text-gray-800 mb-2" data-path="step2.summary.components[${idx}].bottomLine.heading">Bottom Line${bottomLineHeading ? ': ' + bottomLineHeading : ''}</h4>
+                                    <p class="paragraph text-[--box-gray]" data-path="step2.summary.components[${idx}].bottomLine.content">${bottomLineContent}</p>
                                 </div>
                             </div>
                         `;
@@ -3789,7 +4724,7 @@ Investment products:</p>
                 
                 // Handle alternative investments
                 if (asset.isAlternativeInvestment) {
-                    altInvestmentAssets.push(asset);
+                    altInvestmentAssets.push({asset, index});
                     isInAltInvestmentGroup = true;
                 }
                 // Handle cash items
@@ -3800,7 +4735,7 @@ Investment products:</p>
                         altInvestmentAssets = [];
                         isInAltInvestmentGroup = false;
                     }
-                    addCashRow(tbody, asset);
+                    addCashRow(tbody, asset, index);
                 }
                 // Handle regular assets
                 else {
@@ -3810,7 +4745,7 @@ Investment products:</p>
                         altInvestmentAssets = [];
                         isInAltInvestmentGroup = false;
                     }
-                    addAssetRow(tbody, asset);
+                    addAssetRow(tbody, asset, index);
                 }
             });
             
@@ -3818,11 +4753,82 @@ Investment products:</p>
             if (isInAltInvestmentGroup && altInvestmentAssets.length > 0) {
                 renderAltInvestmentGroup(tbody, altInvestmentAssets);
             }
+            
+            // Add click event delegation for weight dots
+            tbody.addEventListener('click', handleWeightDotClick);
+        }
+        
+        // Handle weight dot clicks (both regular and alternative investments)
+        function handleWeightDotClick(e) {
+            // Check for regular weight dots
+            const weightDot = e.target.closest('.weight-dot');
+            if (weightDot) {
+                const assetIndex = parseInt(weightDot.getAttribute('data-asset-index'));
+                const newPosition = parseInt(weightDot.getAttribute('data-position'));
+                
+                if (isNaN(assetIndex) || isNaN(newPosition)) return;
+                
+                // Update DocumentData
+                if (DocumentData.step2?.tableData?.data?.[assetIndex]) {
+                    DocumentData.step2.tableData.data[assetIndex].position = newPosition;
+                    
+                    // Save to localStorage
+                    localStorage.setItem('documentData', JSON.stringify(DocumentData));
+                    
+                    // Re-render the table
+                    populateTableData(DocumentData.step2.tableData);
+                    
+                    showToast('✓ CIO view position updated', 'success');
+                }
+                return;
+            }
+            
+            // Check for alternative investment indicator clicks
+            const altIndicator = e.target.closest('.alt-investment-indicator');
+            if (altIndicator) {
+                const assetIndicesStr = altIndicator.getAttribute('data-asset-indices');
+                const currentPosition = parseInt(altIndicator.getAttribute('data-position')) || 3;
+                
+                if (!assetIndicesStr) return;
+                
+                // Cycle through positions 1-5
+                const newPosition = (currentPosition % 5) + 1;
+                
+                // Parse the comma-separated asset indices
+                const assetIndices = assetIndicesStr.split(',').map(idx => parseInt(idx));
+                
+                // Update all assets in the alternative investment group
+                let updated = false;
+                assetIndices.forEach(assetIndex => {
+                    if (DocumentData.step2?.tableData?.data?.[assetIndex]) {
+                        DocumentData.step2.tableData.data[assetIndex].position = newPosition;
+                        updated = true;
+                    }
+                });
+                
+                if (updated) {
+                    // Save to localStorage
+                    localStorage.setItem('documentData', JSON.stringify(DocumentData));
+                    
+                    // Re-render the table
+                    populateTableData(DocumentData.step2.tableData);
+                    
+                    const positionLabel = newPosition <= 2 ? 'Underweight' : (newPosition === 3 ? 'Neutral' : 'Overweight');
+                    showToast(`✓ Alternative investment moved to ${positionLabel} (${newPosition})`, 'success');
+                }
+                return;
+            }
         }
         
         // Helper function to render alternative investment group with vertical line
         function renderAltInvestmentGroup(tbody, altAssets) {
             if (altAssets.length === 0) return;
+            
+            // Get the position from the first asset in the group (they should all share the same position)
+            const position = altAssets[0]?.asset?.position || 3; // Default to neutral (position 3)
+            
+            // Store indices for all assets in this group
+            const assetIndices = altAssets.map(item => item.index);
             
             // Create a single row that spans the full width
             const row = document.createElement('tr');
@@ -3830,12 +4836,12 @@ Investment products:</p>
                 <td colspan="2" class="alt-investment-group">
                     <div class="alt-investment-container px-1 py-2">
                         <div class="alt-investment-labels text-[9px] space-y-1 font-thin">
-                            ${altAssets.map(asset => `
-                                <div class="text-[9px] font-thin">${asset.name || ''}</div>
+                            ${altAssets.map(item => `
+                                <div class="text-[9px] font-thin">${item.asset.name || ''}</div>
                             `).join('')}
                         </div>
-                        <div class="alt-investment-indicator">
-                            <div class="alt-line-container">
+                        <div class="alt-investment-indicator" data-asset-indices="${assetIndices.join(',')}" data-position="${position}">
+                            <div class="alt-line-container position-${position}">
                                 <div class="alt-dot"></div>
                                 <div class="alt-line"></div>
                                 <div class="alt-dot"></div>
@@ -3850,8 +4856,9 @@ Investment products:</p>
         
         
         // Helper function to add asset row
-        function addAssetRow(tbody, asset) {
+        function addAssetRow(tbody, asset, assetIndex) {
             const row = document.createElement('tr');
+            row.setAttribute('data-asset-index', assetIndex);
             
             // Add top and bottom border if separate is 1
             if (asset.separate === 1) {
@@ -3867,7 +4874,7 @@ Investment products:</p>
                 `;
             } else {
                 const category = getWeightCategory(asset.position);
-                const weightIndicator = createWeightIndicator(asset.position, category);
+                const weightIndicator = createWeightIndicator(asset.position, category, assetIndex);
                 row.innerHTML = `
                     <td class="text-[9px] font-thin  px-1">${asset.name || ''}</td>
                     <td class="text-center">${weightIndicator}</td>
@@ -3879,8 +4886,9 @@ Investment products:</p>
         
     
         // Helper function to add cash row
-        function addCashRow(tbody, asset) {
+        function addCashRow(tbody, asset, assetIndex) {
             const row = document.createElement('tr');
+            row.setAttribute('data-asset-index', assetIndex);
             
             // Add top and bottom border if separate is 1
             if (asset.separate === 1) {
@@ -3903,7 +4911,7 @@ Investment products:</p>
         }
         
         // Function to create weight indicator
-        function createWeightIndicator(position, category) {
+        function createWeightIndicator(position, category, assetIndex) {
             const totalDots = 5;
             let dotsHtml = '';
             
@@ -3927,11 +4935,11 @@ Investment products:</p>
                     dotClass += ' empty';
                 }
                 
-                dotsHtml += `<div class="${dotClass}" data-position="${i}" title="Position ${i}"></div>`;
+                dotsHtml += `<div class="${dotClass}" data-position="${i}" data-asset-index="${assetIndex}" title="Position ${i}"></div>`;
             }
             
             return `
-                <div class="weight-indicator">
+                <div class="weight-indicator" data-asset-index="${assetIndex}">
                     ${dotsHtml}
                 </div>
             `;
