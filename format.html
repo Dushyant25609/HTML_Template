@@ -1388,6 +1388,16 @@
   </div>
 
   <script>
+    // Prevent multiple initializations using IIFE
+    (function() {
+      if (window.formInitialized) {
+        console.log('Form already initialized, skipping...');
+        return; // Exit the function immediately
+      }
+      
+      window.formInitialized = true;
+      console.log('Initializing form for the first time...');
+      
     const step1 = document.getElementById('step1');
     const step2 = document.getElementById('step2');
     const step1Indicator = document.getElementById('step1Indicator');
@@ -1527,7 +1537,9 @@
 
      const addPointBtn = document.getElementById('addPointBtn');
      if (addPointBtn) {
-       addPointBtn.addEventListener('click', addInBriefPoint);
+       const newBtn = addPointBtn.cloneNode(true);
+       addPointBtn.parentNode.replaceChild(newBtn, addPointBtn);
+       newBtn.addEventListener('click', addInBriefPoint);
      }
 
      // Function to add more bullet points using IDs
@@ -3598,7 +3610,9 @@
 
     const step4AddSubsectionBtn = document.getElementById('step4_addSubsectionBtn');
     if (step4AddSubsectionBtn) {
-      step4AddSubsectionBtn.addEventListener('click', addStep4Subsection);
+      const newBtn = step4AddSubsectionBtn.cloneNode(true);
+      step4AddSubsectionBtn.parentNode.replaceChild(newBtn, step4AddSubsectionBtn);
+      newBtn.addEventListener('click', addStep4Subsection);
     }
 
     // Step 4: Add watch list item handler
@@ -3617,7 +3631,9 @@
 
     const step4AddWatchListBtn = document.getElementById('step4_addWatchListBtn');
     if (step4AddWatchListBtn) {
-      step4AddWatchListBtn.addEventListener('click', addStep4WatchListItem);
+      const newBtn = step4AddWatchListBtn.cloneNode(true);
+      step4AddWatchListBtn.parentNode.replaceChild(newBtn, step4AddWatchListBtn);
+      newBtn.addEventListener('click', addStep4WatchListItem);
     }
 
     // Step 4: Add risk consideration handler
@@ -3636,7 +3652,9 @@
 
     const step4AddRiskConsiderationBtn = document.getElementById('step4_addRiskConsiderationBtn');
     if (step4AddRiskConsiderationBtn) {
-      step4AddRiskConsiderationBtn.addEventListener('click', addStep4RiskConsideration);
+      const newBtn = step4AddRiskConsiderationBtn.cloneNode(true);
+      step4AddRiskConsiderationBtn.parentNode.replaceChild(newBtn, step4AddRiskConsiderationBtn);
+      newBtn.addEventListener('click', addStep4RiskConsideration);
     }
 
     // Step 4: Add sector data handler
@@ -3668,7 +3686,9 @@
 
     const step4AddSectorDataBtn = document.getElementById('step4_addSectorDataBtn');
     if (step4AddSectorDataBtn) {
-      step4AddSectorDataBtn.addEventListener('click', addStep4SectorData);
+      const newBtn = step4AddSectorDataBtn.cloneNode(true);
+      step4AddSectorDataBtn.parentNode.replaceChild(newBtn, step4AddSectorDataBtn);
+      newBtn.addEventListener('click', addStep4SectorData);
     }
 
     // Step 5: Add subsection handler
@@ -3690,7 +3710,9 @@
 
     const step5AddSubsectionBtn = document.getElementById('step5_addSubsectionBtn');
     if (step5AddSubsectionBtn) {
-      step5AddSubsectionBtn.addEventListener('click', addStep5Subsection);
+      const newBtn = step5AddSubsectionBtn.cloneNode(true);
+      step5AddSubsectionBtn.parentNode.replaceChild(newBtn, step5AddSubsectionBtn);
+      newBtn.addEventListener('click', addStep5Subsection);
     }
 
     // Step 5: Add watch list item handler
@@ -3709,7 +3731,9 @@
 
     const step5AddWatchListBtn = document.getElementById('step5_addWatchListBtn');
     if (step5AddWatchListBtn) {
-      step5AddWatchListBtn.addEventListener('click', addStep5WatchListItem);
+      const newBtn = step5AddWatchListBtn.cloneNode(true);
+      step5AddWatchListBtn.parentNode.replaceChild(newBtn, step5AddWatchListBtn);
+      newBtn.addEventListener('click', addStep5WatchListItem);
     }
 
     // Step 5: Add risk consideration handler
@@ -3728,7 +3752,9 @@
 
     const step5AddRiskConsiderationBtn = document.getElementById('step5_addRiskConsiderationBtn');
     if (step5AddRiskConsiderationBtn) {
-      step5AddRiskConsiderationBtn.addEventListener('click', addStep5RiskConsideration);
+      const newBtn = step5AddRiskConsiderationBtn.cloneNode(true);
+      step5AddRiskConsiderationBtn.parentNode.replaceChild(newBtn, step5AddRiskConsiderationBtn);
+      newBtn.addEventListener('click', addStep5RiskConsideration);
     }
 
     // Step 6: Add container data point handler
@@ -3747,7 +3773,9 @@
 
     const step6_addContainerDataBtn = document.getElementById('step6_addContainerDataBtn');
     if (step6_addContainerDataBtn) {
-      step6_addContainerDataBtn.addEventListener('click', addStep6ContainerData);
+      const newBtn = step6_addContainerDataBtn.cloneNode(true);
+      step6_addContainerDataBtn.parentNode.replaceChild(newBtn, step6_addContainerDataBtn);
+      newBtn.addEventListener('click', addStep6ContainerData);
     }
 
     // Step 6: Add subsection handler
@@ -3769,7 +3797,9 @@
 
     const step6_addSubsectionBtn = document.getElementById('step6_addSubsectionBtn');
     if (step6_addSubsectionBtn) {
-      step6_addSubsectionBtn.addEventListener('click', addStep6Subsection);
+      const newBtn = step6_addSubsectionBtn.cloneNode(true);
+      step6_addSubsectionBtn.parentNode.replaceChild(newBtn, step6_addSubsectionBtn);
+      newBtn.addEventListener('click', addStep6Subsection);
     }
 
     // Step 6: Add strategy group handler
@@ -3835,16 +3865,35 @@
 
     const step6_addStrategyGroupBtn = document.getElementById('step6_addStrategyGroupBtn');
     if (step6_addStrategyGroupBtn) {
-      step6_addStrategyGroupBtn.addEventListener('click', addStep6StrategyGroup);
+      const newBtn = step6_addStrategyGroupBtn.cloneNode(true);
+      step6_addStrategyGroupBtn.parentNode.replaceChild(newBtn, step6_addStrategyGroupBtn);
+      newBtn.addEventListener('click', addStep6StrategyGroup);
     }
 
     // Step 6: Add strategy item handler (using event delegation)
+    let step6LastClickTime = 0;
+    
     document.addEventListener('click', (e) => {
       if (e.target.classList.contains('step6_addStrategyItemBtn')) {
         e.preventDefault();
-        const groupItems = e.target.closest('.p-4').querySelector('.step6_strategyGroup_items');
-        if (!groupItems) return;
+        e.stopPropagation();
+        e.stopImmediatePropagation();
         
+        // Debounce: ignore clicks within 400ms
+        const now = Date.now();
+        if (now - step6LastClickTime < 400) {
+          console.log('Step 6: Click too fast, ignoring');
+          return;
+        }
+        step6LastClickTime = now;
+        
+        const groupItems = e.target.closest('.p-4').querySelector('.step6_strategyGroup_items');
+        if (!groupItems) {
+          console.error('Could not find step6_strategyGroup_items');
+          return;
+        }
+        
+        console.log('Step 6: Adding strategy item');
         const item = document.createElement('div');
         item.className = 'relative p-3 border border-gray-200 rounded-lg bg-white';
         item.innerHTML = `
@@ -3900,7 +3949,9 @@
 
     const step6_addMacroStrategyDataBtn = document.getElementById('step6_addMacroStrategyDataBtn');
     if (step6_addMacroStrategyDataBtn) {
-      step6_addMacroStrategyDataBtn.addEventListener('click', addStep6MacroStrategyData);
+      const newBtn = step6_addMacroStrategyDataBtn.cloneNode(true);
+      step6_addMacroStrategyDataBtn.parentNode.replaceChild(newBtn, step6_addMacroStrategyDataBtn);
+      newBtn.addEventListener('click', addStep6MacroStrategyData);
     }
 
     // Step 7: Add data row handler (Economic Forecasts)
@@ -3930,7 +3981,9 @@
 
     const step7_addDataRowBtn = document.getElementById('step7_addDataRowBtn');
     if (step7_addDataRowBtn) {
-      step7_addDataRowBtn.addEventListener('click', addStep7DataRow);
+      const newBtn = step7_addDataRowBtn.cloneNode(true);
+      step7_addDataRowBtn.parentNode.replaceChild(newBtn, step7_addDataRowBtn);
+      newBtn.addEventListener('click', addStep7DataRow);
     }
 
     // Step 7: Add S&P data row handler
@@ -3954,7 +4007,9 @@
 
     const step7_addSpDataRowBtn = document.getElementById('step7_addSpDataRowBtn');
     if (step7_addSpDataRowBtn) {
-      step7_addSpDataRowBtn.addEventListener('click', addStep7SpDataRow);
+      const newBtn = step7_addSpDataRowBtn.cloneNode(true);
+      step7_addSpDataRowBtn.parentNode.replaceChild(newBtn, step7_addSpDataRowBtn);
+      newBtn.addEventListener('click', addStep7SpDataRow);
     }
 
     // Step 8: Add asset class data handler
@@ -4008,7 +4063,9 @@
 
     const step8_addDataBtn = document.getElementById('step8_addDataBtn');
     if (step8_addDataBtn) {
-      step8_addDataBtn.addEventListener('click', addStep8Data);
+      const newBtn = step8_addDataBtn.cloneNode(true);
+      step8_addDataBtn.parentNode.replaceChild(newBtn, step8_addDataBtn);
+      newBtn.addEventListener('click', addStep8Data);
     }
 
     // Step 9: Add sector data handler
@@ -4064,7 +4121,9 @@
 
     const step9_addDataBtn = document.getElementById('step9_addDataBtn');
     if (step9_addDataBtn) {
-      step9_addDataBtn.addEventListener('click', addStep9Data);
+      const newBtn = step9_addDataBtn.cloneNode(true);
+      step9_addDataBtn.parentNode.replaceChild(newBtn, step9_addDataBtn);
+      newBtn.addEventListener('click', addStep9Data);
     }
 
     // Step 10: Add category handler
@@ -4116,16 +4175,38 @@
 
     const step10_addCategoryBtn = document.getElementById('step10_addCategoryBtn');
     if (step10_addCategoryBtn) {
-      step10_addCategoryBtn.addEventListener('click', addStep10Category);
+      const newBtn = step10_addCategoryBtn.cloneNode(true);
+      step10_addCategoryBtn.parentNode.replaceChild(newBtn, step10_addCategoryBtn);
+      newBtn.addEventListener('click', addStep10Category);
     }
 
-    // Step 10: Event delegation for nested add buttons
+    // Step 10: Event delegation for nested add buttons with debounce protection
+    let step10LeftLastClickTime = 0;
+    let step10RightLastClickTime = 0;
+    
     document.addEventListener('click', function(e) {
       // Add left data item
       if (e.target.classList.contains('step10_addLeftDataBtn')) {
-        const container = e.target.previousElementSibling;
-        if (!container) return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
         
+        // Debounce: ignore clicks within 400ms
+        const now = Date.now();
+        if (now - step10LeftLastClickTime < 400) {
+          console.log('Step 10 Left: Click too fast, ignoring');
+          return;
+        }
+        step10LeftLastClickTime = now;
+        
+        // Find the container (should be the previous sibling)
+        const container = e.target.previousElementSibling;
+        if (!container || !container.classList.contains('step10_leftDataContainer')) {
+          console.error('Could not find step10_leftDataContainer');
+          return;
+        }
+        
+        console.log('Step 10 Left: Adding item');
         const item = document.createElement('div');
         item.className = 'relative';
         item.innerHTML = `
@@ -4137,9 +4218,26 @@
 
       // Add right data detail
       if (e.target.classList.contains('step10_addRightDataBtn')) {
-        const container = e.target.previousElementSibling;
-        if (!container) return;
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
         
+        // Debounce: ignore clicks within 400ms
+        const now = Date.now();
+        if (now - step10RightLastClickTime < 400) {
+          console.log('Step 10 Right: Click too fast, ignoring');
+          return;
+        }
+        step10RightLastClickTime = now;
+        
+        // Find the container (should be the previous sibling)
+        const container = e.target.previousElementSibling;
+        if (!container || !container.classList.contains('step10_rightDataContainer')) {
+          console.error('Could not find step10_rightDataContainer');
+          return;
+        }
+        
+        console.log('Step 10 Right: Adding detail');
         const detail = document.createElement('div');
         detail.className = 'relative p-3 border border-gray-300 rounded-lg bg-white';
         detail.innerHTML = `
@@ -4180,7 +4278,9 @@
 
     const step11_addDataBtn = document.getElementById('step11_addDataBtn');
     if (step11_addDataBtn) {
-      step11_addDataBtn.addEventListener('click', addStep11Data);
+      const newBtn = step11_addDataBtn.cloneNode(true);
+      step11_addDataBtn.parentNode.replaceChild(newBtn, step11_addDataBtn);
+      newBtn.addEventListener('click', addStep11Data);
     }
 
     // Step 12: Add disclosure item handler
@@ -4206,7 +4306,9 @@
 
     const step12_addDataBtn = document.getElementById('step12_addDataBtn');
     if (step12_addDataBtn) {
-      step12_addDataBtn.addEventListener('click', addStep12Data);
+      const newBtn = step12_addDataBtn.cloneNode(true);
+      step12_addDataBtn.parentNode.replaceChild(newBtn, step12_addDataBtn);
+      newBtn.addEventListener('click', addStep12Data);
     }
        });
 
@@ -4428,15 +4530,18 @@
      }
 
    // Step 2 Back Button
-   backBtn.addEventListener('click', () => {
-     showStep(1);
-   });
+   if (backBtn) {
+     backBtn.addEventListener('click', () => {
+       showStep(1);
+     });
+   }
 
     // Step 2 Submit → Proceed (simulate)
-    step2Form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const summary = step2Form.summary.value.trim();
-      if (!summary) return alert("Please enter a summary before continuing.");
+    if (step2Form) {
+      step2Form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const summary = step2Form.summary.value.trim();
+        if (!summary) return alert("Please enter a summary before continuing.");
       
       // Collect all components data
       const summaryComponents = document.querySelectorAll('#summaryComponents > div');
@@ -4522,6 +4627,9 @@
       alert('Step 2 data saved! Proceeding to Step 3...');
       showStep(3);
     });
+    } // End of if (step2Form)
+    
+    })(); // End of IIFE - Immediately Invoked Function Expression
   </script>
 </body>
 </html>
