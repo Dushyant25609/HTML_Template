@@ -187,6 +187,13 @@
           "isHeader": 0
         },
         {
+          "name": "Private Equity & Credit",
+          "separate": 0,
+          "isAlternativeInvestment": 1,
+          "isCash": 0,
+          "isHeader": 0
+        },
+        {
           "name": "Cash",
           "separate": 1,
           "isAlternativeInvestment": 0,
@@ -203,9 +210,13 @@
       "headers": {
         "factorHeader": "Factor",
         "implicationHeader": "Implication for Equities",
-        "cioViewHeader": "CIO View"
+        "cioViewHeader": "CIO View",
+        "negativeLabel": "Negative",
+        "neutralLabel": "Neutral",
+        "positiveLabel": "Positive"
       },
       "subtitle": "Current readings on the key drivers of Equities for investors to consider, with arrows representing the recent trend:",
+      "footnote": "Source: Chief Investment Office.",
       "data": [
         {
           "factor": "Earnings",
@@ -407,12 +418,14 @@
       }
     ],
     "rightContainer": {
+      "fixedIncomeTitle": "Fixed Income Watch List",
       "fixedIncomeWatchList": [
         "Inflation trends and Fed policy decisions",
         "Economic growth indicators",
         "Credit spreads and default rates",
         "Geopolitical developments and market volatility"
       ],
+      "riskTitle": "RISK CONSIDERATIONS",
       "riskConsiderations": [
         "Rising inflation and interest rates",
         "Economic slowdown or recession", 
