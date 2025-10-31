@@ -45,7 +45,6 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
             flex-wrap: wrap;
         }
 
@@ -80,6 +79,10 @@
         }
         /* Print styles */
         @media print {
+            @page {
+                size: A4 portrait;
+                margin-bottom: 5in !important;
+            }
             body {
                 background-color: white !important;
                 padding: 0 !important;
@@ -89,9 +92,8 @@
 
             .page {
                 width: 210mm !important;
+                margin-bottom: 5in !important;
                 box-shadow: none !important;
-                margin: 0 auto !important;
-                padding: 7mm !important;
                 page-break-after: always !important;
                 overflow: hidden !important;
                 print-color-adjust: exact !important;
@@ -142,11 +144,6 @@
                 print-color-adjust: exact !important;
                 color-adjust: exact !important;
             }
-        }
-
-        @page {
-            size: A4 portrait;
-            margin: 0;
         }
 
         /* Weight indicator styles - adjusted for 35% width */

@@ -3517,9 +3517,16 @@
          }
 
     // Step 3: Add data row handler
+    let isAddingRow = false; // Flag to prevent multiple simultaneous additions
     function addStep3DataRow() {
+      if (isAddingRow) return; // Prevent multiple calls
+      isAddingRow = true;
+      
       const rowsContainer = document.getElementById('step3_dataRows');
-      if (!rowsContainer) return;
+      if (!rowsContainer) {
+        isAddingRow = false;
+        return;
+      }
       const row = document.createElement('div');
       row.className = 'relative p-3 border border-gray-200 rounded-lg bg-white step3-data-row';
       row.innerHTML = `
@@ -3556,11 +3563,20 @@
         </div>
       `;
       rowsContainer.appendChild(row);
+      
+      // Reset flag after a short delay
+      setTimeout(() => {
+        isAddingRow = false;
+      }, 300);
     }
 
     const step3AddRowBtn = document.getElementById('step3_addRowBtn');
     if (step3AddRowBtn) {
-      step3AddRowBtn.addEventListener('click', addStep3DataRow);
+      // Clone and replace button to remove ALL existing event listeners
+      const newBtn = step3AddRowBtn.cloneNode(true);
+      step3AddRowBtn.parentNode.replaceChild(newBtn, step3AddRowBtn);
+      // Add listener to the new button
+      newBtn.addEventListener('click', addStep3DataRow);
     }
 
     // Step 4: Add subsection handler
