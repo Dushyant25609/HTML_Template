@@ -81,28 +81,34 @@
         @media print {
             @page {
                 size: A4 portrait;
-                margin-bottom: 5in !important;
+                margin: 15mm;
             }
             body {
                 background-color: white !important;
                 padding: 0 !important;
                 margin: 0 !important;
-                display: block !important;
             }
 
             .page {
-                width: 210mm !important;
-                margin-bottom: 5in !important;
+                width: auto !important;
+                min-height: auto !important;
+                padding: 0 !important;
+                margin: 0 !important;
                 box-shadow: none !important;
-                page-break-after: always !important;
-                overflow: hidden !important;
-                print-color-adjust: exact !important;
-                -webkit-print-color-adjust: exact !important;
-                color-adjust: exact !important;
+                page-break-after: auto !important;
             }
-            
+
             .button-container, .toast-message {
                 display: none !important;
+            }
+
+            /* Better page breaks */
+            .gray-box, table {
+                page-break-inside: avoid !important;
+            }
+
+            h1, h2, h3, h4, h5 {
+                page-break-after: avoid !important;
             }
             
             img, object, embed, svg {
@@ -817,6 +823,33 @@
                     display: none;
                 }
             }
+
+            /* Preview button - Teal */
+            .btn-preview {
+                background: linear-gradient(135deg, #20c997, #12b886);
+                color: white;
+            }
+
+            .btn-preview:hover {
+                background: linear-gradient(135deg, #12b886, #0ca678);
+            }
+
+            /* Preview mode styles */
+            body.preview-mode {
+                background-color: #525659;
+            }
+
+            body.preview-mode .page {
+                padding: 20mm 0 30mm 0 !important;
+                margin-bottom: 20px;
+            }
+
+            body.preview-mode .button-container {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+            }
+
             .pageTitle p {
                 font-size: 12px;
                 color: #555;
@@ -949,10 +982,37 @@
                 link.download = 'document-data.json';
                 link.click();
             }
+
+            // Function to toggle preview mode
+            function togglePreviewMode() {
+                const body = document.body;
+                const previewBtn = document.querySelector('.btn-preview span');
+
+                if (body.classList.contains('preview-mode')) {
+                    // Exit preview mode
+                    body.classList.remove('preview-mode');
+                    if (previewBtn) previewBtn.textContent = '👁️ Preview PDF';
+                    showToast('✓ Exited preview mode', 'success');
+                } else {
+                    // Enter preview mode
+                    body.classList.add('preview-mode');
+                    if (previewBtn) previewBtn.textContent = '✏️ Edit Mode';
+                    showToast('✓ Preview mode activated - Ready for PDF download', 'success');
+                }
+            }
+
+            // Function to download as PDF (uses print)
+            function downloadPDF() {
+                // Trigger browser print dialog
+                window.print();
+            }
         </script>
         
         <!-- Sticky Button Container -->
         <div class="button-container">
+            <button class="action-btn btn-pdf" onclick="downloadPDF()" title="Download as PDF">
+                <span>Download PDF</span>
+            </button>
             <button class="action-btn btn-save" onclick="saveUpdates()" title="Save changes to JSON file">
                 <span>Save Updates</span>
             </button>
