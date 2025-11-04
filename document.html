@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -289,6 +289,65 @@
         .separated-row {
             border-top: 1px solid #333;
             border-bottom: 1px solid #333;
+        }
+        
+        /* Table 4 (Sidebar table) trend styles */
+        #table4-view-body .weight-dot {
+            position: relative;
+        }
+        
+        #table4-view-body .trend-triangle {
+            position: absolute;
+            width: 0;
+            height: 0;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        #table4-view-body .trend-triangle.left {
+            border-left: 12px solid #ef4444;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            left: -100%;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-right: 2px;
+        }
+
+        #table4-view-body .trend-triangle.right {
+            border-right: 12px solid #ef4444;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            left: -100%;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-left: 2px;
+        }
+
+        /* Trend row highlights for table 4 - red border on both columns */
+        #table4-view-body tr.trend-row-up td,
+        #table4-view-body tr.trend-row-down td {
+            position: relative;
+        }
+
+        #table4-view-body tr.trend-row-up td:first-child::before,
+        #table4-view-body tr.trend-row-down td:first-child::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 30px;
+            width: calc(200% + 20px); /* Covers both columns */
+            border: 2px solid #ef2121;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* Table 4 row hover effect for editing */
+        #table4-view-body tr[data-asset-index]:hover {
+            background-color: #f9fafb;
+            cursor: pointer;
         }
         
         /* Fade out animation for dialog */
@@ -2725,9 +2784,17 @@ Investment products:</p>
             <script>
             // Table 2: Create asset class row with weight indicators
             function createAssetClassRow(item, index, allItems) {
-                // Determine if row should have separation borders
-                const rowClass = item.separate === 1 ? ' class="separated-row"' : '';
-                const classAttr = rowClass;
+                // Determine if row should have separation borders and trend classes
+                let rowClass = item.separate === 1 ? 'separated-row' : '';
+                
+                // Add trend border class if there's a trend
+                if (item.trend === 1) {
+                    rowClass += (rowClass ? ' ' : '') + 'trend-row-up';
+                } else if (item.trend === -1) {
+                    rowClass += (rowClass ? ' ' : '') + 'trend-row-down';
+                }
+                
+                const classAttr = rowClass ? ` class="${rowClass.trim()}"` : '';
                 
                 // Check if previous row has merge=1 (this row's comment cell should be hidden)
                 const previousItem = index > 0 ? allItems[index - 1] : null;
@@ -2768,6 +2835,7 @@ Investment products:</p>
                 
                 for (let i = 1; i <= totalDots; i++) {
                 let dotClass = 'weight-dot';
+                let triangleHtml = '';
                 
                 if (i === item.position) {
                     // Only the selected position gets color
@@ -2781,9 +2849,21 @@ Investment products:</p>
                 } else {
                     dotClass += ' empty'; // All other dots are empty/gray
                 }
-                
-                dotsHtml += `<div class="${dotClass}" data-position="${i}"></div>`;
+
+                // Add trend triangle based on trend value and position
+                if (item.trend !== undefined && item.trend !== 0 && item.position !== -1) {
+                    if (item.trend === 1 && i === (item.position - 1) && i >= 1) {
+                    // Show upward trend triangle on the dot to the LEFT of the selected position
+                    triangleHtml = '<div class="trend-triangle trend-row-up left"></div>';
+                    } else if (item.trend === -1 && i === (item.position + 1) && i <= 5) {
+                    // Show downward trend triangle on the dot to the RIGHT of the selected position
+                    triangleHtml = '<div class="trend-triangle trend-row-down right"></div>';
+                    }
                 }
+                
+                dotsHtml += `<div class="${dotClass}" data-position="${i}">${triangleHtml}</div>`;
+                }
+                
 
                 const weightIndicator = `
                 <div class="weight-indicator">
@@ -2810,7 +2890,7 @@ Investment products:</p>
 
                 return `
                 <tr${classAttr}>
-                    <td class="text-[11px] font-bold">${item.assetClass}</td>
+                    <td class="text-[11px] font-bold pl-2">${item.assetClass}</td>
                     <td>${weightIndicator}</td>
                     <td${commentStyle}${mergeAttr} class="text-[11px] font-thin">${commentContent}</td>
                 </tr>
@@ -3065,7 +3145,7 @@ Investment products:</p>
                 }
 
                 .trend-triangle:hover {
-                    transform: translateX(-50%) scale(1.1);
+                    transform: translateX(50%) scale(1.1);
                     filter: brightness(1.2);
                 }
 
@@ -3107,7 +3187,7 @@ Investment products:</p>
 
                 .trend-row-up td:first-child::before,
                 .trend-row-down td:first-child::before {
-                    width: calc(250% + 8px); /* Covers first two columns */
+                    width: calc(250% + 96px); /* Covers first two columns */
                     border-right: 2px solid #ef2121;
                 }
 
@@ -5100,6 +5180,168 @@ Investment products:</p>
             
             // Add click event delegation for weight dots
             tbody.addEventListener('click', handleWeightDotClick);
+            
+            // Add double-click event delegation for trend editing
+            tbody.addEventListener('dblclick', handleTable4RowDoubleClick);
+        }
+        
+        // Handle double-click on table 4 rows to edit trend
+        function handleTable4RowDoubleClick(e) {
+            // Don't trigger if clicking on weight dots
+            if (e.target.closest('.weight-dot') || e.target.closest('.weight-indicator')) {
+                return;
+            }
+            
+            const row = e.target.closest('tr');
+            if (!row) return;
+            
+            const assetIndex = row.getAttribute('data-asset-index');
+            if (assetIndex === null) return;
+            
+            const index = parseInt(assetIndex);
+            if (isNaN(index)) return;
+            
+            const asset = DocumentData.step2?.tableData?.data?.[index];
+            if (!asset) return;
+            
+            // Don't allow editing cash rows or alternative investments
+            if (asset.isCash || asset.isAlternativeInvestment) return;
+            
+            showTable4TrendEditDialog(asset, index);
+        }
+        
+        // Show trend edit dialog for table 4
+        function showTable4TrendEditDialog(asset, assetIndex) {
+            // Remove existing dialog if any
+            const existingDialog = document.querySelector('.table4-trend-dialog');
+            if (existingDialog) {
+                existingDialog.remove();
+            }
+            
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'edit-dialog-overlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+            `;
+            
+            // Create dialog
+            const dialog = document.createElement('div');
+            dialog.className = 'edit-dialog table4-trend-dialog';
+            dialog.style.cssText = `
+                background: white;
+                border-radius: 8px;
+                padding: 24px;
+                width: 90%;
+                max-width: 500px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            `;
+            
+            const currentTrend = asset.trend !== undefined ? asset.trend : 0;
+            
+            dialog.innerHTML = `
+                <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 600;">Edit Asset: ${asset.name}</h3>
+                
+                <div style="margin-bottom: 16px;">
+                    <label class="edit-dialog-label" for="table4Position">Position (Weight Value)</label>
+                    <select 
+                        id="table4Position" 
+                        class="edit-dialog-input"
+                        style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px;"
+                    >
+                        <option value="" ${!asset.position ? 'selected' : ''}>Hide (No position)</option>
+                        <option value="1" ${asset.position === 1 ? 'selected' : ''}>1 (Underweight)</option>
+                        <option value="2" ${asset.position === 2 ? 'selected' : ''}>2 (Underweight)</option>
+                        <option value="3" ${asset.position === 3 ? 'selected' : ''}>3 (Neutral)</option>
+                        <option value="4" ${asset.position === 4 ? 'selected' : ''}>4 (Overweight)</option>
+                        <option value="5" ${asset.position === 5 ? 'selected' : ''}>5 (Overweight)</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label class="edit-dialog-label" for="table4Trend">Trend</label>
+                    <select 
+                        id="table4Trend" 
+                        class="edit-dialog-input"
+                        style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px;"
+                    >
+                        <option value="0" ${currentTrend === 0 ? 'selected' : ''}>No Trend (0)</option>
+                        <option value="1" ${currentTrend === 1 ? 'selected' : ''}>Upward Trend (1)</option>
+                        <option value="-1" ${currentTrend === -1 ? 'selected' : ''}>Downward Trend (-1)</option>
+                    </select>
+                    <p style="font-size: 12px; color: #666; margin-top: 4px;">
+                        Upward: Triangle below left dot | Downward: Triangle above right dot
+                    </p>
+                </div>
+                
+                <div style="display: flex; gap: 12px; justify-content: flex-end;">
+                    <button id="cancelTable4Btn" class="edit-dialog-btn-secondary" style="padding: 8px 16px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;">Cancel</button>
+                    <button id="saveTable4Btn" class="edit-dialog-btn-primary" style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Save</button>
+                </div>
+            `;
+            
+            overlay.appendChild(dialog);
+            document.body.appendChild(overlay);
+            
+            // Focus on first select
+            const positionSelect = document.getElementById('table4Position');
+            positionSelect.focus();
+            
+            // Handle save
+            document.getElementById('saveTable4Btn').addEventListener('click', () => {
+                const positionValue = document.getElementById('table4Position').value;
+                const trendValue = parseInt(document.getElementById('table4Trend').value);
+                
+                // Update position (empty string means null/undefined)
+                if (positionValue === '') {
+                    DocumentData.step2.tableData.data[assetIndex].position = null;
+                } else {
+                    DocumentData.step2.tableData.data[assetIndex].position = parseInt(positionValue);
+                }
+                
+                // Update trend
+                DocumentData.step2.tableData.data[assetIndex].trend = trendValue;
+                
+                // Save to localStorage
+                localStorage.setItem('documentData', JSON.stringify(DocumentData));
+                
+                // Re-render table
+                populateTableData(DocumentData.step2.tableData);
+                
+                // Show success message
+                showToast('✓ Asset updated successfully!');
+                
+                // Close dialog
+                document.body.removeChild(overlay);
+            });
+            
+            // Handle cancel
+            document.getElementById('cancelTable4Btn').addEventListener('click', () => {
+                document.body.removeChild(overlay);
+            });
+            
+            // Close on Escape
+            overlay.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    document.body.removeChild(overlay);
+                }
+            });
+            
+            // Close on overlay click
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    document.body.removeChild(overlay);
+                }
+            });
         }
         
         // Handle weight dot clicks (both regular and alternative investments)
@@ -5204,9 +5446,21 @@ Investment products:</p>
             const row = document.createElement('tr');
             row.setAttribute('data-asset-index', assetIndex);
             
-            // Add top and bottom border if separate is 1
+            // Add trend classes if trend exists
+            let rowClass = '';
             if (asset.separate === 1) {
-                row.className = 'separated-row';
+                rowClass = 'separated-row';
+            }
+            
+            // Add trend border class if there's a trend
+            if (asset.trend === 1) {
+                rowClass += (rowClass ? ' ' : '') + 'trend-row-up';
+            } else if (asset.trend === -1) {
+                rowClass += (rowClass ? ' ' : '') + 'trend-row-down';
+            }
+            
+            if (rowClass) {
+                row.className = rowClass.trim();
             }
 
             
@@ -5218,7 +5472,7 @@ Investment products:</p>
                 `;
             } else {
                 const category = getWeightCategory(asset.position);
-                const weightIndicator = createWeightIndicator(asset.position, category, assetIndex);
+                const weightIndicator = createWeightIndicator(asset.position, category, assetIndex, asset.trend);
                 row.innerHTML = `
                     <td class="text-[9px] font-thin  px-1">${asset.name || ''}</td>
                     <td class="text-center">${weightIndicator}</td>
@@ -5255,12 +5509,13 @@ Investment products:</p>
         }
         
         // Function to create weight indicator
-        function createWeightIndicator(position, category, assetIndex) {
+        function createWeightIndicator(position, category, assetIndex, trend) {
             const totalDots = 5;
             let dotsHtml = '';
             
             for (let i = 1; i <= totalDots; i++) {
                 let dotClass = 'weight-dot';
+                let triangleHtml = '';
                 
                 // If position is null/undefined, show all empty dots
                 if (position === null || position === undefined) {
@@ -5279,7 +5534,18 @@ Investment products:</p>
                     dotClass += ' empty';
                 }
                 
-                dotsHtml += `<div class="${dotClass}" data-position="${i}" data-asset-index="${assetIndex}" title="Position ${i}"></div>`;
+                // Add trend triangle based on trend value and position
+                if (trend !== undefined && trend !== 0 && position !== null && position !== undefined) {
+                    if (trend === 1 && i === (position - 1) && i >= 1) {
+                        // Show upward trend triangle on the dot to the LEFT of the selected position
+                        triangleHtml = '<div class="trend-triangle left"></div>';
+                    } else if (trend === -1 && i === (position + 1) && i <= 5) {
+                        // Show downward trend triangle on the dot to the RIGHT of the selected position  
+                        triangleHtml = '<div class="trend-triangle right"></div>';
+                    }
+                }
+                
+                dotsHtml += `<div class="${dotClass}" data-position="${i}" data-asset-index="${assetIndex}" title="Position ${i}">${triangleHtml}</div>`;
             }
             
             return `
@@ -8205,6 +8471,19 @@ Investment products:</p>
                 </div>
                 
                 <div style="margin-bottom: 16px;">
+                    <label class="edit-dialog-label" for="s7Trend">Trend</label>
+                    <select 
+                        id="s7Trend" 
+                        class="edit-dialog-input"
+                        style="padding: 8px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 14px;"
+                    >
+                        <option value="0" ${(rowData.trend === undefined || rowData.trend === 0) ? 'selected' : ''}>No Trend (0)</option>
+                        <option value="1" ${rowData.trend === 1 ? 'selected' : ''}>Upward Trend (1)</option>
+                        <option value="-1" ${rowData.trend === -1 ? 'selected' : ''}>Downward Trend (-1)</option>
+                    </select>
+                </div>
+                
+                <div style="margin-bottom: 16px;">
                     <label class="edit-dialog-label" for="s7Comments">Comments</label>
                     <textarea 
                         id="s7Comments" 
@@ -8256,6 +8535,7 @@ Investment products:</p>
             document.getElementById('saveS7RowBtn').addEventListener('click', () => {
                 const newAssetClass = document.getElementById('s7AssetClass').value.trim();
                 const newPosition = parseInt(document.getElementById('s7Position').value);
+                const newTrend = parseInt(document.getElementById('s7Trend').value);
                 const newComments = document.getElementById('s7Comments').value.trim();
                 const newSeparate = parseInt(document.getElementById('s7Separate').value);
                 const newMerge = parseInt(document.getElementById('s7Merge').value);
@@ -8275,6 +8555,7 @@ Investment products:</p>
                 // Update data
                 DocumentData.step8.data[rowIndex].assetClass = newAssetClass;
                 DocumentData.step8.data[rowIndex].position = newPosition;
+                DocumentData.step8.data[rowIndex].trend = newTrend;
                 DocumentData.step8.data[rowIndex].weight = newWeight;
                 DocumentData.step8.data[rowIndex].comments = newComments;
                 DocumentData.step8.data[rowIndex].separate = newSeparate;

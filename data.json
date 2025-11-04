@@ -707,6 +707,7 @@
         "assetClass": "Global Equities",
         "position": 4,
         "separate": 1,
+        "trend": -1,
         "merge": 0,
         "comments": "We are overweight Equities and continue to view weakness as a buying opportunity for long-term investors. We are overweight the U.S. and neutral EM and International Developed."
       },
