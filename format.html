@@ -321,20 +321,28 @@
                     <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
                       ×
                     </button>
-                    <div class="grid grid-cols-2 gap-4 mb-3">
+                    <div class="grid grid-cols-3 gap-4 mb-3">
                       <div>
                         <label class="block text-xs text-gray-600 mb-1">Asset Class Name</label>
                         <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Equities">
                       </div>
                       <div>
                         <label class="block text-xs text-gray-600 mb-1">Position (1-5)</label>
-                        <select class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
+                        <select class="asset-class-position w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
                           <option value="">Select Position</option>
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
                           <option value="4">4</option>
                           <option value="5">5</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label class="block text-xs text-gray-600 mb-1">Trend (-1/0/1)</label>
+                        <select class="asset-class-trend w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
+                          <option value="0" selected>0 - None</option>
+                          <option value="-1">-1 - Down</option>
+                          <option value="1">1 - Up</option>
                         </select>
                       </div>
                     </div>
@@ -970,7 +978,7 @@
                   <label class="block text-xs text-gray-600 mb-1">Asset Class</label>
                   <input type="text" class="step8_assetClass w-full rounded-lg border border-gray-300 p-2" placeholder="Global Equities">
                 </div>
-                <div class="grid grid-cols-3 gap-3 mb-3">
+                <div class="grid grid-cols-4 gap-3 mb-3">
                   <div>
                     <label class="block text-xs text-gray-600 mb-1">Position</label>
                     <select class="step8_position w-full rounded-lg border border-gray-300 p-2">
@@ -981,6 +989,14 @@
                       <option value="3">3</option>
                       <option value="4">4</option>
                       <option value="5">5</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs text-gray-600 mb-1">Trend (-1/0/1)</label>
+                    <select class="step8_trend w-full rounded-lg border border-gray-300 p-2">
+                      <option value="0" selected>0 - None</option>
+                      <option value="-1">-1 - Down</option>
+                      <option value="1">1 - Up</option>
                     </select>
                   </div>
                   <div>
@@ -1324,7 +1340,7 @@
       <div class="bg-white rounded-lg max-w-4xl w-full max-h-[80vh] overflow-hidden">
         <div class="flex justify-between items-center p-4 border-b">
           <h3 class="text-lg font-semibold">Generated JSON Data</h3>
-          <button id="closeJsonModal" class="text-gray-500 hover:text-gray-700">
+          <button id="closeJsonModal" class="text-gray-500 hover:text-gray-700" title="Close modal">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -1348,7 +1364,7 @@
       <div class="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
         <div class="flex justify-between items-center p-4 border-b">
           <h3 class="text-lg font-semibold">Component Preview</h3>
-          <button id="closeImageModal" class="text-gray-500 hover:text-gray-700">
+          <button id="closeImageModal" title="Close Image modal" class="text-gray-500 hover:text-gray-700">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -1367,7 +1383,7 @@
       <div class="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-hidden">
         <div class="flex justify-between items-center p-4 border-b">
           <h3 class="text-lg font-semibold">Load JSON Data</h3>
-          <button id="closeLoadJsonModal" class="text-gray-500 hover:text-gray-700">
+          <button id="closeLoadJsonModal" title="Close JSON modal" class="text-gray-500 hover:text-gray-700">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
@@ -1744,20 +1760,28 @@
          <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
            ×
          </button>
-         <div class="grid grid-cols-2 gap-4 mb-3">
+         <div class="grid grid-cols-3 gap-4 mb-3">
            <div>
              <label class="block text-xs text-gray-600 mb-1">Asset Class Name</label>
              <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Equities">
            </div>
            <div>
              <label class="block text-xs text-gray-600 mb-1">Position (1-4)</label>
-             <select class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
+             <select class="asset-class-position w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
                <option value="">Select Position</option>
                <option value="1">1 - Underweight</option>
                <option value="2">2 - Underweight</option>
                <option value="3">3 - Neutral</option>
                <option value="4">4 - Overweight</option>
                <option value="5">5 - Overweight</option>
+             </select>
+           </div>
+           <div>
+             <label class="block text-xs text-gray-600 mb-1">Trend (-1/0/1)</label>
+             <select class="asset-class-trend w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
+               <option value="0" selected>0 - None</option>
+               <option value="-1">-1 - Down</option>
+               <option value="1">1 - Up</option>
              </select>
            </div>
          </div>
@@ -1811,20 +1835,28 @@
          <button type="button" class="removeBtn absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition z-10" title="Remove">
            ×
          </button>
-         <div class="grid grid-cols-2 gap-4 mb-3">
+         <div class="grid grid-cols-3 gap-4 mb-3">
            <div>
              <label class="block text-xs text-gray-600 mb-1">Asset Class Name</label>
              <input type="text" class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5" placeholder="e.g., Equities">
            </div>
            <div>
              <label class="block text-xs text-gray-600 mb-1">Position (1-5)</label>
-             <select class="w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
+             <select class="asset-class-position w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
                <option value="">Select Position</option>
                <option value="1">1 - Underweight</option>
                <option value="2">2 - Underweight</option>
                <option value="3">3 - Neutral</option>
                <option value="4">4 - Overweight</option>
                <option value="5">5 - Overweight</option>
+             </select>
+           </div>
+           <div>
+             <label class="block text-xs text-gray-600 mb-1">Trend (-1/0/1)</label>
+             <select class="asset-class-trend w-full rounded-lg border border-gray-300 focus:border-blue-600 focus:ring focus:ring-blue-100 transition p-2.5">
+               <option value="0" selected>0 - None</option>
+               <option value="-1">-1 - Down</option>
+               <option value="1">1 - Up</option>
              </select>
            </div>
          </div>
@@ -2164,16 +2196,24 @@
               div.className = 'relative bg-gray-50 p-3 rounded';
               div.innerHTML = `
                 <input type="text" class="w-full p-2 border rounded mb-2" placeholder="Asset Class Name (e.g., Global Equities)" value="${assetClass.name || ''}">
-                <div class="grid grid-cols-2 gap-2 mb-2">
+                <div class="grid grid-cols-3 gap-2 mb-2">
                   <div>
                     <label class="block text-sm mb-1">Position (1-5)</label>
-                    <select class="w-full p-2 border rounded">
+                    <select class="asset-class-position w-full p-2 border rounded">
                       <option value="">None</option>
                       <option value="1" ${assetClass.position === 1 ? 'selected' : ''}>1</option>
                       <option value="2" ${assetClass.position === 2 ? 'selected' : ''}>2</option>
                       <option value="3" ${assetClass.position === 3 ? 'selected' : ''}>3</option>
                       <option value="4" ${assetClass.position === 4 ? 'selected' : ''}>4</option>
                       <option value="5" ${assetClass.position === 5 ? 'selected' : ''}>5</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-sm mb-1">Trend (-1/0/1)</label>
+                    <select class="asset-class-trend w-full p-2 border rounded">
+                      <option value="0" ${assetClass.trend === 0 || assetClass.trend === undefined ? 'selected' : ''}>0 - None</option>
+                      <option value="-1" ${assetClass.trend === -1 ? 'selected' : ''}>-1 - Down</option>
+                      <option value="1" ${assetClass.trend === 1 ? 'selected' : ''}>1 - Up</option>
                     </select>
                   </div>
                   <div class="flex flex-col gap-1">
@@ -2599,7 +2639,7 @@
           dataContainer.innerHTML = '';
           data.step8.data.forEach((row, index) => {
             const div = document.createElement('div');
-            div.className = 'relative grid grid-cols-5 gap-2 bg-gray-50 p-2 rounded mb-2';
+            div.className = 'relative grid grid-cols-6 gap-2 bg-gray-50 p-2 rounded mb-2';
             div.innerHTML = `
               <input type="text" class="step8_assetClass w-full p-2 border rounded" placeholder="Asset Class" value="${row.assetClass || ''}">
               <select class="step8_position w-full p-2 border rounded">
@@ -2609,6 +2649,11 @@
                 <option value="3" ${row.position === 3 ? 'selected' : ''}>3</option>
                 <option value="4" ${row.position === 4 ? 'selected' : ''}>4</option>
                 <option value="5" ${row.position === 5 ? 'selected' : ''}>5</option>
+              </select>
+              <select class="step8_trend w-full p-2 border rounded">
+                <option value="0" ${row.trend === 0 || row.trend === undefined ? 'selected' : ''}>0 - None</option>
+                <option value="-1" ${row.trend === -1 ? 'selected' : ''}>-1 - Down</option>
+                <option value="1" ${row.trend === 1 ? 'selected' : ''}>1 - Up</option>
               </select>
               <input type="number" class="step8_separate w-full p-2 border rounded" placeholder="Separate" value="${row.separate !== undefined ? row.separate : ''}">
               <input type="number" class="step8_merge w-full p-2 border rounded" placeholder="Merge" value="${row.merge !== undefined ? row.merge : ''}">
@@ -3095,6 +3140,7 @@
             document.querySelectorAll('#step8_dataContainer > div').forEach(row => {
               const assetClass = row.querySelector('.step8_assetClass')?.value.trim() || '';
               const position = parseInt(row.querySelector('.step8_position')?.value) || 0;
+              const trend = parseInt(row.querySelector('.step8_trend')?.value) || 0;
               const separate = parseInt(row.querySelector('.step8_separate')?.value) || 0;
               const merge = parseInt(row.querySelector('.step8_merge')?.value) || 0;
               const comments = row.querySelector('.step8_comments')?.value.trim() || '';
@@ -3102,6 +3148,7 @@
               dataArray.push({
                 assetClass: assetClass,
                 position: position,
+                trend: trend,
                 separate: separate,
                 merge: merge,
                 comments: comments
@@ -3245,8 +3292,9 @@
        const cioViewHeader = document.getElementById('cioViewHeader')?.value || '';
        const tableFootnote = document.getElementById('tableFootnote')?.value || '';
        const assetClasses = Array.from(document.querySelectorAll('#assetClassesContainer > div')).map(assetClass => ({
-         name: assetClass.querySelector('input[placeholder*="Equities"]')?.value || '',
-         position: parseInt(assetClass.querySelector('select')?.value) || undefined,
+         name: assetClass.querySelector('input[placeholder*="Equities"], input[placeholder*="e.g., Equities"], input[placeholder*="Global Equities"], input[placeholder*="Asset Class Name"]')?.value || '',
+         position: parseInt(assetClass.querySelector('select.asset-class-position')?.value) || undefined,
+         trend: parseInt(assetClass.querySelector('select.asset-class-trend')?.value) || 0,
          separate: assetClass.querySelectorAll('input[type="checkbox"]')[0]?.checked || false,
          isHeader: assetClass.querySelectorAll('input[type="checkbox"]')[1]?.checked || false,
          isAltInvestment: assetClass.querySelectorAll('input[type="checkbox"]')[2]?.checked || false,
@@ -3262,6 +3310,7 @@
          data: assetClasses.map(assetClass => ({
            name: assetClass.name,
            position: assetClass.position,
+           trend: assetClass.trend,
            separate: assetClass.separate ? 1 : 0,
            isAlternativeInvestment: assetClass.isAltInvestment ? 1 : 0,
            isCash: assetClass.isCash ? 1 : 0,
@@ -4028,7 +4077,7 @@
           <label class="block text-xs text-gray-600 mb-1">Asset Class</label>
           <input type="text" class="step8_assetClass w-full rounded-lg border border-gray-300 p-2" placeholder="Asset class name...">
         </div>
-        <div class="grid grid-cols-3 gap-3 mb-3">
+        <div class="grid grid-cols-4 gap-3 mb-3">
           <div>
             <label class="block text-xs text-gray-600 mb-1">Position</label>
             <select class="step8_position w-full rounded-lg border border-gray-300 p-2">
@@ -4039,6 +4088,14 @@
               <option value="3">3</option>
               <option value="4">4</option>
               <option value="5">5</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-gray-600 mb-1">Trend (-1/0/1)</label>
+            <select class="step8_trend w-full rounded-lg border border-gray-300 p-2">
+              <option value="0" selected>0 - None</option>
+              <option value="-1">-1 - Down</option>
+              <option value="1">1 - Up</option>
             </select>
           </div>
           <div>
