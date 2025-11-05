@@ -643,8 +643,9 @@
                 
                 console.log('Updating DocumentData...');
                 
-                // Update DocumentData
+                // Update both data objects (unify casing)
                 DocumentData = jsonData;
+                documentData = jsonData;
                 
                 console.log('Saving to localStorage...');
                 
@@ -653,18 +654,40 @@
                 
                 console.log('localStorage updated');
                 
-                // Close dialog
+                // Re-render UI without full page reload
+                try {
+                    // Section 1
+                    const titleEl = document.getElementById('documentTitle');
+                    const dateEl = document.getElementById('documentDate');
+                    if (titleEl) titleEl.textContent = DocumentData?.step1?.documentTitle || 'Document Title';
+                    if (dateEl) dateEl.textContent = DocumentData?.step1?.documentMonth || 'Document Month';
+
+                    // Summary components & table (Step 2)
+                    if (typeof populateSummaryComponents === 'function') {
+                        populateSummaryComponents(DocumentData?.step2?.summary?.components || []);
+                    }
+                    if (typeof populateTableData === 'function') {
+                        populateTableData(DocumentData?.step2?.tableData || {});
+                    }
+
+                    // Subsequent sections (these functions exist later in file)
+                    if (typeof populateSectionTwo === 'function') populateSectionTwo(DocumentData?.step3 || {});
+                    if (typeof populateSectionThree === 'function') populateSectionThree(DocumentData?.step4 || {});
+                    if (typeof populateSectionFour === 'function') populateSectionFour(DocumentData?.step5 || {});
+                    if (typeof populateSectionFive === 'function') populateSectionFive(DocumentData?.step6 || {});
+                    if (typeof populateSectionSix === 'function') populateSectionSix(DocumentData?.step7 || {});
+                    if (typeof populateSectionSeven === 'function') populateSectionSeven(DocumentData?.step8 || {});
+                    if (typeof populateSectionEight === 'function') populateSectionEight(DocumentData?.step9 || {});
+                    if (typeof populateSectionNine === 'function') populateSectionNine(DocumentData?.step10 || {});
+                    if (typeof populateSectionTen === 'function') populateSectionTen(DocumentData?.step11 || {});
+                    if (typeof populateSectionEleven === 'function') populateSectionEleven(DocumentData?.step12 || {});
+                } catch(renderErr) {
+                    console.error('Render after paste failed:', renderErr);
+                }
+
+                // Close dialog now that rendering complete
                 overlay.remove();
-                
-                // Show success message
-                showToast('✓ JSON data loaded successfully', 'success');
-                
-                console.log('Reloading page in 1 second...');
-                
-                // Reload page after a short delay
-                setTimeout(() => {
-                    location.reload();
-                }, 1000);
+                showToast('✓ JSON data loaded & applied', 'success');
                 
             } catch (error) {
                 showToast('✗ Invalid JSON format: ' + error.message, 'error');
@@ -1051,8 +1074,10 @@
                 const savedData = localStorage.getItem('documentData');
                 if (savedData) {
                     documentData = JSON.parse(savedData);
-                    document.getElementById('documentTitle').textContent = documentData.step1.documentTitle;
-                    document.getElementById('documentDate').textContent = documentData.step1.documentMonth;
+                    // Keep unified capitalized reference updated for later section editors
+                    DocumentData = documentData;
+                    document.getElementById('documentTitle').textContent = documentData?.step1?.documentTitle || 'Document Title';
+                    document.getElementById('documentDate').textContent = documentData?.step1?.documentMonth || 'Document Month';
                     console.log('Loaded saved edits from localStorage:', JSON.stringify(documentData, null, 2));
                 }
                 
@@ -5174,15 +5199,15 @@ Investment products:</p>
                         html += `
                             <div class="grid grid-cols-2 w-[196mm] mt-4">
                                 <div>
-                                    <h4 class="text-xs font-semibold bg-[--bg-gray] mb-2 text-center">${component.mainHeading1 || ''}</h4>
-                                    <h5 class="text-xs font-semibold text-gray-800 mb-2 px-2">${component.subHeading1 || ''}</h5>
+                                    <h4 class="text-xs font-black bg-[--bg-gray] text-black mb-2 text-center">${component.mainHeading1 || ''}</h4>
+                                    <h5 class="text-xs font-bold text-black mb-2 px-2">${component.subHeading1 || ''}</h5>
                                     <ul class="paragraph disc-list space-y-1 px-2">
                                         ${(component.leftPoints || []).map(point => `<li>• ${(point).replace(/\n/g, '<br><br>')}</li>`).join('')}
                                     </ul>
                                 </div>
                                 <div>
-                                    <h4 class="text-xs font-semibold bg-[--bg-gray] mb-2 text-center">${component.mainHeading2 || ''}</h4>
-                                    <h5 class="text-xs font-semibold text-gray-800 mb-2 px-2">${component.subHeading2 || ''}</h5>
+                                    <h4 class="text-xs font-black bg-[--bg-gray] text-black mb-2 text-center">${component.mainHeading2 || ''}</h4>
+                                    <h5 class="text-xs font-bold text-black mb-2 px-2">${component.subHeading2 || ''}</h5>
                                     <ul class="paragraph space-y-1 px-2">
                                         ${(component.rightPoints || []).map(point => `<li>• ${point.replace(/\n/g, '<br><br>')}</li>`).join('')}
                                     </ul>
@@ -5219,11 +5244,11 @@ Investment products:</p>
                         html += `
                             <div class="flex justify-between w-[196mm] mt-2 gap-4">
                                 <div class="w-[65%]">
-                                    <h4 class="heading mb-3" data-path="step2.summary.components[${idx}].mainHeading">${component.mainHeading || ''}</h4>
+                                    <h4 class="font-bold text-sm mb-3" data-path="step2.summary.components[${idx}].mainHeading">${component.mainHeading || ''}</h4>
                                     <ol class="list-decimal list-outside ml-5 space-y-2">
                                         ${(component.bulletPoints || []).map((point, pointIdx) => {
                                             if (point.subheading) {
-                                                return `<li class="text-[12px]" data-path="step2.summary.components[${idx}].bulletPoints[${pointIdx}]"><span class="font-semibold" data-path="step2.summary.components[${idx}].bulletPoints[${pointIdx}].subheading">${point.subheading}</span><span class="paragraph" data-path="step2.summary.components[${idx}].bulletPoints[${pointIdx}].content">—${point.content || ''}</span></li>`;
+                                                return `<li class="text-[12px] font-bold" data-path="step2.summary.components[${idx}].bulletPoints[${pointIdx}]"><span class="font-semibold" data-path="step2.summary.components[${idx}].bulletPoints[${pointIdx}].subheading">${point.subheading}</span><span class="paragraph" data-path="step2.summary.components[${idx}].bulletPoints[${pointIdx}].content">—${point.content || ''}</span></li>`;
                                             } else {
                                                 return `<li class="paragraph" data-path="step2.summary.components[${idx}].bulletPoints[${pointIdx}].content">${point.content || ''}</li>`;
                                             }
@@ -5232,7 +5257,7 @@ Investment products:</p>
                                 </div>
                                 <div class="w-[30%] gray-box px-4 py-3">
                                     <h4 class="text-xs font-semibold text-gray-800 mb-2" data-path="step2.summary.components[${idx}].bottomLine.heading">Bottom Line${bottomLineHeading ? ': ' + bottomLineHeading : ''}</h4>
-                                    <p class="paragraph text-[--box-gray]" data-path="step2.summary.components[${idx}].bottomLine.content">${bottomLineContent}</p>
+                                    <p class="paragraph text-[--box-gray]" data-path="step2.summary.components[${idx}].bottomLine.content">${bottomLineContent.replace(/\n/g, '<br><br>')}</p>
                                 </div>
                             </div>
                         `;

@@ -3367,38 +3367,25 @@
            
          case 'numbered-bottom-line': {
             const pointsContainer = component.querySelector(`#${component.id}_points`) || component.querySelector('[id$="_points"]');
-            
-            // Get main heading - it's the first input in the component
-            const mainHeading = component.querySelector('input[placeholder*="Main Heading"]')?.value ||
-                               component.querySelector('input[placeholder*="Why We\'re Bullish"]')?.value || '';
-            
+
+            // Main heading (case-insensitive match). Use more specific placeholder string.
+            const mainHeading = component.querySelector('input[placeholder*="Main heading" i]')?.value.trim() ||
+                                component.querySelector('input[placeholder*="Why we\'re bullish" i]')?.value.trim() || '';
+
+            // Gather bullet points: each direct child div of points container is a bullet wrapper
             const bulletPoints = [];
-
-            // Initial bullet with subheading + content (inside pointsContainer > space-y-2)
             if (pointsContainer) {
-              const initialSubheading = pointsContainer.querySelector(':scope > div.space-y-2 > input[type="text"]')?.value || '';
-              const initialContent = pointsContainer.querySelector(':scope > div.space-y-2 > textarea')?.value || '';
-              if (initialContent || initialSubheading) {
-                bulletPoints.push({ subheading: initialSubheading, content: initialContent });
-              }
-
-              // Additional bullets with subheading + content
-              const bulletPointContainers = pointsContainer.querySelectorAll('.relative.flex.flex-col, .relative.mt-4.p-3') || [];
-              bulletPointContainers.forEach(bp => {
-                const bulletSubheading = bp.querySelector('input[type="text"]')?.value || '';
-                const bulletContent = bp.querySelector('textarea')?.value || '';
-                if (bulletSubheading || bulletContent) {
-                  bulletPoints.push({ subheading: bulletSubheading, content: bulletContent });
-                }
+              const bulletDivs = Array.from(pointsContainer.querySelectorAll(':scope > div.relative'));
+              bulletDivs.forEach(div => {
+                const subheading = div.querySelector('input[type="text"]')?.value.trim() || '';
+                const content = div.querySelector('textarea')?.value.trim() || '';
+                if (subheading || content) bulletPoints.push({ subheading, content });
               });
             }
 
-            // Bottom Line section - it's in a separate div with border-t class
-            const bottomLineSection = component.querySelector('.border-t.pt-3') || component.querySelector('div.space-y-2:last-child');
-            const bottomLineHeading = bottomLineSection?.querySelector('input[placeholder*="Bottom Line Heading"]')?.value ||
-                                     component.querySelector('input[placeholder*="Expect Higher Highs"]')?.value || '';
-            const bottomLineContent = bottomLineSection?.querySelector('textarea[placeholder*="Bottom Line Content"]')?.value ||
-                                     component.querySelector('textarea[placeholder*="We remain overweight"]')?.value || '';
+            // Bottom line heading/content (case-insensitive on placeholder text)
+            const bottomLineHeading = component.querySelector('input[placeholder*="Bottom line heading" i]')?.value.trim() || '';
+            const bottomLineContent = component.querySelector('textarea[placeholder*="Bottom line content" i]')?.value.trim() || '';
 
             return {
               type: 'numbered-bottom-line',
