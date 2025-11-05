@@ -84,12 +84,6 @@
                 size: A4 portrait;
                 padding: 25px 0px 25px 0px 25px;
                 overflow: visible !important;
-                @bottom-left {
-                    content: "Page " counter(page) " of " counter(pages) " - CIO Viewpoint";
-                    font-size: 9px;
-                    color: #555;
-                    font-family: Arial, sans-serif;
-                }
             }
             
             body {
@@ -684,7 +678,58 @@
         function exportJSON() {
             saveUpdates();
         }
+        // Global formatting help injection for all edit dialogs
+        (function() {
+            function injectFormattingHelp(dialog) {
+                if (!dialog || !dialog.classList || !dialog.classList.contains('edit-dialog')) return;
+                if (dialog.querySelector('.formatting-help-inline')) return;
+                const help = document.createElement('div');
+                help.className = 'formatting-help-inline';
+                help.innerHTML = '<strong class="fmt-title">Text formatting</strong>' +
+                    '<div>Bold: <code>&lt;b&gt;Text&lt;/b&gt;</code> | Underline: <code>&lt;u&gt;Text&lt;/u&gt;</code> | Italic: <code>&lt;i&gt;Text&lt;/i&gt;</code></div>' +
+                    '<div class="fmt-note">You can combine tags. Example: <code>&lt;b&gt;&lt;i&gt;Important&lt;/i&gt;&lt;/b&gt;</code></div>';
+                dialog.appendChild(help);
+            }
+            const observer = new MutationObserver(mutations => {
+                for (const m of mutations) {
+                    for (const node of m.addedNodes) {
+                        if (node.nodeType === 1) {
+                            if (node.classList.contains('edit-dialog')) {
+                                injectFormattingHelp(node);
+                            } else if (node.querySelectorAll) {
+                                node.querySelectorAll('.edit-dialog').forEach(injectFormattingHelp);
+                            }
+                        }
+                    }
+                }
+            });
+            window.addEventListener('DOMContentLoaded', () => {
+                observer.observe(document.body, { childList: true, subtree: true });
+                document.querySelectorAll('.edit-dialog').forEach(injectFormattingHelp);
+            });
+        })();
     </script>
+    <style>
+        /* Inline formatting help styles inside edit dialogs */
+        .edit-dialog .formatting-help-inline {
+            margin-top: 12px;
+            background: #fff8d6;
+            border: 1px solid #e6c200;
+            border-radius: 6px;
+            padding: 6px 8px;
+            font-size: 11px;
+            line-height: 1.3;
+        }
+        .edit-dialog .formatting-help-inline code {
+            background: #f1f1f1;
+            padding: 0 4px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 11px;
+        }
+        .edit-dialog .formatting-help-inline .fmt-title { font-weight: 600; display:block; margin-bottom:4px; }
+        .edit-dialog .formatting-help-inline .fmt-note { margin-top:4px; }
+    </style>
 </head>
 <body>
     <div class="page relative">
@@ -921,6 +966,25 @@
                         // Update the page with loaded data
                         document.getElementById('documentTitle').textContent = documentData.step1.documentTitle;
                         document.getElementById('documentDate').textContent = documentData.step1.documentMonth;
+                        console.log('Applying page styles for PDF footer');
+                        const style = document.createElement("style");
+                        style.textContent = `
+                        @page {
+                            size: A4 portrait;
+                            margin: 25mm;
+                            @bottom-left {
+                            content: "Page " counter(page) " of " counter(pages) " ${documentData.step1.documentMonth} -  CIO Viewpoint";
+                            font-size: 9px;
+                            margin-left: 7mm;
+                            margin-right: 7mm;
+                            margin-top: 5px;
+                            color: #555;
+                            border-top: 1px solid #000;
+                            }
+                        }
+                        `;
+                        document.head.appendChild(style);
+                        console.log(style);
                         console.log('Loaded data from data.json:', JSON.stringify(documentData, null, 2));
                     } else {
                         console.warn('Could not load data.json, using default values');
@@ -5239,9 +5303,6 @@ Investment products:</p>
             
             assets.forEach((asset, index) => {
                 // Skip header assets
-                if (asset.isHeader) {
-                    return;
-                }
                 
                 // Handle alternative investments
                 if (asset.isAlternativeInvestment) {
